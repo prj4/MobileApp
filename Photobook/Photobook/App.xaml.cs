@@ -13,7 +13,7 @@ namespace Photobook
         {
             InitializeComponent();
             FlowListView.Init();
-            MainPage = new UserImagesView();
+            MainPage = new StartUpView();
         }
 
         protected override void OnStart()

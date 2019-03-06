@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.28307.271
+VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Photobook.Android", "Photobook.Android\Photobook.Android.csproj", "{8A9970BE-D3E6-4F36-B1FA-368BE44E5B92}"
 EndProject
@@ -42,6 +42,7 @@ Global
 		{8A9970BE-D3E6-4F36-B1FA-368BE44E5B92}.AppStore|iPhoneSimulator.Deploy.0 = Release|Any CPU
 		{8A9970BE-D3E6-4F36-B1FA-368BE44E5B92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8A9970BE-D3E6-4F36-B1FA-368BE44E5B92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A9970BE-D3E6-4F36-B1FA-368BE44E5B92}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{8A9970BE-D3E6-4F36-B1FA-368BE44E5B92}.Debug|iPhone.ActiveCfg = Debug|Any CPU
 		{8A9970BE-D3E6-4F36-B1FA-368BE44E5B92}.Debug|iPhone.Build.0 = Debug|Any CPU
 		{8A9970BE-D3E6-4F36-B1FA-368BE44E5B92}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
@@ -103,6 +104,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {93B1F50A-7729-49BC-8ACC-DD5B70110C83}
+		SolutionGuid = {7AD22ECE-98E0-4057-92C3-8B33ACB6CF32}
 	EndGlobalSection
 EndGlobal
