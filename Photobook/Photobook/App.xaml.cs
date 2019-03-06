@@ -13,17 +13,17 @@ namespace Photobook
         {
             InitializeComponent();
             FlowListView.Init();
-            MainPage = new StartUpView();
+            
         }
 
         protected override void OnStart()
         {
-            // Handle when your app starts
+            MainPage = new StartUpView();
         }
 
         protected override void OnSleep()
         {
-            // Handle when your app sleeps
+           
         }
 
         protected override void OnResume()
