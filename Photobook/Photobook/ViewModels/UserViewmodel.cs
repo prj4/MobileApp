@@ -12,10 +12,7 @@ namespace Photobook.ViewModels
 {
     public class UserViewmodel: INotifyPropertyChanged
     {
-
-
-
-
+        
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
