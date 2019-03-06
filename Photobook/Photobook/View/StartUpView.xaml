@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+    NavigationPage.HasNavigationBar="false"
+    BackgroundColor="#333"
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
+    x:Class="Photobook.View.StartUpView">
+    
+    
+    <AbsoluteLayout>
+         <Image 
+            Source="{local:EmbeddedImage Photobook.Images.bg.png}"
+            Aspect="AspectFill"
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0,0,1,1">
+        </Image>
+        
+        
+        
+        <Image
+            Source="{local:EmbeddedImage Photobook.Images.Logo.png}"
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0.5, 0.15, 0.7, 0.1"
+        />
+        
+        <StackLayout HorizontalOptions="Center" VerticalOptions="Center" AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1" AbsoluteLayout.LayoutFlags="All">
+            <Label Margin="0,0,0,10" Text="Log ind som gæst eller arrangør" TextColor="White" />
+            <Button Padding="10" BackgroundColor="White" Text="Gæst" />
+            <Button Text="Arrangør" />
+        </StackLayout>
+        
+        <Image
+            VerticalOptions="End"
+            Source="bottom_bg.png"
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0.5, 0, 1, 1"
+            Aspect="AspectFill"
+            >
+          
+            <Image.Source>
+                <OnPlatform x:TypeArguments="FileImageSource"
+                            iOS="bottom_bg.png"
+                            Android="bottom_bg.png"
+                />
+            </Image.Source>
+        </Image>
+        
+        
+        <Button 
+            Text="Terms of use"
+            AbsoluteLayout.LayoutFlags="All"
+            AbsoluteLayout.LayoutBounds="0.5, 1, 1, 0.1"
+            TextColor="White"
+            FontAttributes="Bold"
+            BackgroundColor="Transparent"
+            
+            
+        />
+    </AbsoluteLayout>
+    
+ 
+    
+</ContentPage>
