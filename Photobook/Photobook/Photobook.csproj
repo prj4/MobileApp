@@ -17,7 +17,6 @@
     <Folder Include="View\" />
     <Folder Include="Images\" />
     <Folder Include="MarkupExtensions\" />
-    <Folder Include="Models\" />
     <Folder Include="ViewModels\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
