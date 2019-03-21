@@ -11,7 +11,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Photobook.Models;
-
+/*
 namespace Photobook.Droid.Models
 {
     class AndroidCamera : ICameraAPI
@@ -19,7 +19,7 @@ namespace Photobook.Droid.Models
         private CameraManager Manager = null;
         public void Open()
         {
-            Manager = (CameraManager)
+            Manager = (CameraManager);
 
         }
 
@@ -31,3 +31,4 @@ namespace Photobook.Droid.Models
 
     }
 }
+*/
