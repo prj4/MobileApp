@@ -41,9 +41,7 @@
                 <Button.TextColor>
                     <OnPlatform x:TypeArguments="Color"
                                 Android="White" 
-                                iOS="Blue"
-                                >
-                       
+                                iOS="Blue">
                     </OnPlatform>
                 </Button.TextColor>
             </Button>
