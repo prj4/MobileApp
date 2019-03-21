@@ -10,13 +10,4 @@ namespace Photobook.Models
         void Open();
 
     }
-
-    public class AndroidCamera : ICameraAPI
-    {
-        public void Open()
-        {
-            
-            
-        }
-    }
 }
