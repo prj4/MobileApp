@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage 
-    NavigationPage.HasNavigationBar="false"
-    BackgroundColor="#333"
-    xmlns="http://xamarin.com/schemas/2014/forms" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-    xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
-    x:Class="Photobook.View.StartUpView">
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="Photobook.View.GuestLogin"
+             xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
+             NavigationPage.HasNavigationBar="false"
+             >
     
+        
     
     <AbsoluteLayout>
          <Image 
@@ -18,7 +18,6 @@
         
         
         
-               
         <Image
             Source="{local:EmbeddedImage Photobook.Images.Logo.png}"
             AbsoluteLayout.LayoutFlags="All"
@@ -32,21 +31,14 @@
             </Image.AbsoluteLayout.LayoutBounds>
         </Image>
         
-        
-        <StackLayout HorizontalOptions="Center" VerticalOptions="Center" AbsoluteLayout.LayoutBounds="0.5, 0.5, 1, 1" AbsoluteLayout.LayoutFlags="All">
-            <Label Margin="0,0,0,10" Text="Log ind som gæst eller arrangør" TextColor="White" />
-            <Button Padding="10" BackgroundColor="White" Text="Gæst" Clicked="Handle_Clicked" />
-
-            <Button Text="Arrangør" BackgroundColor="Transparent">
-                <Button.TextColor>
-                    <OnPlatform x:TypeArguments="Color"
-                                Android="White" 
-                                iOS="Blue"
-                                >
-                       
-                    </OnPlatform>
-                </Button.TextColor>
-            </Button>
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" AbsoluteLayout.LayoutBounds="0.5, 0.5, 0.65, 1" AbsoluteLayout.LayoutFlags="All">
+            <Label HorizontalTextAlignment="Center" HorizontalOptions="Center" Text="Log ind på begivenhed" TextColor="White" />
+            
+            <Entry HorizontalTextAlignment="Center" Keyboard="Text" x:Name="usernameEntry" Placeholder="Dit fulde navn" TextColor="White" PlaceholderColor="White" />
+            <Entry HorizontalTextAlignment="Center" Keyboard="Numeric" x:Name="passwordEntry" Placeholder="PIN kode til event" TextColor="White" PlaceholderColor="White" IsPassword="true" />
+            
+            <Button Padding="10" BackgroundColor="White" Text="Log ind" Clicked="LogInd_Clicked"/>
+            
             
         </StackLayout>
         
@@ -73,7 +65,7 @@
         
         
         <Button 
-            Text="Hvad er Photobook?"
+            Text=""
             AbsoluteLayout.LayoutFlags="All"
             AbsoluteLayout.LayoutBounds="0.5, 1, 1, 0.1"
             TextColor="White"
@@ -83,7 +75,4 @@
             
         />
     </AbsoluteLayout>
-    
- 
-    
 </ContentPage>
