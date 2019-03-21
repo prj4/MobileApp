@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.Hardware;
@@ -17,10 +16,18 @@ namespace Photobook.Droid.Models
 {
     class AndroidCamera : ICameraAPI
     {
+        private CameraManager Manager = null;
         public void Open()
         {
-            Camera.Open();
-            
+            Manager = (CameraManager)
+
         }
+
+    }
+
+
+    class CameraHandler : CameraDevice.StateCallback
+    {
+
     }
 }
