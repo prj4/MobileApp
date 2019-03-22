@@ -19,7 +19,7 @@ namespace Photobook.Droid.Models
     class AndroidCamera : ICameraAPI
     {
         private CameraManager Manager = null;
-        public async void Open()
+        public async void TakePhoto()
         {
             await CrossMedia.Current.Initialize();
 

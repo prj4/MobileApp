@@ -7,7 +7,7 @@ namespace Photobook.Models
 {
     public interface ICameraAPI
     {
-        void Open();
+        void TakePhoto();
 
     }
 }
