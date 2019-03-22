@@ -22,7 +22,6 @@ using Xamarin.Forms;
 
 
 [assembly:Dependency(typeof(AndroidCamera))]
-[Activity]
 namespace Photobook.Droid.Models
 {
     class AndroidCamera : ICameraAPI
