@@ -17,17 +17,11 @@ namespace Photobook.Droid.Models
     class AndroidCamera : ICameraAPI
     {
         private CameraManager Manager = null;
+
         public void Open()
         {
-            Manager = (CameraManager)
-
+            
         }
-
     }
 
-
-    class CameraHandler : CameraDevice.StateCallback
-    {
-
-    }
 }
