@@ -11,24 +11,34 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Photobook.Models;
-/*
+using Plugin.Media;
+using Plugin.Media.Abstractions;
+
 namespace Photobook.Droid.Models
 {
     class AndroidCamera : ICameraAPI
     {
         private CameraManager Manager = null;
-        public void Open()
+        public async void Open()
         {
-            Manager = (CameraManager);
+            await CrossMedia.Current.Initialize();
 
+            if (!CrossMedia.Current.IsCameraAvailable 
+                || !CrossMedia.Current.IsPickPhotoSupported)
+            {
+
+            }
+
+            var photo = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+            {
+                SaveToAlbum = true
+            });
+
+            if (photo == null)
+            {
+               
+            }
         }
 
     }
-
-
-    class CameraHandler : CameraDevice.StateCallback
-    {
-
-    }
 }
-*/
