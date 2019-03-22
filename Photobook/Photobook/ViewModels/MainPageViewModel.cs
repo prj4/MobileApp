@@ -1,13 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Runtime.CompilerServices;
 
-namespace Photobook.Models
+namespace Photobook.ViewModels
 {
-    public class SimpleItem : INotifyPropertyChanged
+    public class MainPageViewModel : INotifyPropertyChanged
     {
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -16,18 +14,39 @@ namespace Photobook.Models
         }
 
 
+        public MainPageViewModel()
+        {
+
+        }
+
+
+
         string title;
         public string Title
         {
             get { return title; }
-            set 
+            set
             {
                 title = value;
-                NotifyPropertyChanged(); 
+                NotifyPropertyChanged();
             }
         }
 
-       // public Color Color { get; private set; }
+
+        string description;
+        public string Description
+        {
+            get { return description; }
+            set
+            {
+                description = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
+
+
 
     }
 }
