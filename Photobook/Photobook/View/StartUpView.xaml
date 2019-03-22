@@ -45,6 +45,10 @@
                     </OnPlatform>
                 </Button.TextColor>
             </Button>
+
+            <Button Text="Troels' store testknap" Clicked="Button_OnClicked">
+
+            </Button>
             
         </StackLayout>
         

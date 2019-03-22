@@ -19,5 +19,9 @@ namespace Photobook.View
             await Navigation.PushAsync(new GuestLogin());
         }
 
+        private void Button_OnClicked(object sender, EventArgs e)
+        {
+            DependencyService.Get<ICameraAPI>().TakePhoto();
+        }
     }
 }

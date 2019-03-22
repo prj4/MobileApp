@@ -1,10 +1,12 @@
 ﻿using System;
+using Android;
 using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Android.Support.V4.Content;
 using Plugin.Media;
 
 namespace Photobook.Droid
@@ -22,7 +24,7 @@ namespace Photobook.Droid
             LoadApplication(new App());
 
             await CrossMedia.Current.Initialize();
-
+            ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera);
 
         }
     }

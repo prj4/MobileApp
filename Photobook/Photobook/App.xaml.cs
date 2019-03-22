@@ -1,10 +1,12 @@
 ﻿using System;
 using DLToolkit.Forms.Controls;
+using Photobook.Models;
 using Photobook.View;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+
 namespace Photobook
 {
     public partial class App : Application
@@ -13,7 +15,7 @@ namespace Photobook
         {
             InitializeComponent();
             FlowListView.Init();
-            
+            Xamarin.Forms.DependencyService.Register<ICameraAPI>();
         }
         
 
