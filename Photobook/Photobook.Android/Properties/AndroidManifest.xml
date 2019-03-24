@@ -4,7 +4,12 @@
 	<uses-permission android:name="android.permission.CAMERA" />
 	<application android:label="Photobook.Android" android:icon="@drawable/bottom_bg">
     <provider>
-      android:authorities=""
+      android:authorities="${applicationId.provider}"
+      android:name="android.support.v4.content.FileProvider"
+      android:exported="false"
+      android:grantUriPermissions="true"
+      <meta-data android:name="android.support.v4.content.FILE_PROVIDER_PATHS"
+                 android:resource="@xml/Resource_paths"/>
     </provider>
 
   </application>
