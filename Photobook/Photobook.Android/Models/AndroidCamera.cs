@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using Android;
 using Android.App;
@@ -35,11 +36,7 @@ namespace Photobook.Droid.Models
                 new Plugin.Media.Abstractions.StoreCameraMediaOptions() { });
             
         }
-
-        public void SendInformation()
-        {
-           
-        }
+        
 
     }
 }
