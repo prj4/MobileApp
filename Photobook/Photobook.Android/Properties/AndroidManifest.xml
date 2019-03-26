@@ -9,7 +9,7 @@
       android:exported="false"
       android:grantUriPermissions="true"
       <meta-data android:name="android.support.v4.content.FILE_PROVIDER_PATHS"
-                 android:resource="@xml/Resource_paths"/>
+                 android:resource="@xml/file_paths"/>
     </provider>
 
   </application>
