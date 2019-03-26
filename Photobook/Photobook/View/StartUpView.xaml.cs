@@ -16,9 +16,14 @@ namespace Photobook.View
 #if DEBUG
             Button TestBtn = new Button();
             TestBtn.Text = "Troels' store testknap";
-            TestBtn.Clicked += (sender, args) => { DependencyService.Get<ICameraAPI>().TakePhoto(); };
+            string arg = "";
+            TestBtn.Clicked += (sender, args) =>
+            {
+                DependencyService.Get<IUserServerCommunicator>().SendUserInformation();
+                arg = DependencyService.Get<IUserServerCommunicator>().Result;
+            };
             MainStack.Children.Add(TestBtn);
-            
+            DisplayAlert("New message", arg, "Ok");
 #endif
         }
 
