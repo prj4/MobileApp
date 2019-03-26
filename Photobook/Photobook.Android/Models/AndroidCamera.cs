@@ -8,11 +8,14 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Hardware;
 using Android.Hardware.Camera2;
+using Android.Media.Audiofx;
 using Android.OS;
+using Android.Provider;
 using Android.Runtime;
 using Android.Support.V4.App;
 using Android.Support.V4.Content;
 using Android.Views;
+using Android.Views.TextClassifiers;
 using Android.Widget;
 using Photobook.Droid.Models;
 using Photobook.Models;
@@ -28,24 +31,14 @@ namespace Photobook.Droid.Models
     {
         public async void TakePhoto()
         {
-            await CrossMedia.Current.Initialize();
+            var photo = await Plugin.Media.CrossMedia.Current.TakePhotoAsync(
+                new Plugin.Media.Abstractions.StoreCameraMediaOptions() { });
+            
+        }
 
-            if (!CrossMedia.Current.IsCameraAvailable
-                || !CrossMedia.Current.IsPickPhotoSupported)
-            {
-
-            }
-
-            var photo = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
-            {
-               SaveToAlbum = true
-            });
-
-            if (photo == null)
-            {
-
-            }
-
+        public void SendInformation()
+        {
+           
         }
 
     }

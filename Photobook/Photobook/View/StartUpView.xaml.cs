@@ -18,6 +18,7 @@ namespace Photobook.View
             TestBtn.Text = "Troels' store testknap";
             TestBtn.Clicked += (sender, args) => { DependencyService.Get<ICameraAPI>().TakePhoto(); };
             MainStack.Children.Add(TestBtn);
+            
 #endif
         }
 
