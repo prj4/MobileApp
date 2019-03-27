@@ -3,10 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="Photobook.View.NewUser"
              xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
-             xmlns:vm="clr-namespace:Photobook.ViewModels; assembly=Photobook"
-             >
-
-   
+             xmlns:vm="clr-namespace:Photobook.ViewModels">
+    <ContentPage.BindingContext>
+        <vm:NewUserViewModel></vm:NewUserViewModel>
+    </ContentPage.BindingContext>
     <ContentPage.Content>
      
         <Grid x:Name="controlGrid" RowSpacing="1" ColumnSpacing="1">
@@ -47,16 +47,18 @@
             <StackLayout Grid.Row="1" Grid.Column="0" x:Name="MainStack" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Margin="70">
                 <Label Margin="0,0,0,10" HorizontalOptions="CenterAndExpand" Text="Opret bruger" TextColor="White" />
                 
-                <Entry HorizontalTextAlignment="Center" Keyboard="Text" Text="{Binding Path=User.Username}" x:Name="HostUsername" Placeholder="Dit fulde navn" TextColor="White" PlaceholderColor="White" />
-                <Entry HorizontalTextAlignment="Center" Keyboard="Numeric" Text="{Binding Path=User.Password}" x:Name="HostPassword" Placeholder="Kodeord" TextColor="White" PlaceholderColor="White" IsPassword="true" />
-                <Entry HorizontalTextAlignment="Center" Keyboard="Numeric" Text="{Binding Path=PasswordValidation}" x:Name="HostPasswordVerification" Placeholder="Gentag kodeord" TextColor="White" PlaceholderColor="White" IsPassword="true" />
-                <Entry HorizontalTextAlignment="Center" Keyboard="Email" Text="{Binding Path=User.Email}" Placeholder="Email" TextColor="White" PlaceholderColor="White" />
+                <Entry HorizontalTextAlignment="Center" Keyboard="Text" Text="{Binding User.Username, Mode=TwoWay}" x:Name="HostUsername" Placeholder="Dit fulde navn" TextColor="White" PlaceholderColor="White" />
+                <Entry HorizontalTextAlignment="Center" Keyboard="Numeric" Text="{Binding User.Password, Mode=TwoWay}" x:Name="HostPassword" Placeholder="Kodeord" TextColor="White" PlaceholderColor="White" IsPassword="true" />
+                <Entry HorizontalTextAlignment="Center" Keyboard="Numeric" Text="{Binding PasswordValidation, Mode=TwoWay}" x:Name="HostPasswordVerification" Placeholder="Gentag kodeord" TextColor="White" PlaceholderColor="White" IsPassword="true" />
+                <Entry HorizontalTextAlignment="Center" Keyboard="Email" Text="{Binding User.Email, Mode=TwoWay}" Placeholder="Email" TextColor="White" PlaceholderColor="White" />
 
 
+                <Label IsVisible="True" Text="{Binding SuccesTxt, Mode=TwoWay}" TextColor="Red"></Label>
                 <Label Margin="0,0,0,10" HorizontalOptions="CenterAndExpand" Text="Log ind for at oprette et event" TextColor="White" />
-                <Button Padding="10" Margin="0,0,0,10" BackgroundColor="White" Text="Log ind" Command="{Binding NewUserCommand}" />
+                <Button Padding="10" Margin="0,0,0,10" BackgroundColor="White" Text="Log ind" Command="{Binding Path=NewUserCommand}"/>
 
-                <Label Text="{Binding Path=SuccesTxt, Mode=OneWay}"></Label>
+                
+                
 
 
 

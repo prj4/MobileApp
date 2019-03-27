@@ -21,7 +21,7 @@ namespace Photobook.View
             TestBtn.Clicked += async (sender, args) =>
             {
                 IUserServerCommunicator com = new UserServerCommunicator();
-                com.SendUserInformation(new User());//Opmærksom
+                com.SendUserInformation(new User(), this);//Opmærksom
             };
             MainStack.Children.Add(TestBtn);
 #endif

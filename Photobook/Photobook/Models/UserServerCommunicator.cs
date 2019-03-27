@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.IO;
+using System.Net.Http;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 
@@ -7,14 +9,11 @@ namespace Photobook.Models
     public interface IUserServerCommunicator
     {
         void SendUserInformation(User sender);
+
     }
 
-    public class UserServerCommunicator : Page, IUserServerCommunicator
+    public class UserServerCommunicator : IUserServerCommunicator
     {
-        public UserServerCommunicator()
-        {
-
-        }
         public async void SendUserInformation (User sender)
         {
             var client = new HttpClient();
@@ -26,6 +25,7 @@ namespace Photobook.Models
             response.EnsureSuccessStatusCode();
 
             string body = await response.Content.ReadAsStringAsync();
+            
         }
     }
 }

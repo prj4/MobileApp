@@ -10,8 +10,10 @@ namespace Photobook.View
     {
         public NewUser()
         {
+            
             InitializeComponent();
-            BindingContext = new NewUserViewModel(new UserServerCommunicator());
+            
+
         }
     }
 }

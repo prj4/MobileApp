@@ -8,13 +8,13 @@ using Prism.Common;
 using System.Windows.Input;
 using Photobook.Models;
 using System.Runtime.CompilerServices;
+using Photobook.View;
+using Xamarin.Forms;
 
 namespace Photobook.ViewModels
 {
     public class NewUserViewModel : INotifyPropertyChanged
     {
-
-
         private IUserServerCommunicator Com;
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -23,11 +23,11 @@ namespace Photobook.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-
-        public NewUserViewModel(IUserServerCommunicator com)
+        public NewUserViewModel()
         {
-            Com = com;
-            SuccesTxt = "";
+            user = new User();
+            Com = new UserServerCommunicator();
+            SuccesTxt = "dasdasdasdas";
         }
 
         private User user;
@@ -43,26 +43,26 @@ namespace Photobook.ViewModels
         public string PasswordValidation
         {
             get { return _passwordValidation; }
-            set { _passwordValidation = value; NotifyPropertyChanged(); }
+            set { _passwordValidation = value; NotifyPropertyChanged();}
         }
 
-        private string _SuccesTxt;
+        private string _SuccesTxt = "";
         public string SuccesTxt
         {
             get { return _SuccesTxt; }
             set { _SuccesTxt = value; NotifyPropertyChanged(); }
         }
 
-
+      
         ICommand _newUserCommand;
         public ICommand NewUserCommand
         {
-            get { return _newUserCommand ?? (_newUserCommand = new DelegateCommand(AddNewUser_Execute, AddNewUser_CanExecute)); }
+            get { return _newUserCommand ?? (_newUserCommand = new DelegateCommand(AddNewUser_Execute)); }
         }
 
         private void AddNewUser_Execute()
         {
-            // Gå videre til næste view her 
+            
             try
             {
                 User.Validate();
@@ -71,15 +71,21 @@ namespace Photobook.ViewModels
             {
                 SuccesTxt = e.Message;
             }
+            
+            Com.SendUserInformation(User);
+            
 
             SuccesTxt = "";
         }
 
-        private bool AddNewUser_CanExecute()
+        public bool AddNewUser_CanExecute()
         {
             if (User.Password == PasswordValidation)
+            {
                 SuccesTxt = "";
                 return true;
+            }
+                
 
             SuccesTxt = "Check at dine passwords stemmer overens";
             return false;
