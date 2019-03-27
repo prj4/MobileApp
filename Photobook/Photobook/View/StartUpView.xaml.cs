@@ -18,12 +18,6 @@ namespace Photobook.View
 #if DEBUG
             Button TestBtn = new Button();
             TestBtn.Text = "Troels' store testknap";
-            TestBtn.Clicked += async (sender, args) =>
-            {
-                IUserServerCommunicator com = new UserServerCommunicator();
-                com.SendUserInformation(new User(), this);//Opmærksom
-            };
-            MainStack.Children.Add(TestBtn);
 #endif
         }
 

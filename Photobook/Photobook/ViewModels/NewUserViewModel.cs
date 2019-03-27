@@ -72,10 +72,6 @@ namespace Photobook.ViewModels
                 SuccesTxt = e.Message;
             }
             
-            Com.SendUserInformation(User);
-            
-
-            SuccesTxt = "";
         }
 
         public bool AddNewUser_CanExecute()
