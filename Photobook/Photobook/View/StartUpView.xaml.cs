@@ -20,10 +20,8 @@ namespace Photobook.View
             TestBtn.Clicked += (sender, args) =>
             {
                 DependencyService.Get<IUserServerCommunicator>().SendUserInformation();
-                arg = DependencyService.Get<IUserServerCommunicator>().Result;
             };
             MainStack.Children.Add(TestBtn);
-            DisplayAlert("New message", arg, "Ok");
 #endif
         }
 

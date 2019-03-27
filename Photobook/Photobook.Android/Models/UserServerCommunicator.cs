@@ -18,14 +18,13 @@ namespace Photobook.Droid.Models
     }
     class UserServerCommunicator : IUserServerCommunicator
     {
-        public string Result { get; set; }
         public async void SendUserInformation()
         {
             var client = new HttpClient();
 
-            var hand = await client.GetAsync("https://example.com/hi/there?hand=wave");
+            var hand = await client.PostAsync("https://localhost:44382/Lab3/AddPerson/1?msg=hejsa",
+                new StringContent(""));
 
-            Result = hand.ToString();
         }
     }
 }

@@ -6,7 +6,6 @@ namespace Photobook.Models
 {
     public interface IUserServerCommunicator
     {
-        string Result { get; set; }
         void SendUserInformation();
     }
 }
