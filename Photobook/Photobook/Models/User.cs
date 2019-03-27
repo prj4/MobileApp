@@ -2,9 +2,19 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Photobook.Models;
 
 namespace Photobook.Models
 {
+    public class IncorrectEmailException : Exception
+    {
+        public IncorrectEmailException(string msg)
+        {
+            Message = msg;
+        }
+        public override string Message{ get; }}
+    }
+
     public class User : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -25,6 +35,14 @@ namespace Photobook.Models
         }
         */
 
+        public void Validate()
+        {
+            if (!_email.Contains("@"))
+            {
+                throw new IncorrectEmailException("Incorrect email entered");
+            }
+        }
+
         private string _password;
         public string Password
         {
@@ -37,7 +55,11 @@ namespace Photobook.Models
         public string Email
         {
             get { return _email; }
-            set { _email = value; NotifyPropertyChanged(); }
+            set
+            {
+                _email = value;
+                NotifyPropertyChanged();
+            }
 
         }
 
@@ -75,4 +97,3 @@ namespace Photobook.Models
 
 
     }
-}
