@@ -13,6 +13,9 @@ namespace Photobook.ViewModels
 {
     public class NewUserViewModel : INotifyPropertyChanged
     {
+
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -21,6 +24,10 @@ namespace Photobook.ViewModels
         }
 
 
+        public NewUserViewModel()
+        {
+            SuccesTxt = "";
+        }
 
         private User user;
 
