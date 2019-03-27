@@ -35,6 +35,14 @@ namespace Photobook.Models
         }
         */
 
+        public void Validate()
+        {
+            if (!_email.Contains("@"))
+            {
+                throw new IncorrectEmailException("Incorrect email entered");
+            }
+        }
+
         private string _password;
         public string Password
         {
@@ -49,12 +57,7 @@ namespace Photobook.Models
             get { return _email; }
             set
             {
-                if (!value.Contains("@"))
-                    throw new IncorrectEmailException("Incorrect email entered");
-                else
-                {
-                    _email = value;
-                }
+                _email = value;
                 NotifyPropertyChanged();
             }
 

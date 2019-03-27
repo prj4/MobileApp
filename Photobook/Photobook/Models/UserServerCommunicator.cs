@@ -11,6 +11,10 @@ namespace Photobook.Models
 
     public class UserServerCommunicator : Page, IUserServerCommunicator
     {
+        public UserServerCommunicator()
+        {
+
+        }
         public async void SendUserInformation (User sender)
         {
             var client = new HttpClient();

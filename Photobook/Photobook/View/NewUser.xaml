@@ -6,9 +6,7 @@
              xmlns:vm="clr-namespace:Photobook.ViewModels; assembly=Photobook"
              >
 
-    <ContentPage.BindingContext>
-        <vm:NewUserViewModel></vm:NewUserViewModel>
-    </ContentPage.BindingContext>
+   
     <ContentPage.Content>
      
         <Grid x:Name="controlGrid" RowSpacing="1" ColumnSpacing="1">
@@ -56,7 +54,7 @@
 
 
                 <Label Margin="0,0,0,10" HorizontalOptions="CenterAndExpand" Text="Log ind for at oprette et event" TextColor="White" />
-                <Button Paddng="10" Margin="0,0,0,10" BackgroundColor="White" Text="Log ind" Command="{Binding NewUserCommand}" />
+                <Button Padding="10" Margin="0,0,0,10" BackgroundColor="White" Text="Log ind" Command="{Binding NewUserCommand}" />
 
                 <Label Text="{Binding Path=SuccesTxt, Mode=OneWay}"></Label>
 

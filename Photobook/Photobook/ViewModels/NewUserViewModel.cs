@@ -15,7 +15,7 @@ namespace Photobook.ViewModels
     {
 
 
-
+        private IUserServerCommunicator Com;
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -24,8 +24,9 @@ namespace Photobook.ViewModels
         }
 
 
-        public NewUserViewModel()
+        public NewUserViewModel(IUserServerCommunicator com)
         {
+            Com = com;
             SuccesTxt = "";
         }
 
@@ -64,15 +65,14 @@ namespace Photobook.ViewModels
             // Gå videre til næste view her 
             try
             {
-
+                User.Validate();
             }
-            catch()
+            catch(Exception e)
             {
-
+                SuccesTxt = e.Message;
             }
 
             SuccesTxt = "";
-
         }
 
         private bool AddNewUser_CanExecute()

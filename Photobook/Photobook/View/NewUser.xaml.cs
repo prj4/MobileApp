@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using Photobook.Models;
+using Photobook.ViewModels;
 using Xamarin.Forms;
 
 namespace Photobook.View
@@ -10,9 +11,7 @@ namespace Photobook.View
         public NewUser()
         {
             InitializeComponent();
-
-          
-
+            BindingContext = new NewUserViewModel(new UserServerCommunicator());
         }
     }
 }
