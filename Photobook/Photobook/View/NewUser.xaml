@@ -54,7 +54,11 @@
                 <Entry HorizontalTextAlignment="Center" Keyboard="Numeric" Text="{Binding Path=PasswordValidation}" x:Name="HostPasswordVerification" Placeholder="Gentag kodeord" TextColor="White" PlaceholderColor="White" IsPassword="true" />
                 
                 <Label Margin="0,0,0,10" HorizontalOptions="CenterAndExpand" Text="Log ind for at oprette et event" TextColor="White" />
-                <Button Padding="10" Margin="0,0,0,10" BackgroundColor="White" Text="Log ind" Command="{Binding NewUserCommand}" />
+                <Button Paddng="10" Margin="0,0,0,10" BackgroundColor="White" Text="Log ind" Command="{Binding NewUserCommand}" />
+
+                <Label Text="{Binding Path=SuccesTxt, Mode=OneWay}"></Label>
+
+
 
             </StackLayout>
             

@@ -38,6 +38,13 @@ namespace Photobook.ViewModels
             set { _passwordValidation = value; NotifyPropertyChanged(); }
         }
 
+        private string _SuccesTxt;
+        public string SuccesTxt
+        {
+            get { return _SuccesTxt; }
+            set { _SuccesTxt = value; NotifyPropertyChanged(); }
+        }
+
 
         ICommand _newUserCommand;
         public ICommand NewUserCommand
@@ -56,13 +63,18 @@ namespace Photobook.ViewModels
             {
 
             }
-                
+
+            SuccesTxt = "";
+
         }
 
         private bool AddNewUser_CanExecute()
         {
             if (User.Password == PasswordValidation)
+                SuccesTxt = "";
                 return true;
+
+            SuccesTxt = "Check at dine passwords stemmer overens";
             return false;
         }
 
