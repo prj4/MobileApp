@@ -24,11 +24,13 @@
     <None Remove="Images\bg.png" />
     <None Remove="Images\bottom-bg.png" />
     <None Remove="Images\Logo.png" />
+    <None Remove="Images\allimages.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Images\bg.png" />
     <EmbeddedResource Include="Images\bottom-bg.png" />
     <EmbeddedResource Include="Images\Logo.png" />
+    <EmbeddedResource Include="Images\allimages.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Mono.Android">
@@ -37,9 +39,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="View\HostMainMenu.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="View\HostMenu.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="View\SeeImages.xaml">

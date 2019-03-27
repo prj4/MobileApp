@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using Photobook.ViewModels;
 using Xamarin.Forms;
 
 namespace Photobook.View
@@ -14,7 +14,7 @@ namespace Photobook.View
 
         async void NewUser_ClickedAsync(object sender, System.EventArgs e)
         {
-            await Navigation.PushAsync(new NewUser());
+            await Navigation.PushAsync(new NewUser(new NewUserViewModel()));
         }
     }
 }

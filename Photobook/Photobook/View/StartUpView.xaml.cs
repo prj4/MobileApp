@@ -14,7 +14,7 @@ namespace Photobook.View
         public StartUpView()
         {
             InitializeComponent();
-
+            /*
 #if DEBUG
             Button TestBtn = new Button();
             TestBtn.Text = "Troels' store testknap";
@@ -25,6 +25,7 @@ namespace Photobook.View
             };
             MainStack.Children.Add(TestBtn);
 #endif
+*/
         }
 
         async void Handle_Clicked(object sender, System.EventArgs e)

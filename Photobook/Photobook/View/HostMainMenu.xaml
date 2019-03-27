@@ -1,20 +1,47 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Photobook.View.HostMainMenu">
+             x:Class="Photobook.View.HostMainMenu"
+             xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
+             BackgroundColor="BLack"
+             >
     <ContentPage.Content>
         <ScrollView>
-            <Grid RowSpacing="1" ColumnSpacing="1">
+            <Grid RowSpacing="1" ColumnSpacing="1" Padding="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
+                
+                <StackLayout Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Label Style="{StaticResource h1}" Text="Navn" />
+                    <Editor IsReadOnly="true" Style="{StaticResource pTxt}" Text="Noget her de de dew dew" BackgroundColor="Transparent" Margin="-4,0,0,0" />
+                </StackLayout>
+                
+                <StackLayout BackgroundColor="Olive" Padding="30" Orientation="Vertical" Margin="0,15,0,15" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                     <Image 
+                        Source="{local:EmbeddedImage Photobook.Images.allimages.png}"
+                        Aspect="AspectFit"
+                        >
+                     </Image>
+                    <Label HorizontalOptions="Center" Style="{StaticResource pTxt}" Text="Opret event" />
 
-                <Label>Hello </Label>
+                </StackLayout>
+                
+                 <StackLayout BackgroundColor="Olive" Padding="30" Orientation="Vertical" Margin="0,0,0,15" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                     <Image 
+                        Source="{local:EmbeddedImage Photobook.Images.allimages.png}"
+                        Aspect="AspectFit"
+                        >
+                     </Image>
+                    <Label HorizontalOptions="Center" Style="{StaticResource pTxt}" Text="Se events" />
+
+                </StackLayout>
 
             </Grid>
         </ScrollView>

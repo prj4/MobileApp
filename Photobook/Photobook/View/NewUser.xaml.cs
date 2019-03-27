@@ -8,11 +8,11 @@ namespace Photobook.View
 {
     public partial class NewUser : ContentPage
     {
-        public NewUser()
+        public NewUser(NewUserViewModel vm)
         {
-            
+            vm.Navigation = Navigation;
+            BindingContext = vm;
             InitializeComponent();
-            
 
         }
     }

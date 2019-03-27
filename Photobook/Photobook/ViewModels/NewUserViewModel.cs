@@ -11,10 +11,13 @@ using System.Runtime.CompilerServices;
 using Photobook.View;
 using Xamarin.Forms;
 
+
 namespace Photobook.ViewModels
 {
     public class NewUserViewModel : INotifyPropertyChanged
     {
+        public INavigation Navigation;
+
         private IUserServerCommunicator Com;
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -27,7 +30,7 @@ namespace Photobook.ViewModels
         {
             user = new User();
             Com = new UserServerCommunicator();
-            SuccesTxt = "dasdasdasdas";
+            SuccesTxt = "";
         }
 
         private User user;
@@ -35,7 +38,7 @@ namespace Photobook.ViewModels
         public User User
         {
             get { return user; }
-            set { user = value; NotifyPropertyChanged(); }
+            set { user = value; NotifyPropertyChanged(); ((Command)NewUserCommand).ChangeCanExecute(); }
         }
 
 
@@ -43,7 +46,12 @@ namespace Photobook.ViewModels
         public string PasswordValidation
         {
             get { return _passwordValidation; }
-            set { _passwordValidation = value; NotifyPropertyChanged();}
+            set 
+            {   
+                _passwordValidation = value;
+                NotifyPropertyChanged();
+               
+            }
         }
 
         private string _SuccesTxt = "";
@@ -65,7 +73,35 @@ namespace Photobook.ViewModels
             
             try
             {
+
+                if (User.Password == PasswordValidation)
+                {
+                    SuccesTxt = "";
+                }
+                else
+                {
+                    SuccesTxt = "Check at dine passwords stemmer overens";
+                }
+
                 User.Validate();
+
+
+
+                // Vi skla her tjekke, at hvis det er rigtigt, sendes der en anmodning til server
+                // Om at oprette en ny bruger
+                // Tjek om bruger indsættes == succes
+                // Hvis brugeren er indsat: 
+                // Gå videre til næste view med brugerens info.
+                // Så vi får brugerens info her: 
+
+                User newUser = new User();
+                newUser.Email = "Troelsbleicken@remoulade.dk";
+                newUser.Password = "123";
+                newUser.Username = "Troels Bleicken";
+
+                // Giv den nye user som input parameter og vis info.
+                Navigation.PushAsync(new HostMainMenu());
+
             }
             catch(Exception e)
             {
@@ -74,18 +110,8 @@ namespace Photobook.ViewModels
             
         }
 
-        public bool AddNewUser_CanExecute()
-        {
-            if (User.Password == PasswordValidation)
-            {
-                SuccesTxt = "";
-                return true;
-            }
-                
+ 
 
-            SuccesTxt = "Check at dine passwords stemmer overens";
-            return false;
-        }
 
     }
 }
