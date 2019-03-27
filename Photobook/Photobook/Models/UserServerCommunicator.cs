@@ -8,13 +8,19 @@ namespace Photobook.Models
 {
     public interface IUserServerCommunicator
     {
-        void SendUserInformation(User sender);
+        bool SendUserInfoReturnIsValid(User sender);
 
     }
 
     public class UserServerCommunicator : IUserServerCommunicator
     {
-        public async void SendUserInformation (User sender)
+        private string Response { get; set; }
+        public bool SendUserInfoReturnIsValid(User sender)
+        {
+            SendUserInformation(sender);
+            return Response == null;
+        }
+        private async void SendUserInformation (User sender)
         {
             var client = new HttpClient();
             var data = JsonConvert.SerializeObject(sender);
@@ -24,8 +30,8 @@ namespace Photobook.Models
 
             response.EnsureSuccessStatusCode();
 
-            string body = await response.Content.ReadAsStringAsync();
-            
+            Response = await response.Content.ReadAsStringAsync();
+
         }
     }
 }
