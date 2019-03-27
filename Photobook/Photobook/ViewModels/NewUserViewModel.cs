@@ -13,6 +13,9 @@ namespace Photobook.ViewModels
 {
     public class NewUserViewModel : INotifyPropertyChanged
     {
+
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -21,6 +24,10 @@ namespace Photobook.ViewModels
         }
 
 
+        public NewUserViewModel()
+        {
+            SuccesTxt = "";
+        }
 
         private User user;
 
@@ -36,6 +43,13 @@ namespace Photobook.ViewModels
         {
             get { return _passwordValidation; }
             set { _passwordValidation = value; NotifyPropertyChanged(); }
+        }
+
+        private string _SuccesTxt;
+        public string SuccesTxt
+        {
+            get { return _SuccesTxt; }
+            set { _SuccesTxt = value; NotifyPropertyChanged(); }
         }
 
 
@@ -56,13 +70,18 @@ namespace Photobook.ViewModels
             {
 
             }
-                
+
+            SuccesTxt = "";
+
         }
 
         private bool AddNewUser_CanExecute()
         {
             if (User.Password == PasswordValidation)
+                SuccesTxt = "";
                 return true;
+
+            SuccesTxt = "Check at dine passwords stemmer overens";
             return false;
         }
 

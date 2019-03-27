@@ -58,6 +58,9 @@
     <PackageReference Include="Plugin.Permissions">
       <Version>3.0.0.12</Version>
     </PackageReference>
+    <PackageReference Include="Prism.Forms">
+      <Version>7.1.0.431</Version>
+    </PackageReference>
     <PackageReference Include="Xam.Plugin.Media">
       <Version>4.0.1.5</Version>
     </PackageReference>
@@ -71,6 +74,7 @@
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
     <Compile Include="Models\AndroidCamera.cs" />
+    <Compile Include="Models\UserServerCommunicator.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

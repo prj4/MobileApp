@@ -16,7 +16,6 @@
     <PackageReference Include="DLToolkit.Forms.Controls.FlowListView" Version="2.0.11" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="View\" />
     <Folder Include="Images\" />
     <Folder Include="MarkupExtensions\" />
     <Folder Include="ViewModels\" />
