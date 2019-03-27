@@ -25,6 +25,21 @@ namespace Photobook.Models
         }
         */
 
+        private string _password;
+        public string Password
+        {
+            get { return _password; }
+            set { _password = value; NotifyPropertyChanged(); }
+
+        }
+
+        private string _email;
+        public string Email
+        {
+            get { return _email; }
+            set { _email = value; NotifyPropertyChanged(); }
+
+        }
 
 
         private string _imageUrl;
