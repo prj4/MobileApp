@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO.Compression;
+using System.Net.Http;
+using Newtonsoft.Json;
 using Photobook.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration;
@@ -16,10 +18,10 @@ namespace Photobook.View
 #if DEBUG
             Button TestBtn = new Button();
             TestBtn.Text = "Troels' store testknap";
-            string arg = "";
-            TestBtn.Clicked += (sender, args) =>
+            TestBtn.Clicked += async (sender, args) =>
             {
-                DependencyService.Get<IUserServerCommunicator>().SendUserInformation();
+                IUserServerCommunicator com = new UserServerCommunicator();
+                com.SendUserInformation(new User());//Opmærksom
             };
             MainStack.Children.Add(TestBtn);
 #endif

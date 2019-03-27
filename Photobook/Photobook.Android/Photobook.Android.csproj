@@ -71,7 +71,6 @@
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
     <Compile Include="Models\AndroidCamera.cs" />
-    <Compile Include="Models\UserServerCommunicator.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
