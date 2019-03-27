@@ -29,6 +29,11 @@ namespace Photobook.View
         {
             await Navigation.PushAsync(new GuestLogin());
         }
-        
+
+        async void Host_Clicked(object sender, System.EventArgs e)
+        {
+            await Navigation.PushAsync(new HostView());
+        }
+
     }
 }
