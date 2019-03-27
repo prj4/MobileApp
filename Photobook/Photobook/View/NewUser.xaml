@@ -3,8 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="Photobook.View.NewUser"
              xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
+             xmlns:vm="clr-namespace:Photobook.ViewModels; assembly=Photobook"
              >
-     <ContentPage.Content>
+
+    <ContentPage.BindingContext>
+        <vm:NewUserViewModel></vm:NewUserViewModel>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
      
         <Grid x:Name="controlGrid" RowSpacing="1" ColumnSpacing="1">
             <Grid.RowDefinitions>
@@ -44,12 +49,12 @@
             <StackLayout Grid.Row="1" Grid.Column="0" x:Name="MainStack" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Margin="70">
                 <Label Margin="0,0,0,10" HorizontalOptions="CenterAndExpand" Text="Opret bruger" TextColor="White" />
                 
-                <Entry HorizontalTextAlignment="Center" Keyboard="Text" x:Name="HostUsername" Placeholder="Dit fulde navn" TextColor="White" PlaceholderColor="White" />
-                <Entry HorizontalTextAlignment="Center" Keyboard="Numeric" x:Name="HostPassword" Placeholder="Kodeord" TextColor="White" PlaceholderColor="White" IsPassword="true" />
-                <Entry HorizontalTextAlignment="Center" Keyboard="Numeric" x:Name="HostPasswordVerification" Placeholder="Gentag kodeord" TextColor="White" PlaceholderColor="White" IsPassword="true" />
+                <Entry HorizontalTextAlignment="Center" Keyboard="Text" Text="{Binding Path=User.Username}" x:Name="HostUsername" Placeholder="Dit fulde navn" TextColor="White" PlaceholderColor="White" />
+                <Entry HorizontalTextAlignment="Center" Keyboard="Numeric" Text="{Binding Path=User.Password}" x:Name="HostPassword" Placeholder="Kodeord" TextColor="White" PlaceholderColor="White" IsPassword="true" />
+                <Entry HorizontalTextAlignment="Center" Keyboard="Numeric" Text="{Binding Path=PasswordValidation}" x:Name="HostPasswordVerification" Placeholder="Gentag kodeord" TextColor="White" PlaceholderColor="White" IsPassword="true" />
                 
                 <Label Margin="0,0,0,10" HorizontalOptions="CenterAndExpand" Text="Log ind for at oprette et event" TextColor="White" />
-                <Button Padding="10" Margin="0,0,0,10" BackgroundColor="White" Text="Log ind" />
+                <Button Padding="10" Margin="0,0,0,10" BackgroundColor="White" Text="Log ind" Command="{Binding NewUserCommand}" />
 
             </StackLayout>
             
