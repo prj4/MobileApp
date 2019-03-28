@@ -21,6 +21,21 @@ namespace Photobook.View
                 PIN = passwordEntry.Text
             };
 
+            IServerCommunicator Com = new ServerCommunicator();
+
+            var status = Com.SendGuestLogon(GuestUser);
+            if (status != null)
+            {
+                if (status.Result)
+                {
+                    //Kør noget kode her
+                }
+                else
+                {
+                    //"Sign up failed"
+                }
+            }
+
             // Sign up logic
             /*
             var signUpSucceeded = AreDetailsValid(GuestUser);

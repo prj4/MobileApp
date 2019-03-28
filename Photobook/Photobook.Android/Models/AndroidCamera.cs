@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Android.Util;
 using Photobook.Droid.Models;
 using Photobook.Models;
@@ -19,7 +20,8 @@ namespace Photobook.Droid.Models
                 new Plugin.Media.Abstractions.StoreCameraMediaOptions()
                 {
                     SaveToAlbum = true,
-                    DefaultCamera = CameraDevice.Rear
+                    DefaultCamera = CameraDevice.Rear,
+                    Name = $"Photobook{DateTime.Now.ToString("yyyyMMddHHmmss")}"
                 });
 
             PhotoPath = photo != null ? photo.Path : "Null";

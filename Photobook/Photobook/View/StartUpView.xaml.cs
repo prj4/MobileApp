@@ -16,16 +16,9 @@ namespace Photobook.View
             TestBtn.Text = "Troels' store testknap";
             MainStack.Children.Add(TestBtn);
 
-            TestBtn.Clicked += async(sender, args) =>
+            TestBtn.Clicked += async (sender, args) =>
             {
-                var result = await DependencyService.Get<ICameraAPI>().TakeVideoReturnPath();
-                
-                IUserServerCommunicator Com = new UserServerCommunicator();
-
-                if(result != "Null")
-                    Com.UploadPhoto(result);
-
-            };
+                string p = await DependencyService.Get<ICameraAPI>().TakePhotoReturnPath(); };
 #endif
 
         }

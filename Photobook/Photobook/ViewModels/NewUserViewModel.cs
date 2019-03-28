@@ -18,7 +18,7 @@ namespace Photobook.ViewModels
     {
         public INavigation Navigation;
 
-        private IUserServerCommunicator Com;
+        private IServerCommunicator Com;
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -29,7 +29,7 @@ namespace Photobook.ViewModels
         public NewUserViewModel()
         {
             user = new User();
-            Com = new UserServerCommunicator();
+            Com = new ServerCommunicator();
             SuccesTxt = "";
         }
 

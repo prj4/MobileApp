@@ -11,35 +11,60 @@ using Xamarin.Forms.PlatformConfiguration;
 
 namespace Photobook.Models
 {
-    public interface IUserServerCommunicator
+    public interface IServerCommunicator
     {
         Task<bool> SendUserInformation(User sender);
         void UploadPhoto(string filePath);
+        Task<bool> SendGuestLogon(GuestUser guest);
 
     }
 
-    public class UserServerCommunicator : IUserServerCommunicator
+    public class ServerCommunicator : IServerCommunicator
     {
         private string Response { get; set; }
         private HttpClient client;
-        private string LoginServerUrl = "https://postman-echo.com/post";
+        private string HostLoginServerUrl = "https://postman-echo.com/post";
         private string UploadPhotoServerUrl = "https://postman-echo.com/post";
+        private string GuestLoginServerUrl = "https://postman-echo.com/post";
 
-        public UserServerCommunicator()
+        public ServerCommunicator()
         {
             client = new HttpClient();
+        }
+
+        public async Task<bool> SendGuestLogon(GuestUser guest)
+        {
+            var data = JsonConvert.SerializeObject(guest);
+            var response = await client.PostAsync(GuestLoginServerUrl, new StringContent(data));
+            if (response == null)
+                return false;
+            else
+            {
+                response.EnsureSuccessStatusCode();
+
+                string serverResponse = await response.Content.ReadAsStringAsync();
+
+                Debug.WriteLine(serverResponse, "SERVER_GUEST_MESSAGE");
+                return false;
+            }
         }
         
         public async Task<bool> SendUserInformation (User sender)
         {
             var data = JsonConvert.SerializeObject(sender);
 
-            var response = await client.PostAsync(LoginServerUrl, new StringContent(data));
+            var response = await client.PostAsync(HostLoginServerUrl, new StringContent(data));
 
-            response.EnsureSuccessStatusCode();
+            if (response == null)
+                return false;
+            else
+            {
+                response.EnsureSuccessStatusCode();
 
-            Response = await response.Content.ReadAsStringAsync();
-            return false;
+                Response = await response.Content.ReadAsStringAsync();
+                return false;
+            }
+            
         }
 
         public async void UploadPhoto(string filePath)
