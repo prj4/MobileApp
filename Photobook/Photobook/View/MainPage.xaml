@@ -12,7 +12,7 @@
         <ViewModel:MainPageViewModel />
     </ContentPage.BindingContext>
     
-    <AbsoluteLayout>
+    <AbsoluteLayout x:Name="MainLayout">
         <Image 
             Source="{local:EmbeddedImage Photobook.Images.bg.png}"
             Aspect="AspectFill"

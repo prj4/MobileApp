@@ -1,5 +1,6 @@
 ﻿using Photobook.Droid.Models;
 using Photobook.Models;
+using Plugin.Media.Abstractions;
 using Xamarin.Forms;
 
 
@@ -11,8 +12,12 @@ namespace Photobook.Droid.Models
         public async void TakePhoto()
         {
             var photo = await Plugin.Media.CrossMedia.Current.TakePhotoAsync(
-                new Plugin.Media.Abstractions.StoreCameraMediaOptions() { });
-            
+                new Plugin.Media.Abstractions.StoreCameraMediaOptions()
+                {
+                    SaveToAlbum = true,
+                    DefaultCamera = CameraDevice.Rear
+                });
+
         }
         
 
