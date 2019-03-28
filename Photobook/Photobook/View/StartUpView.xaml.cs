@@ -1,4 +1,5 @@
 ﻿
+using System.IO;
 using Photobook.Models;
 using Xamarin.Forms;
 
@@ -17,7 +18,7 @@ namespace Photobook.View
 
             TestBtn.Clicked += async(sender, args) =>
             {
-                var result = await DependencyService.Get<ICameraAPI>().TakePhotoReturnPath();
+                var result = await DependencyService.Get<ICameraAPI>().TakeVideoReturnPath();
                 
                 IUserServerCommunicator Com = new UserServerCommunicator();
 

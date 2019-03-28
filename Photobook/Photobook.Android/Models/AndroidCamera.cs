@@ -12,6 +12,7 @@ namespace Photobook.Droid.Models
     class AndroidCamera : ICameraAPI
     {
         private string PhotoPath = "Test";
+        private string VideoPath = "Test";
         public async Task<string> TakePhotoReturnPath()
         {
             var photo = await Plugin.Media.CrossMedia.Current.TakePhotoAsync(
@@ -25,6 +26,21 @@ namespace Photobook.Droid.Models
             Log.Info("Photopath", PhotoPath);
         
             return PhotoPath;
+        }
+
+        public async Task<string> TakeVideoReturnPath()
+        {
+            var video = await Plugin.Media.CrossMedia.Current.TakeVideoAsync(
+                new Plugin.Media.Abstractions.StoreVideoOptions()
+                {
+                    SaveToAlbum = true,
+                    DefaultCamera = CameraDevice.Rear
+                });
+
+            VideoPath = video != null ? video.Path : "Null";
+            Log.Info("VideoPath", VideoPath);
+
+            return VideoPath;
         }
         
     }

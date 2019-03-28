@@ -9,6 +9,6 @@ namespace Photobook.Models
     public interface ICameraAPI
     {
         Task<string> TakePhotoReturnPath();
-        
+        Task<string> TakeVideoReturnPath();
     }
 }

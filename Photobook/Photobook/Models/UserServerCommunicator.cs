@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration;
@@ -12,7 +13,7 @@ namespace Photobook.Models
 {
     public interface IUserServerCommunicator
     {
-        bool SendUserInfoReturnIsValid(User sender);
+        Task<bool> SendUserInformation(User sender);
         void UploadPhoto(string filePath);
 
     }
@@ -28,12 +29,8 @@ namespace Photobook.Models
         {
             client = new HttpClient();
         }
-        public bool SendUserInfoReturnIsValid(User sender)
-        {
-            SendUserInformation(sender);
-            return Response == null;
-        }
-        private async void SendUserInformation (User sender)
+        
+        public async Task<bool> SendUserInformation (User sender)
         {
             var data = JsonConvert.SerializeObject(sender);
 
@@ -42,7 +39,7 @@ namespace Photobook.Models
             response.EnsureSuccessStatusCode();
 
             Response = await response.Content.ReadAsStringAsync();
-
+            return false;
         }
 
         public async void UploadPhoto(string filePath)
@@ -59,7 +56,6 @@ namespace Photobook.Models
 
                 var response = await client.PostAsync(UploadPhotoServerUrl, content);
                 
-                Debug.WriteLine("UserServerCom response: " + response.Content.ReadAsStringAsync().Result);
             }
             catch (Exception e)
             {
