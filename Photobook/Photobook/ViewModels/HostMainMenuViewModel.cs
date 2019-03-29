@@ -5,6 +5,8 @@ using System.Windows.Input;
 using Prism.Commands;
 using Xamarin.Forms;
 using Photobook.View;
+using System.Collections.ObjectModel;
+using Photobook.Models;
 
 namespace Photobook.ViewModels
 {
@@ -31,6 +33,8 @@ namespace Photobook.ViewModels
                 _user.Username = "Troels Bleicken";
             }
 
+            LoadDummydata();
+
 
 
         }
@@ -48,6 +52,57 @@ namespace Photobook.ViewModels
                 return $"Hej {User.Username}!";
             }
         }
+
+
+
+        #region Event liste
+
+        private ObservableCollection<NewEvent> _events = new ObservableCollection<NewEvent>();
+        public ObservableCollection<NewEvent> Events
+        {
+            get { return _events; }
+            set { _events = value; NotifyPropertyChanged(); }
+        }
+
+        public void LoadDummydata()
+        {
+
+            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2019-05-19"), "Barnedåb"));
+            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2019-05-29"), "Fest"));
+        }
+
+
+        public string EventList
+        {
+            get
+            {
+                if (Events.Count > 0)
+                {
+                    return $"Dine events";
+                }
+                else
+                {
+                    return $"Du har ikke nogle events endnu - opret et event";
+                }
+
+            }
+        }
+
+
+
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
 
         private ICommand _seeEventsCommand;
         public ICommand SeeEventsCommand
@@ -68,7 +123,10 @@ namespace Photobook.ViewModels
 
         private void AddEvent_Execute()
         {
-            Navigation.PushAsync(new HostAddEvent(User));
+            var newEvent = new NewEvent();
+            Events.Add(newEvent);
+            Navigation.PushAsync(new HostAddEvent(User, ref newEvent));
+
         }
 
     }

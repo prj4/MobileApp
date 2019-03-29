@@ -3,6 +3,13 @@ namespace Photobook.Models
 {
     public class NewEvent
     {
+        public NewEvent(DateTime Start, DateTime end, string name)
+        {
+            StartDate = Start;
+            EndDate = end;
+            EventName = name;
+        }
+
         public NewEvent()
         {
         }

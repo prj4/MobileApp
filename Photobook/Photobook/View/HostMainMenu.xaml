@@ -9,6 +9,7 @@
             <Grid RowSpacing="1" ColumnSpacing="1" Padding="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -23,16 +24,28 @@
 
                 </StackLayout>
             
-            <ScrollView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                <Grid>
-                    <StackLayout>
-                        <Button Text="Opret event" Style="{StaticResource itemBtn}" Command="{Binding AddEventCommand}"/>
-                        <Button Text="Se events" Style="{StaticResource itemBtn}"/>
-                    </StackLayout>
+                <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Button Text="Opret event" Style="{StaticResource itemBtn}" Command="{Binding AddEventCommand}"/>
+                    <Label Style="{StaticResource h2}" Text="{Binding EventList}"/>
                     
-                </Grid>
-                
-            </ScrollView>
+                </StackLayout>
+            
+                <ScrollView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid>
+                        <ListView ItemsSource="{Binding Events}" BackgroundColor="#f2f2f2">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <StackLayout Orientation="Vertical">
+                                            <Label Text="{Binding EventName}"/>
+                                            
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </ScrollView>
             
                 
 

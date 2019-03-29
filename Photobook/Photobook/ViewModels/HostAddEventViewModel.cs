@@ -5,6 +5,7 @@ using Photobook.Models;
 using Xamarin.Forms;
 using Prism.Commands;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
 
 namespace Photobook.ViewModels
 {
@@ -19,15 +20,17 @@ namespace Photobook.ViewModels
 
         public INavigation Navigation;
 
-        private NewEvent _newEvent = new NewEvent();
+        private NewEvent _newEvent;
         private User _user;
+        private NewEvent _event;
 
 
-   
 
-        public HostAddEventViewModel(User user)
+
+        public HostAddEventViewModel(User user, ref NewEvent newEvent)
         {
-            _user = user; 
+            _user = user;
+            _newEvent = newEvent;
         }
 
         public DateTime MinDate
@@ -57,6 +60,7 @@ namespace Photobook.ViewModels
             // Her kunne vi evt. bruge "SMS" eller "EMAIL" funktionen Poul snakkede om i essentials
             // Så når der trykkes på knappen, laves der en PIN kode og sendes også en sms til brugere med denne PIN
 
+            Navigation.PopAsync();
         }
 
     }
