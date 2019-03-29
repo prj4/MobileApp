@@ -1,7 +1,10 @@
-﻿
-using System.IO;
+﻿using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Photobook.Models;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Essentials;
 
 namespace Photobook.View
 {
@@ -18,7 +21,20 @@ namespace Photobook.View
 
             TestBtn.Clicked += async (sender, args) =>
             {
-                string p = await DependencyService.Get<ICameraAPI>().TakePhotoReturnPath(); };
+                Location location = null;
+                try
+                {
+                    location = await Geolocation.GetLastKnownLocationAsync();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
+                if (location != null)
+                {
+                    Debug.WriteLine($"Latitude: {location.Latitude}, longitude: {location.Longitude}");
+                }
+            };
 #endif
 
         }

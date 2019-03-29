@@ -23,9 +23,9 @@ namespace Photobook.Models
     {
         private string Response { get; set; }
         private HttpClient client;
-        private string HostLoginServerUrl = "https://postman-echo.com/post";
-        private string UploadPhotoServerUrl = "https://postman-echo.com/post";
-        private string GuestLoginServerUrl = "https://postman-echo.com/post";
+        private const string HostLoginServerUrl = "https://postman-echo.com/post";
+        private const string UploadPhotoServerUrl = "https://postman-echo.com/post";
+        private const string GuestLoginServerUrl = "https://postman-echo.com/post";
 
         public ServerCommunicator()
         {
