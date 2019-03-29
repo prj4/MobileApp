@@ -156,6 +156,12 @@
       <Version>7.1.0.431</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="3.6.0.264807" />
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Net.Http">
+      <Version>2.2.29</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ItemGroup>
@@ -166,5 +172,6 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\bottom_bg.png" />
+    <BundleResource Include="Resources\itemBg.png" />
   </ItemGroup>
 </Project>

@@ -3,47 +3,39 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Photobook.View.HostMainMenu"
              xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
-             BackgroundColor="BLack"
+             BackgroundColor="#0e122a"
              >
     <ContentPage.Content>
-        <ScrollView>
             <Grid RowSpacing="1" ColumnSpacing="1" Padding="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 
-                <StackLayout Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-                    <Label Style="{StaticResource h1}" Text="Navn" />
-                    <Editor IsReadOnly="true" Style="{StaticResource pTxt}" Text="Noget her de de dew dew" BackgroundColor="Transparent" Margin="-4,0,0,0" />
-                </StackLayout>
-                
-                <StackLayout BackgroundColor="Olive" Padding="30" Orientation="Vertical" Margin="0,15,0,15" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                     <Image 
-                        Source="{local:EmbeddedImage Photobook.Images.allimages.png}"
-                        Aspect="AspectFit"
-                        >
-                     </Image>
-                    <Label HorizontalOptions="Center" Style="{StaticResource pTxt}" Text="Opret event" />
+                <StackLayout Margin="0,0,0,10" Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Label Style="{StaticResource h1}" Text="Menu" />
+                    <Label Style="{StaticResource pTxt}" Text="{Binding Gesture}"/>
+                    <Label Style="{StaticResource pTxt}" Text="Opret et nyt event, eller se dine events" />
 
                 </StackLayout>
+            
+            <ScrollView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid>
+                    <StackLayout>
+                        <Button Text="Opret event" Style="{StaticResource itemBtn}" Command="{Binding AddEventCommand}"/>
+                        <Button Text="Se events" Style="{StaticResource itemBtn}"/>
+                    </StackLayout>
+                    
+                </Grid>
                 
-                 <StackLayout BackgroundColor="Olive" Padding="30" Orientation="Vertical" Margin="0,0,0,15" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
-                     <Image 
-                        Source="{local:EmbeddedImage Photobook.Images.allimages.png}"
-                        Aspect="AspectFit"
-                        >
-                     </Image>
-                    <Label HorizontalOptions="Center" Style="{StaticResource pTxt}" Text="Se events" />
-
-                </StackLayout>
+            </ScrollView>
+            
+                
 
             </Grid>
-        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

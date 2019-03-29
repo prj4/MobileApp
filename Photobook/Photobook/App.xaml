@@ -34,6 +34,12 @@
             <Setter Property="FontSize" Value="16" />
             <Setter Property="TextColor" Value="White" />
         </Style>
-
+         <Style x:Key="itemBtn" TargetType="Button" >
+            <Setter Property="BackgroundColor" Value="#1b1b2c" />
+            <Setter Property="TextColor" Value="#ff7d7d" />
+            <Setter Property="Padding" Value="30" />
+            <Setter Property="Margin" Value="0,0,0,10" />
+            
+        </Style>
     </Application.Resources>
 </Application>

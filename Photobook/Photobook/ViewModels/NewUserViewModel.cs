@@ -19,6 +19,7 @@ namespace Photobook.ViewModels
         public INavigation Navigation;
 
         private IUserServerCommunicator Com;
+        private bool loggedIn = false;
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -70,48 +71,50 @@ namespace Photobook.ViewModels
 
         private void AddNewUser_Execute()
         {
-            
-            try
+            loggedIn = false;
+            if(loggedIn)
             {
-
-                if (User.Password == PasswordValidation)
-                {
-                    SuccesTxt = "";
-                }
-                else
-                {
-                    SuccesTxt = "Check at dine passwords stemmer overens";
-                }
-
-                User.Validate();
-
-
-
-                // Vi skla her tjekke, at hvis det er rigtigt, sendes der en anmodning til server
-                // Om at oprette en ny bruger
-                // Tjek om bruger indsættes == succes
-                // Hvis brugeren er indsat: 
-                // Gå videre til næste view med brugerens info.
-                // Så vi får brugerens info her: 
-
-                User newUser = new User();
-                newUser.Email = "Troelsbleicken@remoulade.dk";
-                newUser.Password = "123";
-                newUser.Username = "Troels Bleicken";
-
-                // Giv den nye user som input parameter og vis info.
-                Navigation.PushAsync(new HostMainMenu());
-
+                Navigation.PushAsync(new HostMainMenu(User));
             }
-            catch(Exception e)
+            else
             {
-                SuccesTxt = e.Message;
+                try
+                {
+
+                    if (User.Password == PasswordValidation)
+                    {
+                        SuccesTxt = "";
+                    }
+                    else
+                    {
+                        SuccesTxt = "Check at dine passwords stemmer overens";
+                    }
+
+                    User.Validate();
+
+
+
+                    // Vi skla her tjekke, at hvis det er rigtigt, sendes der en anmodning til server
+                    // Om at oprette en ny bruger
+                    // Tjek om bruger indsættes == succes
+                    // Hvis brugeren er indsat: 
+                    // Gå videre til næste view med brugerens info.
+                    // Så vi får brugerens info her: 
+
+
+                    // Giv den nye user som input parameter og vis info.
+                    Navigation.PushAsync(new HostMainMenu(User));
+
+                }
+                catch (Exception e)
+                {
+                    SuccesTxt = e.Message;
+                }
+
+
             }
             
         }
-
- 
-
 
     }
 }
