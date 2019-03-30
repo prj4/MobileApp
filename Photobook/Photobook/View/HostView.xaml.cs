@@ -9,12 +9,12 @@ namespace Photobook.View
     {
         public HostView()
         {
+            var vm = new HostViewViewModel();
+            vm.Navigation = Navigation;
+            BindingContext = vm;
+
             InitializeComponent();
         }
 
-        async void NewUser_ClickedAsync(object sender, System.EventArgs e)
-        {
-            await Navigation.PushAsync(new NewUser(new NewUserViewModel()));
-        }
     }
 }

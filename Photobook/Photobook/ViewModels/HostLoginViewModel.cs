@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Photobook.View;
@@ -44,10 +45,18 @@ namespace Photobook.ViewModels
             var tempUsr = new User();
             tempUsr.Username = "Troels Blikspand";
 
-            Navigation.PushAsync(new HostMainMenu(tempUsr));
+            var rootPage = Navigation.NavigationStack.FirstOrDefault();
+            if (rootPage != null)
+            {
+                Navigation.InsertPageBefore(new HostMainMenu(tempUsr), Navigation.NavigationStack.First());
+                Navigation.PopToRootAsync();
+            }
+
         }
 
         #endregion
+
+   
 
 
     }

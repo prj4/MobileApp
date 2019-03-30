@@ -7,6 +7,7 @@ using Xamarin.Forms;
 using Photobook.View;
 using System.Collections.ObjectModel;
 using Photobook.Models;
+using System.Linq;
 
 namespace Photobook.ViewModels
 {
@@ -25,6 +26,8 @@ namespace Photobook.ViewModels
         private User _user;
         public HostMainMenuViewModel(User user)
         {
+            _selectedEvent = null;
+
             if (user != null)
                 _user = user;
             else
@@ -63,21 +66,6 @@ namespace Photobook.ViewModels
             set { _events = value; NotifyPropertyChanged(); }
         }
 
-        public void LoadDummydata()
-        {
-
-            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2019-05-19"), "Barnedåb"));
-            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2019-05-29"), "Fest"));
-            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2020-02-29"), "Fødselsdag"));
-            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2019-05-19"), "Barnedåb"));
-            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2019-05-29"), "Fest"));
-            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2020-02-29"), "Fødselsdag"));
-            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2019-05-19"), "Barnedåb"));
-            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2019-05-29"), "Fest"));
-            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2020-02-29"), "Fødselsdag"));
-        }
-
-
         public string EventList
         {
             get
@@ -106,9 +94,10 @@ namespace Photobook.ViewModels
                 _selectedEvent = value;
                 NotifyPropertyChanged();
 
+
                 // Skriv til server om at få info om dette event
                 TestText = _selectedEvent.EventName;
-                Navigation.PushAsync(new Event());
+                Navigation.PushAsync(new Event(_selectedEvent, true));
             }
         }
 
@@ -149,9 +138,27 @@ namespace Photobook.ViewModels
         
         private void AddEvent_Execute()
         {
-            Navigation.PushAsync(new HostAddEvent(User, Events));
+            _selectedEvent = null;
+            Navigation.PushModalAsync(new HostAddEvent(User, Events));
 
         }
+
+        private ICommand _logOutCommand;
+        public ICommand LogoutCommand
+        {
+            get { return _logOutCommand ?? (_logOutCommand = new DelegateCommand(Logout_Execute)); }
+        }
+
+        private void Logout_Execute()
+        {
+            var rootPage = Navigation.NavigationStack.FirstOrDefault();
+            if (rootPage != null)
+            {
+                Navigation.InsertPageBefore(new StartUpView(), Navigation.NavigationStack.First());
+                Navigation.PopToRootAsync();
+            }
+        }
+
 
     }
 }

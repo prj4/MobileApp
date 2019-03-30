@@ -90,7 +90,19 @@ namespace Photobook.ViewModels
 
 
             _events.Add(NewEvent);
-            Navigation.PopAsync();
+            Navigation.PopModalAsync();
+        }
+
+        private ICommand _regretCommand;
+        public ICommand RegretCommand
+        {
+            get { return _regretCommand ?? (_regretCommand = new DelegateCommand(Regret_Execute)); }
+        }
+
+        private void Regret_Execute()
+        {
+
+            Navigation.PopModalAsync();
         }
 
     }
