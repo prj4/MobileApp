@@ -4,7 +4,6 @@
              x:Class="Photobook.View.HostView"
              NavigationPage.HasNavigationBar="false"
              xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
-             
              >
     <ContentPage.Content>
         <Grid RowSpacing="1" ColumnSpacing="1">
