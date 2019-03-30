@@ -20,28 +20,56 @@ namespace Photobook.ViewModels
 
         public INavigation Navigation;
 
-        private NewEvent _newEvent;
+        private NewEvent _newEvent = new NewEvent();
         private User _user;
-        private NewEvent _event;
+        private ObservableCollection<NewEvent> _events;
+        private DateTime _startDate = new DateTime();
+        private DateTime _endDate = new DateTime();
 
 
 
 
-        public HostAddEventViewModel(User user, ref NewEvent newEvent)
+        public HostAddEventViewModel(User user, ObservableCollection<NewEvent> events)
         {
             _user = user;
-            _newEvent = newEvent;
+            _events = events;
         }
 
         public DateTime MinDate
         {
-            get { return DateTime.Now; }
+            get { return DateTime.Today.Date; }
         }
 
         public NewEvent NewEvent
         {
             get { return _newEvent; }
             set { _newEvent = value; NotifyPropertyChanged(); }
+
+        }
+
+        public DateTime StartDate
+        {
+            get { return NewEvent.StartDate; }
+            set 
+            {
+                if (NewEvent.StartDate == null)
+                    NewEvent.StartDate = DateTime.Today;
+                else
+                    NewEvent.StartDate = value; NotifyPropertyChanged();
+            }
+        }
+
+        public DateTime EndDate
+        {
+            get { return NewEvent.EndDate; }
+            set 
+            {
+                if (NewEvent.EndDate == null)
+                    NewEvent.EndDate = DateTime.Today;
+                else
+                    NewEvent.EndDate = value; NotifyPropertyChanged();
+
+            }
         }
 
         private ICommand _createEventCommand;
@@ -60,6 +88,8 @@ namespace Photobook.ViewModels
             // Her kunne vi evt. bruge "SMS" eller "EMAIL" funktionen Poul snakkede om i essentials
             // Så når der trykkes på knappen, laves der en PIN kode og sendes også en sms til brugere med denne PIN
 
+
+            _events.Add(NewEvent);
             Navigation.PopAsync();
         }
 

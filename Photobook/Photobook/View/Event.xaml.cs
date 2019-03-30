@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Photobook.Models;
 using Photobook.ViewModels;
 using Xamarin.Forms;
 
 namespace Photobook.View
 {
-    public partial class HostAddEvent : ContentPage
+    public partial class Event : ContentPage
     {
-        public HostAddEvent(User user, ObservableCollection<NewEvent> events)
+        public Event()
         {
-            var vm = new HostAddEventViewModel(user, events);
+            var vm = new EventViewModel();
             vm.Navigation = Navigation;
             BindingContext = vm;
 

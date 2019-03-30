@@ -27,15 +27,15 @@
                         <Entry HorizontalTextAlignment="Start" Keyboard="Text" Text="{Binding NewEvent.EventName}" x:Name="HostUsername" Placeholder="Barnedåb, fest..." TextColor="White" PlaceholderColor="White" />
                         <Label Text="Start dato"  TextColor="White"/>
                         <DatePicker 
-                            MinimumDate="{Binding MinDate}"
-                            Date="{Binding NewEvent.StartDate}"
+                            MinimumDate="{Binding MinDate, Mode=TwoWay}"
+                            Date="{Binding StartDate}"
                             TextColor="White"
                         />
                         
                         <Label Text="Slut dato" TextColor="White" />
                         <DatePicker 
-                            MinimumDate="{Binding MinDate}"
-                            Date="{Binding NewEvent.EndDate}"
+                            MinimumDate="{Binding MinDate, Mode=TwoWay}"
+                            Date="{Binding EndDate}"
                             TextColor="White"
                         />
                         

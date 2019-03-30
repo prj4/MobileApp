@@ -19,6 +19,7 @@ namespace Photobook.View
             BindingContext = vm;
 
 			InitializeComponent ();
-		}
-	}
+        }
+
+    }
 }

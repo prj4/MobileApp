@@ -33,7 +33,6 @@ namespace Photobook.ViewModels
                 _user.Username = "Troels Bleicken";
             }
 
-            LoadDummydata();
 
 
 
@@ -69,6 +68,13 @@ namespace Photobook.ViewModels
 
             Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2019-05-19"), "Barnedåb"));
             Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2019-05-29"), "Fest"));
+            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2020-02-29"), "Fødselsdag"));
+            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2019-05-19"), "Barnedåb"));
+            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2019-05-29"), "Fest"));
+            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2020-02-29"), "Fødselsdag"));
+            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2019-05-19"), "Barnedåb"));
+            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2019-05-29"), "Fest"));
+            Events.Add(new NewEvent(DateTime.Now, DateTime.Parse("2020-02-29"), "Fødselsdag"));
         }
 
 
@@ -78,42 +84,61 @@ namespace Photobook.ViewModels
             {
                 if (Events.Count > 0)
                 {
+                    NotifyPropertyChanged();
                     return $"Dine events";
                 }
                 else
                 {
+                    NotifyPropertyChanged();
                     return $"Du har ikke nogle events endnu - opret et event";
                 }
+
 
             }
         }
 
+        private NewEvent _selectedEvent;
+        public NewEvent SelectedEvent
+        {
+            get { return _selectedEvent; }
+            set 
+            { 
+                _selectedEvent = value;
+                NotifyPropertyChanged();
+
+                // Skriv til server om at få info om dette event
+                TestText = _selectedEvent.EventName;
+                Navigation.PushAsync(new Event());
+            }
+        }
+
+        private string _testText;
+        public string TestText
+        {
+            get { return _testText; }
+            set { _testText = value;  NotifyPropertyChanged(); }
+        }
 
 
         #endregion
 
 
-
-
-
-
-
-
-
-
-
-
-
-        private ICommand _seeEventsCommand;
-        public ICommand SeeEventsCommand
+        private ICommand _deleteEventCommand;
+        public ICommand DeleteEventCommand
         {
-            get { return _seeEventsCommand ?? (_seeEventsCommand = new DelegateCommand(SeeEvents_Execute)); }
+            get { return _deleteEventCommand ?? (_deleteEventCommand = new DelegateCommand(DeleteEvent_Execute)); }
         }
 
-        private void SeeEvents_Execute()
+        private void DeleteEvent_Execute()
         {
-            // Navigation.PushAsync();
+            Events.Remove(SelectedEvent);
+            TestText = _selectedEvent.EventName;
+
+            NotifyPropertyChanged("Events");
         }
+
+
+ 
 
         private ICommand _addEventCommand;
         public ICommand AddEventCommand
@@ -121,11 +146,10 @@ namespace Photobook.ViewModels
             get { return _addEventCommand ?? (_addEventCommand = new DelegateCommand(AddEvent_Execute)); }
         }
 
+        
         private void AddEvent_Execute()
         {
-            var newEvent = new NewEvent();
-            Events.Add(newEvent);
-            Navigation.PushAsync(new HostAddEvent(User, ref newEvent));
+            Navigation.PushAsync(new HostAddEvent(User, Events));
 
         }
 

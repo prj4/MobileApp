@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="Photobook.View.HostLogin"
+             xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
+             >
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid RowSpacing="1" ColumnSpacing="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <Image 
+                    Source="{local:EmbeddedImage Photobook.Images.bg.png}"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    Aspect="AspectFill"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.RowSpan="3"
+                    Grid.ColumnSpan="1"
+                    >
+                </Image>
+                
+                
+                
+                 <Image
+                    Source="{local:EmbeddedImage Photobook.Images.Logo.png}"
+                    AbsoluteLayout.LayoutFlags="All"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="0,20,0,0"
+                    >
+             
+                </Image>
+                
+                   
+                <StackLayout Grid.Row="1" Grid.Column="0" x:Name="MainStack" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Margin="70">
+                    <Entry HorizontalTextAlignment="Center" Keyboard="Email" Text="{Binding User.Email, Mode=TwoWay}" Placeholder="Email" TextColor="White" PlaceholderColor="White" />
+                    <Entry HorizontalTextAlignment="Center" Keyboard="Text" Text="{Binding User.Password, Mode=TwoWay}" x:Name="HostPassword" Placeholder="Kodeord" TextColor="White" PlaceholderColor="White" IsPassword="true" />
+                    <Label Margin="0,0,0,10" HorizontalOptions="CenterAndExpand" Text="Log ind for at oprette et event" TextColor="White" />
+                    <Button Padding="10" Margin="0,0,0,10" BackgroundColor="White" Text="Log ind" Command="{Binding Path=LoginCommand}"/>
+                </StackLayout>
+                
+                
+               
+               
+            
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

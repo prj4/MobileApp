@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Photobook.Models;
 using Photobook.ViewModels;
 using Xamarin.Forms;
 
 namespace Photobook.View
 {
-    public partial class HostAddEvent : ContentPage
+    public partial class HostLogin : ContentPage
     {
-        public HostAddEvent(User user, ObservableCollection<NewEvent> events)
+        public HostLogin()
         {
-            var vm = new HostAddEventViewModel(user, events);
+            var vm = new HostLoginViewModel();
             vm.Navigation = Navigation;
             BindingContext = vm;
-
             InitializeComponent();
         }
     }

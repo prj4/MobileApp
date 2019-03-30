@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="Photobook.View.Event"
+             BackgroundColor="#0e122a"
+             >
+    <ContentPage.Content>
+        <Grid RowSpacing="1" ColumnSpacing="1" Padding="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <StackLayout Margin="0,0,0,10" Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                <Label Style="{StaticResource h1}" Text="Lars og Julies bryllup" />
+                <Label Style="{StaticResource pTxt}" Text="Måske en kort beskrivelse, eller gæste PIN her." />
+
+            </StackLayout>
+        
+        
+            <ScrollView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                     </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <Button Grid.Row="0" Grid.Column="0" Text="Se alle billeder" Style="{StaticResource itemBtn}" Command="{Binding DeleteEventCommand}"/>
+                    <Button Grid.Row="0" Grid.Column="1" Text="Upload billede" Style="{StaticResource itemBtn}" Command="{Binding DeleteEventCommand}"/>
+                    <Button Grid.Row="1" Grid.ColumnSpan="2" Text="Tag billede" Style="{StaticResource itemBtn}" Command="{Binding DeleteEventCommand}"/>
+                    
+                    
+                </Grid>
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

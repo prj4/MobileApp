@@ -7,7 +7,7 @@
              
              >
     <ContentPage.Content>
-        <Grid x:Name="controlGrid" RowSpacing="1" ColumnSpacing="1">
+        <Grid RowSpacing="1" ColumnSpacing="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
@@ -42,16 +42,12 @@
             </Image>
             
                
-            <StackLayout Grid.Row="1" Grid.Column="0" x:Name="MainStack" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Margin="70">
+            <StackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Margin="70">
                 <Label Margin="0,0,0,10" HorizontalOptions="CenterAndExpand" Text="Har du allerede en bruger?" TextColor="White" />
-                <Button Padding="10" Margin="0,0,0,10" BackgroundColor="White" Text="Log ind" />
+                <Button Padding="10" Margin="0,0,0,10" BackgroundColor="White" Text="Log ind" /> //  
                 <Button Padding="10" BackgroundColor="White" Text="Opret bruger" Clicked="NewUser_ClickedAsync" />
 
             </StackLayout>
-            
-            
-           
-           
         
         </Grid>
     </ContentPage.Content>
