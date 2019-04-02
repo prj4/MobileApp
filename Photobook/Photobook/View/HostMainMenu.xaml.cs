@@ -18,7 +18,8 @@ namespace Photobook.View
             vm.Navigation = Navigation;
             BindingContext = vm;
 
-			InitializeComponent ();
-		}
-	}
+            InitializeComponent ();
+        }
+
+    }
 }

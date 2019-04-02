@@ -5,16 +5,14 @@ using Xamarin.Forms;
 
 namespace Photobook.View
 {
-    public partial class HostView : ContentPage
+    public partial class HostLogin : ContentPage
     {
-        public HostView()
+        public HostLogin()
         {
-            var vm = new HostViewViewModel();
+            var vm = new HostLoginViewModel();
             vm.Navigation = Navigation;
             BindingContext = vm;
-
             InitializeComponent();
         }
-
     }
 }

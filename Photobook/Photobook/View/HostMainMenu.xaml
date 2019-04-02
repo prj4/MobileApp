@@ -4,12 +4,16 @@
              x:Class="Photobook.View.HostMainMenu"
              xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
              BackgroundColor="#0e122a"
+             NavigationPage.HasNavigationBar="false"
+             
              >
     <ContentPage.Content>
             <Grid RowSpacing="1" ColumnSpacing="1" Padding="20">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -23,16 +27,39 @@
 
                 </StackLayout>
             
-            <ScrollView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                <Grid>
-                    <StackLayout>
-                        <Button Text="Opret event" Style="{StaticResource itemBtn}" Command="{Binding AddEventCommand}"/>
-                        <Button Text="Se events" Style="{StaticResource itemBtn}"/>
-                    </StackLayout>
+                <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Button Text="Opret event" Style="{StaticResource itemBtn}" Command="{Binding AddEventCommand}"/>
+                    <Label Style="{StaticResource h2}" Text="{Binding EventList, Mode=TwoWay}"/>
                     
-                </Grid>
-                
-            </ScrollView>
+                </StackLayout>
+            
+                <ScrollView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid Padding="0,10,0,10">
+                        <ListView ItemsSource="{Binding Events}" x:Name="listView" BackgroundColor="#f2f2f2" HasUnevenRows="true" SelectedItem="{Binding SelectedEvent, Mode=TwoWay}" >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <ViewCell.ContextActions>
+                                            <MenuItem Text="Slet" Command="{Binding DeleteEventCommand, Mode=TwoWay}" IsDestructive="true" />
+                                        </ViewCell.ContextActions>
+                                    
+                                        <StackLayout Orientation="Vertical" Padding="8,10,0,10" >
+                                            <Label TextColor="Black" FontAttributes="Bold" Text="{Binding EventName}"/>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="Dato:" />
+                                                <Label Text="{Binding StartDate}"/>
+                                                 <Label Text="-"/>
+                                                <Label Text="{Binding EndDate}"/>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </ScrollView>
+            
+           <Button Margin="0,10,0,0" Grid.Row="3" Grid.ColumnSpan="2" Text="Log ud" TextColor="White" BackgroundColor="#ff7d7d" Command="{Binding LogoutCommand}" />
             
                 
 

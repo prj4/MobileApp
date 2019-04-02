@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="Photobook.View.HostAddEvent"
              BackgroundColor="#0e122a"
+             
              >
     <ContentPage.Content>
         <Grid RowSpacing="1" ColumnSpacing="1" Padding="20">
@@ -27,20 +28,20 @@
                         <Entry HorizontalTextAlignment="Start" Keyboard="Text" Text="{Binding NewEvent.EventName}" x:Name="HostUsername" Placeholder="Barnedåb, fest..." TextColor="White" PlaceholderColor="White" />
                         <Label Text="Start dato"  TextColor="White"/>
                         <DatePicker 
-                            MinimumDate="{Binding MinDate}"
-                            Date="{Binding NewEvent.StartDate}"
+                            MinimumDate="{Binding MinDate, Mode=TwoWay}"
+                            Date="{Binding StartDate}"
                             TextColor="White"
                         />
                         
                         <Label Text="Slut dato" TextColor="White" />
                         <DatePicker 
-                            MinimumDate="{Binding MinDate}"
-                            Date="{Binding NewEvent.EndDate}"
+                            MinimumDate="{Binding MinDate, Mode=TwoWay}"
+                            Date="{Binding EndDate}"
                             TextColor="White"
                         />
                         
-                        <Button Text="Opret event" Command="{Binding CreateEventCommand}"/>
-                        
+                        <Button Text="Opret event" BackgroundColor="#f2f2f2" Command="{Binding CreateEventCommand}"/>
+                        <Button Text="Fortryd" TextColor="White" BackgroundColor="#ff7d7d" Command="{Binding RegretCommand}"/>
                        
                         
                     </StackLayout>

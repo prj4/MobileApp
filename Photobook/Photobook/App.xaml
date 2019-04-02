@@ -39,7 +39,11 @@
             <Setter Property="TextColor" Value="#ff7d7d" />
             <Setter Property="Padding" Value="30" />
             <Setter Property="Margin" Value="0,0,0,10" />
-            
+        </Style>
+        <Style x:Key="h2" TargetType="Label" >
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="FontAttributes" Value="Bold" />
         </Style>
     </Application.Resources>
 </Application>

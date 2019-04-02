@@ -2,12 +2,11 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="Photobook.View.HostView"
-             NavigationPage.HasNavigationBar="false"
+             NavigationPage.HasNavigationBar="true"
              xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
-             
              >
     <ContentPage.Content>
-        <Grid x:Name="controlGrid" RowSpacing="1" ColumnSpacing="1">
+        <Grid RowSpacing="1" ColumnSpacing="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
@@ -42,16 +41,12 @@
             </Image>
             
                
-            <StackLayout Grid.Row="1" Grid.Column="0" x:Name="MainStack" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Margin="70">
+            <StackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Margin="70">
                 <Label Margin="0,0,0,10" HorizontalOptions="CenterAndExpand" Text="Har du allerede en bruger?" TextColor="White" />
-                <Button Padding="10" Margin="0,0,0,10" BackgroundColor="White" Text="Log ind" />
-                <Button Padding="10" BackgroundColor="White" Text="Opret bruger" Clicked="NewUser_ClickedAsync" />
+                <Button Padding="10" Margin="0,0,0,10" BackgroundColor="White" Text="Log ind" Command="{Binding LoginCommand}"/>
+                <Button Padding="10" BackgroundColor="White" Text="Opret bruger" Command="{Binding CreateUserCommand}" />
 
             </StackLayout>
-            
-            
-           
-           
         
         </Grid>
     </ContentPage.Content>

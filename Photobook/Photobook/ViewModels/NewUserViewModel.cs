@@ -10,7 +10,7 @@ using Photobook.Models;
 using System.Runtime.CompilerServices;
 using Photobook.View;
 using Xamarin.Forms;
-
+using System.Linq;
 
 namespace Photobook.ViewModels
 {
@@ -103,7 +103,18 @@ namespace Photobook.ViewModels
 
 
                     // Giv den nye user som input parameter og vis info.
-                    Navigation.PushAsync(new HostMainMenu(User));
+
+                    var rootPage = Navigation.NavigationStack.FirstOrDefault();
+                    if (rootPage != null)
+                    {
+                        Navigation.InsertPageBefore(new HostMainMenu(User), Navigation.NavigationStack.First());
+                        Navigation.PopToRootAsync();
+                    }
+                    else
+                    {
+                        Navigation.PushAsync(new HostMainMenu(User));
+                    }
+                   
 
                 }
                 catch (Exception e)

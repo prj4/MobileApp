@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              x:Class="Photobook.View.GuestLogin"
              xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
-             NavigationPage.HasNavigationBar="false"
+             NavigationPage.HasNavigationBar="true"
              >
     
         
@@ -34,10 +34,11 @@
         <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" AbsoluteLayout.LayoutBounds="0.5, 0.5, 0.65, 1" AbsoluteLayout.LayoutFlags="All">
             <Label HorizontalTextAlignment="Center" HorizontalOptions="Center" Text="Log ind på begivenhed" TextColor="White" />
             
-            <Entry HorizontalTextAlignment="Center" Keyboard="Text" x:Name="usernameEntry" Placeholder="Dit fulde navn" TextColor="White" PlaceholderColor="White" />
-            <Entry HorizontalTextAlignment="Center" Keyboard="Numeric" x:Name="passwordEntry" Placeholder="PIN kode til event" TextColor="White" PlaceholderColor="White" IsPassword="true" />
+            <Entry Text="{Binding GuestUser.Username}" HorizontalTextAlignment="Center" Keyboard="Text" x:Name="usernameEntry" Placeholder="Dit fulde navn" TextColor="White" PlaceholderColor="White" />
+            <Entry Text="{Binding GuestUser.PIN}" HorizontalTextAlignment="Center" Keyboard="Numeric" x:Name="passwordEntry" Placeholder="PIN kode til event" TextColor="White" PlaceholderColor="White" IsPassword="true" />
             
-            <Button Padding="10" BackgroundColor="White" Text="Log ind" Clicked="LogInd_Clicked"/>
+            <Label HorizontalTextAlignment="Center" HorizontalOptions="Center" Text="{Binding LoginInfo}" TextColor="Red" />
+            <Button Padding="10" BackgroundColor="White" Text="Log ind" Command="{Binding GuestLoginCommand, Mode=TwoWay}"/>
             
             
         </StackLayout>
