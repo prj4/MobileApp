@@ -26,6 +26,7 @@ namespace Photobook.Droid
             LoadApplication(new App());
 
             await CrossMedia.Current.Initialize();
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera);
 
             Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, new Bundle());

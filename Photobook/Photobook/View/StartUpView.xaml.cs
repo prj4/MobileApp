@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO.Compression;
 using System.Net.Http;
 using Newtonsoft.Json;
 using Photobook.Models;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration;
 
@@ -14,18 +16,27 @@ namespace Photobook.View
         public StartUpView()
         {
             InitializeComponent();
-            /*
 #if DEBUG
-            Button TestBtn = new Button();
-            TestBtn.Text = "Troels' store testknap";
-            TestBtn.Clicked += async (sender, args) =>
+            Button btn = new Button();
+            btn.Text = "Troels' store testknap";
+            MainStack.Children.Add(btn);
+            btn.Clicked += async (sender, args) =>
             {
-                IUserServerCommunicator com = new UserServerCommunicator();
-                com.SendUserInformation(new User());//Opmærksom
+                string[] data = await GeoData.GetCurrentLocation();
+
+                try
+                {
+
+                    var message = new SmsMessage($"Hello Oskar! My current location is {data[0]}; {data[1]}", "60148066");
+                    await Sms.ComposeAsync(message);
+                    
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
             };
-            MainStack.Children.Add(TestBtn);
 #endif
-*/
         }
 
         async void Handle_Clicked(object sender, System.EventArgs e)
