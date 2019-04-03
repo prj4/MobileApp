@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Net.Sockets;
@@ -28,12 +29,17 @@ namespace Photobook.Models
         {
             var data = JsonConvert.SerializeObject(sender);
 
+
+            Debug.WriteLine(data + DateTime.Now.ToString("ss.fff"), "JSON_DATA:");
+
             var response = await client.PostAsync(UserServerUrl,
                 new StringContent(data));
 
             response.EnsureSuccessStatusCode();
-
+            
             Response = await response.Content.ReadAsStringAsync();
+
+            Debug.WriteLine(Response + DateTime.Now.ToString("ss.fff"), "SERVER_RESPONSE:");
 
             return false;
         }

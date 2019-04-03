@@ -18,7 +18,7 @@ namespace Photobook.ViewModels
     {
         public INavigation Navigation;
 
-        private IUserServerCommunicator Com;
+        private IServerCommunicator Com;
         private bool loggedIn = false;
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -30,7 +30,7 @@ namespace Photobook.ViewModels
         public NewUserViewModel()
         {
             user = new User();
-            Com = new UserServerCommunicator();
+            Com = new ServerCommunicator();
             SuccesTxt = "";
         }
 
@@ -69,7 +69,7 @@ namespace Photobook.ViewModels
             get { return _newUserCommand ?? (_newUserCommand = new DelegateCommand(AddNewUser_Execute)); }
         }
 
-        private void AddNewUser_Execute()
+        private async void AddNewUser_Execute()
         {
             loggedIn = false;
             if(loggedIn)
@@ -78,31 +78,21 @@ namespace Photobook.ViewModels
             }
             else
             {
-                try
+                if (User.Password == PasswordValidation)
                 {
-
-                    if (User.Password == PasswordValidation)
+                    SuccesTxt = "";
+                    try
                     {
-                        SuccesTxt = "";
+                        User.Validate();
                     }
-                    else
+                    catch (Exception e)
                     {
-                        SuccesTxt = "Check at dine passwords stemmer overens";
+                        SuccesTxt = e.Message;
+                        return;
                     }
 
-                    User.Validate();
+                    await Com.SendUserInfoReturnIsValid(User);
 
-
-
-                    // Vi skla her tjekke, at hvis det er rigtigt, sendes der en anmodning til server
-                    // Om at oprette en ny bruger
-                    // Tjek om bruger indsættes == succes
-                    // Hvis brugeren er indsat: 
-                    // Gå videre til næste view med brugerens info.
-                    // Så vi får brugerens info her: 
-
-
-                    // Giv den nye user som input parameter og vis info.
 
                     var rootPage = Navigation.NavigationStack.FirstOrDefault();
                     if (rootPage != null)
@@ -114,15 +104,25 @@ namespace Photobook.ViewModels
                     {
                         Navigation.PushAsync(new HostMainMenu(User));
                     }
-                   
-
                 }
-                catch (Exception e)
+                else
                 {
-                    SuccesTxt = e.Message;
+                    SuccesTxt = "Check om at det er at dine passwords stemmer overens";
                 }
 
+                
 
+                // Vi skla her tjekke, at hvis det er rigtigt, sendes der en anmodning til server
+                // Om at oprette en ny bruger
+                // Tjek om bruger indsættes == succes
+                // Hvis brugeren er indsat: 
+                // Gå videre til næste view med brugerens info.
+                // Så vi får brugerens info her: 
+
+
+                // Giv den nye user som input parameter og vis info.
+
+                
             }
             
         }
