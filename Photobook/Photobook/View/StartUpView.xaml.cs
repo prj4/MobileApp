@@ -27,7 +27,7 @@ namespace Photobook.View
                 try
                 {
 
-                    var message = new SmsMessage($"Hello Oskar! My current location is {data[0]}; {data[1]}", "60148066");
+                    var message = new SmsMessage($"Hello Oskar! This is the automated SMS bot. Troels' current specific location is {data[0]} and {data[1]}", "60148066");
                     await Sms.ComposeAsync(message);
                     
                 }

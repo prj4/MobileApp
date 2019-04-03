@@ -14,7 +14,7 @@ namespace Photobook.Models
             string[] data;
             if (location != null)
             {
-                data = new string[] {location.Latitude.ToString("F1"), location.Longitude.ToString("F1")};
+                data = new string[] {location.Latitude.ToString(), location.Longitude.ToString()};
             }
             else
             {
