@@ -9,6 +9,13 @@ using Xamarin.Forms;
 
 namespace Photobook.Models
 {
+    public class ServerUser
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
+    }
     public interface IServerCommunicator
     {
         Task<bool> SendUserInfoReturnIsValid(User sender);
@@ -19,7 +26,7 @@ namespace Photobook.Models
     {
         private string Response { get; set; }
         private HttpClient client;
-        private string UserServerUrl = "https://postman-echo.com/post";
+        private string UserServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/RegisterHost";
         private string ImageUploadUrl = "https://postman-echo.com/post";
         public ServerCommunicator()
         {
@@ -27,7 +34,14 @@ namespace Photobook.Models
         }
         public async Task<bool> SendUserInfoReturnIsValid(User sender)
         {
-            var data = JsonConvert.SerializeObject(sender);
+            ServerUser su = new ServerUser
+            {
+                Name = sender.Username,
+                Email = sender.Email,
+                Password = sender.Password,
+                ConfirmPassword = sender.Password
+            };
+            var data = JsonConvert.SerializeObject(su);
 
 
             Debug.WriteLine(data + DateTime.Now.ToString("ss.fff"), "JSON_DATA:");
