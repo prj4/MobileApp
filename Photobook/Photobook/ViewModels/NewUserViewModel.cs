@@ -91,7 +91,7 @@ namespace Photobook.ViewModels
                         return;
                     }
 
-                    if (await Com.SendUserInfoReturnIsValid(User))
+                    if (await Com.SendNewUserInfoReturnIsValid(User))
                     {
                         var rootPage = Navigation.NavigationStack.FirstOrDefault();
                         if (rootPage != null)
