@@ -41,7 +41,8 @@
                     </Grid.ColumnDefinitions>
                     
                     <Button Grid.Row="0" Grid.Column="0" Text="Se alle billeder" Style="{StaticResource itemBtn}" Command="{Binding DeleteEventCommand}"/>
-                    <Button Grid.Row="0" Grid.Column="1" Text="Upload billede" Style="{StaticResource itemBtn}" Command="{Binding DeleteEventCommand}"/>
+                    <Button Grid.Row="0" Grid.Column="1" Text="Upload billede" Style="{StaticResource itemBtn}" Command="{Binding UploadPictureCommand}"/>
+                    <Button Grid.Row="1" Grid.Column="1" Text="Upload video" Style="{StaticResource itemBtn}" Command="{Binding UploadVideoCommand}"/>
                     <Button Grid.Row="1" Grid.ColumnSpan="2" Text="Tag billede" Style="{StaticResource itemBtn}" Command="{Binding DeleteEventCommand}"/>
                     
                     

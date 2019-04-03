@@ -106,6 +106,41 @@ namespace Photobook.ViewModels
             }
         }
 
+        private ICommand _uploadPictureCommand;
+        public ICommand UploadPictureCommand
+        {
+            get { return _uploadPictureCommand ?? (_uploadPictureCommand = new DelegateCommand(UploadPicture_Execute)); }
+        }
+
+        private async void UploadPicture_Execute()
+        {
+            IMediaPicker Med = new CrossMediaPicker();
+
+            string videoPath = await Med.SelectPhoto();
+
+            if (videoPath != "Null")
+            {
+
+            }
+        }
+        private ICommand _uploadVideoCommand;
+        public ICommand UploadVideoCommand
+        {
+            get { return _uploadVideoCommand ?? (_uploadVideoCommand = new DelegateCommand(UploadVideo_Execute)); }
+        }
+
+        private async void UploadVideo_Execute()
+        {
+            IMediaPicker Med = new CrossMediaPicker();
+
+            var videoPath = await Med.SelectVideo();
+            
+            if (videoPath != "Null")
+            {
+
+            }
+        }
+
 
         #endregion
 
