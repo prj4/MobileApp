@@ -141,6 +141,38 @@ namespace Photobook.ViewModels
             }
         }
 
+        private ICommand _takePhotoCommand;
+        public ICommand TakePhotoCommand
+        {
+            get { return _takePhotoCommand ?? (_takePhotoCommand = new DelegateCommand(TakePhoto_Execute)); }
+        }
+
+        private async void TakePhoto_Execute()
+        {
+            ICameraAPI Cam = new CrossCamera();
+            string path = await Cam.TakePhoto();
+            if (path != "Null")
+            {
+
+            }
+        }
+
+        private ICommand _takeVideoCommand;
+        public ICommand TakeVideoCommand
+        {
+            get { return _takeVideoCommand ?? (_takeVideoCommand = new DelegateCommand(TakePhoto_Execute)); }
+        }
+
+        private async void TakeVideo_Execute()
+        {
+            ICameraAPI Cam = new CrossCamera();
+            string path = await Cam.TakeVideo();
+            if (path != "Null")
+            {
+
+            }
+        }
+
 
         #endregion
 

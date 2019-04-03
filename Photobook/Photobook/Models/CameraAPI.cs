@@ -17,13 +17,15 @@ namespace Photobook.Models
 
     public class CrossCamera : ICameraAPI
     {
+        private string DateTimeFormat = "yyMMddHHmmssfff";
         public async Task<string> TakeVideo()
         {
             var video = await Plugin.Media.CrossMedia.Current.TakeVideoAsync(
                 new StoreVideoOptions
                 {
                     SaveToAlbum = true,
-                    DefaultCamera = CameraDevice.Rear
+                    DefaultCamera = CameraDevice.Rear,
+                    Name = $"photobook{DateTime.Now.ToString(DateTimeFormat)}"
                 });
 
             string path = (video == null) ? "Null" : video.AlbumPath;
@@ -36,7 +38,8 @@ namespace Photobook.Models
                 new Plugin.Media.Abstractions.StoreCameraMediaOptions()
                 {
                     SaveToAlbum = true,
-                    DefaultCamera = CameraDevice.Rear
+                    DefaultCamera = CameraDevice.Rear,
+                    Name = $"photobook{DateTime.Now.ToString(DateTimeFormat)}"
                 });
 
             string path = (photo == null) ? "Null" : photo.AlbumPath;

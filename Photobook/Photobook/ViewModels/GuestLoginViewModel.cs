@@ -67,8 +67,8 @@ namespace Photobook.ViewModels
 
                     var EventFromServer = new NewEvent();
                     EventFromServer.EventName = "Bryllup ved Jane og Lorte Lars";
-                    EventFromServer.StartDate = DateTime.Parse("08/18/2019");
-                    EventFromServer.EndDate = DateTime.Parse("08/22/2019");
+                    EventFromServer.StartDate = DateTime.Today;
+                    EventFromServer.EndDate = DateTime.Today;
 
                     Navigation.InsertPageBefore(new Event(EventFromServer, false), Navigation.NavigationStack.First());
                     Navigation.PopToRootAsync();
