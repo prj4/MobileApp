@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Xamarin.Forms;
@@ -42,12 +43,13 @@ namespace Photobook.Models
                 ConfirmPassword = sender.Password
             };
             var data = JsonConvert.SerializeObject(su);
+            
 
 
             Debug.WriteLine(data + DateTime.Now.ToString("ss.fff"), "JSON_DATA:");
 
             var response = await client.PostAsync(UserServerUrl,
-                new StringContent(data));
+                new StringContent(data, Encoding.UTF8, "application/json"));
 
             response.EnsureSuccessStatusCode();
             
