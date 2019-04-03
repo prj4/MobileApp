@@ -91,19 +91,24 @@ namespace Photobook.ViewModels
                         return;
                     }
 
-                    await Com.SendUserInfoReturnIsValid(User);
-
-
-                    var rootPage = Navigation.NavigationStack.FirstOrDefault();
-                    if (rootPage != null)
+                    if (await Com.SendUserInfoReturnIsValid(User))
                     {
-                        Navigation.InsertPageBefore(new HostMainMenu(User), Navigation.NavigationStack.First());
-                        Navigation.PopToRootAsync();
+                        var rootPage = Navigation.NavigationStack.FirstOrDefault();
+                        if (rootPage != null)
+                        {
+                            Navigation.InsertPageBefore(new HostMainMenu(User), Navigation.NavigationStack.First());
+                            Navigation.PopToRootAsync();
+                        }
+                        else
+                        {
+                            Navigation.PushAsync(new HostMainMenu(User));
+                        }
                     }
                     else
                     {
-                        Navigation.PushAsync(new HostMainMenu(User));
+                        SuccesTxt = "Fejl ved login";
                     }
+                    
                 }
                 else
                 {

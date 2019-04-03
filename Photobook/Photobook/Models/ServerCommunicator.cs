@@ -51,13 +51,20 @@ namespace Photobook.Models
             var response = await client.PostAsync(UserServerUrl,
                 new StringContent(data, Encoding.UTF8, "application/json"));
 
-            response.EnsureSuccessStatusCode();
-            
-            Response = await response.Content.ReadAsStringAsync();
+            try
+            {
+                response.EnsureSuccessStatusCode();
+                Response = await response.Content.ReadAsStringAsync();
 
-            Debug.WriteLine(Response + DateTime.Now.ToString("ss.fff"), "SERVER_RESPONSE:");
-
-            return false;
+                Debug.WriteLine(Response + DateTime.Now.ToString("ss.fff"), "SERVER_RESPONSE:");
+                return true;
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine($"{e.Message}, {DateTime.Now.ToString("yyMMddHHmmss")}",
+                    "HttpRequestException");
+                return false;
+            }
         }
 
         public async Task<bool> SendPictureReturnSucces(string path)
