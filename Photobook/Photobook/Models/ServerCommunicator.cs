@@ -10,75 +10,43 @@ using Xamarin.Forms;
 
 namespace Photobook.Models
 {
-    public class ServerNewUser
+    public enum DataType
     {
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string ConfirmPassword { get; set; }
-    }
-
-    public class ServerUser
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-    }
+        NewUser,
+        User,
+        NewEvent,
+        Picture,
+        Video
+    };
+    
     public interface IServerCommunicator
     {
-        Task<bool> SendNewUserInfoReturnIsValid(User sender);
-        Task<bool> SendPictureReturnSucces(string path);
-        Task<bool> SendLoginReturnSucces(User sender);
+        Task<bool> SendDataReturnIsValid(object o, DataType d);
     }
 
     public class ServerCommunicator : IServerCommunicator
     {
+        
         private string Response { get; set; }
+        private ParserFactory parsFactory;
+        private UrlFactory urlFactory;
         private HttpClient client;
-        private string NewUserServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/RegisterHost";
-        private string UserServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/Login";
-        private string ImageUploadUrl = "https://postman-echo.com/post";
         public ServerCommunicator()
         {
             client = new HttpClient();
+            parsFactory = new ParserFactory();
+            urlFactory = new UrlFactory();
         }
 
-        public async Task<bool> SendLoginReturnSucces(User sender)
+        public async Task<bool> SendDataReturnIsValid(object dataToSend, DataType dataType)
         {
-            ServerUser su = new ServerUser
-            {
-                UserName = sender.Username,
-                Password = sender.Password
-            };
+            IJSONParser parser = parsFactory.Generate(dataType);
+            var data = parser.ParsedData(dataToSend);
 
-            var data = JsonConvert.SerializeObject(su);
-
-
-            return await SendJSON(data, UserServerUrl);
-        }
-        public async Task<bool> SendNewUserInfoReturnIsValid(User sender)
-        {
-            ServerNewUser su = new ServerNewUser
-            {
-                Name = sender.Username,
-                Email = sender.Email,
-                Password = sender.Password,
-                ConfirmPassword = sender.Password
-            };
-            var data = JsonConvert.SerializeObject(su);
-
-
-            return await SendJSON(data, NewUserServerUrl);
+            return await SendJSON(data, urlFactory.Generate(dataType));
         }
 
-        public async Task<bool> SendPictureReturnSucces(string path)
-        {
-            if (File.Exists(path))
-            {
-                
-            }
-
-            return false;
-        }
+       
 
         private async Task<bool> SendJSON(string JSON, string Url)
         {
@@ -97,7 +65,7 @@ namespace Photobook.Models
             }
             catch (HttpRequestException e)
             {
-                Debug.WriteLine($"{e.Message}, {DateTime.Now.ToString("yyMMddHHmmss")}",
+                Debug.WriteLine($"{e.Message}, {DateTime.Now.ToString("yy;MM;dd;HH;mm;ss")}",
                     "HttpRequestException");
                 return false;
             }

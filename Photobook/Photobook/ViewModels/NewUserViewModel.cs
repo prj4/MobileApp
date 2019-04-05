@@ -33,6 +33,7 @@ namespace Photobook.ViewModels
             Com = new ServerCommunicator();
             SuccesTxt = "";
         }
+        
 
         private User user;
 
@@ -74,7 +75,7 @@ namespace Photobook.ViewModels
             loggedIn = false;
             if(loggedIn)
             {
-                Navigation.PushAsync(new HostMainMenu(User));
+                await Navigation.PushAsync(new HostMainMenu(User));
             }
             else
             {
@@ -91,17 +92,17 @@ namespace Photobook.ViewModels
                         return;
                     }
 
-                    if (await Com.SendNewUserInfoReturnIsValid(User))
+                    if (await Com.SendDataReturnIsValid(User, DataType.NewUser))
                     {
                         var rootPage = Navigation.NavigationStack.FirstOrDefault();
                         if (rootPage != null)
                         {
                             Navigation.InsertPageBefore(new HostMainMenu(User), Navigation.NavigationStack.First());
-                            Navigation.PopToRootAsync();
+                            await Navigation.PopToRootAsync();
                         }
                         else
                         {
-                            Navigation.PushAsync(new HostMainMenu(User));
+                            await Navigation.PushAsync(new HostMainMenu(User));
                         }
                     }
                     else
