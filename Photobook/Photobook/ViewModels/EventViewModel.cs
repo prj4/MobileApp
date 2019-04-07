@@ -76,6 +76,16 @@ namespace Photobook.ViewModels
             set { _pin = value; NotifyPropertyChanged(); }
         }
 
+        public string Description
+        {
+            get { return _event.Description; }
+        }
+
+        public string Location
+        {
+            get { return _event.Location; }
+        }
+
         #region Commands
 
 

@@ -47,9 +47,9 @@
                                             <Label TextColor="Black" FontAttributes="Bold" Text="{Binding EventName}"/>
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="Dato:" />
-                                                <Label Text="{Binding StartDate}"/>
+                                                <Label Text="{Binding StartDate.Date}"/>
                                                  <Label Text="-"/>
-                                                <Label Text="{Binding EndDate}"/>
+                                                <Label Text="{Binding EndDate.Date}"/>
                                             </StackLayout>
                                         </StackLayout>
                                     </ViewCell>

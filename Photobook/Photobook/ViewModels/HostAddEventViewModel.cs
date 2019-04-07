@@ -27,12 +27,18 @@ namespace Photobook.ViewModels
         private DateTime _endDate = new DateTime();
 
 
-
+        private bool _isErrorMessageEnabled;
+        public bool isErrorMessageEnabled
+        {
+            get { return _isErrorMessageEnabled; }
+            set { _isErrorMessageEnabled = value;  NotifyPropertyChanged(); }
+        }
 
         public HostAddEventViewModel(User user, ObservableCollection<NewEvent> events)
         {
             _user = user;
             _events = events;
+            isErrorMessageEnabled = false;
         }
 
         public DateTime MinDate
@@ -47,9 +53,19 @@ namespace Photobook.ViewModels
 
         }
 
+        public string Description
+        {
+            get { return _newEvent.Description; }
+            set
+            {
+                _newEvent.Description = value; 
+                NotifyPropertyChanged();
+            }
+        }
+
         public DateTime StartDate
         {
-            get { return NewEvent.StartDate; }
+            get { return NewEvent.StartDate.Date; }
             set 
             {
                 if (NewEvent.StartDate == null)
@@ -61,7 +77,7 @@ namespace Photobook.ViewModels
 
         public DateTime EndDate
         {
-            get { return NewEvent.EndDate; }
+            get { return NewEvent.EndDate.Date; }
             set 
             {
                 if (NewEvent.EndDate == null)
@@ -71,6 +87,8 @@ namespace Photobook.ViewModels
 
             }
         }
+
+
 
         private ICommand _createEventCommand;
         public ICommand CreateEventCommand
@@ -88,9 +106,17 @@ namespace Photobook.ViewModels
             // Her kunne vi evt. bruge "SMS" eller "EMAIL" funktionen Poul snakkede om i essentials
             // Så når der trykkes på knappen, laves der en PIN kode og sendes også en sms til brugere med denne PIN
 
+            if(_newEvent.Description.Length > 50)
+            {
+                isErrorMessageEnabled = true;
+            }
+            else
+            {
+                isErrorMessageEnabled = false;
+                _events.Add(NewEvent);
+                Navigation.PopModalAsync();
+            }
 
-            _events.Add(NewEvent);
-            Navigation.PopModalAsync();
         }
 
         private ICommand _regretCommand;

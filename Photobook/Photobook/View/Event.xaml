@@ -22,8 +22,9 @@
             <StackLayout Margin="0,0,0,10" Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
                 <Label Style="{StaticResource h1}" Text="{Binding EventName}" />
                 <Label Style="{StaticResource pTxt}" TextColor="#f2f2f2" Text="{Binding PIN}" />
+                <Label Style="{StaticResource pTxt}" TextColor="#f2f2f2" Text="{Binding Location}" />
                 <Label Style="{StaticResource pTxt}" TextColor="#f2f2f2" Text="{Binding Date, Mode=TwoWay}" />
-                <Label Style="{StaticResource pTxt}" Text="Måske en kort beskrivelse" />
+                <Label Style="{StaticResource pTxt}" Text="{Binding Description}" />
 
             </StackLayout>
         
