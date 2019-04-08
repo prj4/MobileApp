@@ -20,21 +20,17 @@ namespace Photobook.View
             Button btn = new Button();
             btn.Text = "Troels' store testknap";
             MainStack.Children.Add(btn);
-            btn.Clicked += async (sender, args) =>
+            btn.Clicked += (sender, args) =>
             {
-                string[] data = await GeoData.GetCurrentLocation();
+                List<User> list = SettingsManager.GetAllActiveUsers();
 
-                try
-                {
+                list.Add(new User{Username = $"User{list.Count}"});
 
-                    var message = new SmsMessage($"Hello Oskar! This is the automated SMS bot. Troels' current specific location is {data[0]} and {data[1]}", "60148066");
-                    await Sms.ComposeAsync(message);
-                    
-                }
-                catch (Exception e)
+                foreach (var VARIABLE in list)
                 {
-                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine(VARIABLE.Username);
                 }
+                SettingsManager.SaveActiveUserList(list);
             };
 #endif
         }

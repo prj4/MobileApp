@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using Newtonsoft.Json;
+using Xamarin.Forms;
 
 namespace Photobook.Models
 {
@@ -62,6 +63,24 @@ namespace Photobook.Models
 
             return JsonConvert.SerializeObject(su);
 
+        }
+    }
+
+    public class NewEventParser : IJSONParser
+    {
+        public string ParsedData(object ne)
+        {
+            NewEvent newEvent;
+            try
+            {
+                newEvent = (NewEvent) ne;
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
+
+            return JsonConvert.SerializeObject(newEvent);
         }
     }
 }

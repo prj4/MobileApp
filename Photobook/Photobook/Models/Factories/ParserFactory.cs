@@ -20,6 +20,10 @@ namespace Photobook.Models
                 {
                     return new UserParser();
                 }
+                case DataType.NewEvent:
+                {
+                    return new NewEventParser();
+                }
                 default:
                     return null;
             }

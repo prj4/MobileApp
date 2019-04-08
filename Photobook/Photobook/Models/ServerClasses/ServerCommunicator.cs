@@ -42,7 +42,8 @@ namespace Photobook.Models
         {
             IJSONParser parser = parsFactory.Generate(dataType);
             var data = parser.ParsedData(dataToSend);
-
+            
+            
             return await SendJSON(data, urlFactory.Generate(dataType));
         }
 

@@ -12,7 +12,6 @@ namespace Photobook.Models
 
         public NewEvent()
         {
-
         }
 
         public DateTime StartDate { get; set; }
