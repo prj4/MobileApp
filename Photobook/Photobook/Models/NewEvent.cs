@@ -3,9 +3,9 @@ namespace Photobook.Models
 {
     public class NewEvent
     {
-        public NewEvent(DateTime Start, DateTime end, string name)
+        public NewEvent(DateTime start, DateTime end, string name)
         {
-            StartDate = Start;
+            StartDate = start;
             EndDate = end;
             EventName = name;
         }
@@ -16,9 +16,7 @@ namespace Photobook.Models
         }
 
         public DateTime StartDate { get; set; }
-        public TimeSpan StartTime { get; set; }
         public DateTime EndDate { get; set; }
-        public TimeSpan EndTime { get; set; }
 
         public string EventName { get; set; }
         public string Location { get; set; }

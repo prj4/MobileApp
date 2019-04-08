@@ -1,6 +1,4 @@
-﻿
-using System;
-using Android;
+﻿using Android;
 using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
