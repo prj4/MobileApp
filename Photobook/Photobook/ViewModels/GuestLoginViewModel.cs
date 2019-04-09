@@ -44,7 +44,7 @@ namespace Photobook.ViewModels
 
         bool AreDetailsValid(GuestUser user)
         {
-            return (!string.IsNullOrWhiteSpace(user.Username) && !string.IsNullOrWhiteSpace(user.PIN) && user.PIN.Length == 4);
+            return (!string.IsNullOrWhiteSpace(user.UserName) && !string.IsNullOrWhiteSpace(user.Pin) && user.Pin.Length == 4);
         }
 
         private ICommand _guestLoginCommand;
@@ -53,31 +53,34 @@ namespace Photobook.ViewModels
             get { return _guestLoginCommand ?? (_guestLoginCommand = new DelegateCommand(Login_Execute)); }
         }
 
-        private void Login_Execute()
+        private async void Login_Execute()
         {
-            var signUpSucceeded = AreDetailsValid(GuestUser);
-            if (signUpSucceeded)
-            {
-                var rootPage = Navigation.NavigationStack.FirstOrDefault();
-                if (rootPage != null)
-                {
-                    // Det event brugeren er tilknyttet skal her hentes ned fra serveren, og gives som input parameter
-                    // Det event brugeren er tilknyttet skal laves om til et NewEvent objekt og gives med som parameter. 
+           IServerCommunicator Com = new ServerCommunicator();
+
+           if (await Com.SendDataReturnIsValid(GuestUser, DataType.User))
+           {
+
+               var rootPage = Navigation.NavigationStack.FirstOrDefault();
+               if (rootPage != null)
+               {
+                   // Det event brugeren er tilknyttet skal her hentes ned fra serveren, og gives som input parameter
+                   // Det event brugeren er tilknyttet skal laves om til et NewEvent objekt og gives med som parameter. 
 
 
-                    var EventFromServer = new NewEvent();
-                    EventFromServer.Name = "Oskar og Signes skilsmissefest";
-                    EventFromServer.StartDate = DateTime.Today;
-                    EventFromServer.EndDate = DateTime.Today;
+                   var EventFromServer = new NewEvent();
+                   EventFromServer.Name = "Oskar og Signes skilsmissefest";
+                   EventFromServer.StartDate = DateTime.Today;
+                   EventFromServer.EndDate = DateTime.Today;
 
-                    Navigation.InsertPageBefore(new Event(EventFromServer, false), Navigation.NavigationStack.First());
-                    Navigation.PopToRootAsync();
-                }
-            }
-            else
-            {
-                LoginInfo = "Skriv dit fulde navn, og angiv en PIN kode på 4 cifre";
-            }
+                   Navigation.InsertPageBefore(new Event(EventFromServer, false),
+                       Navigation.NavigationStack.First());
+                   Navigation.PopToRootAsync();
+               }
+           }
+           else
+           {
+               LoginInfo = "Error logging on. Is the pin correct?";
+           }
         }
 
     }

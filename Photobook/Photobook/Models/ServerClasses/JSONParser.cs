@@ -43,25 +43,19 @@ namespace Photobook.Models
     {
         public string ParsedData(object u)
         {
-            User tmpUser;
+            GuestUser tmpUser;
             try
             {
-                tmpUser = (User) u;
+                tmpUser = (GuestUser) u;
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 return "";
             }
+            
 
-           
-            ServerUser su = new ServerUser
-            {
-                UserName = tmpUser.Username,
-                Password = tmpUser.Password
-            };
-
-            return JsonConvert.SerializeObject(su);
+            return JsonConvert.SerializeObject(tmpUser);
 
         }
     }
