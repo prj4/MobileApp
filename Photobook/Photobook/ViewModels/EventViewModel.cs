@@ -56,8 +56,8 @@ namespace Photobook.ViewModels
 
         public string EventName
         {
-            get { return _event.EventName; }
-            set { _event.EventName = value; NotifyPropertyChanged(); }
+            get { return _event.Name; }
+            set { _event.Name = value; NotifyPropertyChanged(); }
         }
 
 

@@ -96,7 +96,7 @@ namespace Photobook.ViewModels
 
 
                 // Skriv til server om at få info om dette event
-                TestText = _selectedEvent.EventName;
+                TestText = _selectedEvent.Name;
                 Navigation.PushAsync(new Event(_selectedEvent, true));
             }
         }
@@ -121,7 +121,7 @@ namespace Photobook.ViewModels
         private void DeleteEvent_Execute()
         {
             Events.Remove(SelectedEvent);
-            TestText = _selectedEvent.EventName;
+            TestText = _selectedEvent.Name;
 
             NotifyPropertyChanged("Events");
         }

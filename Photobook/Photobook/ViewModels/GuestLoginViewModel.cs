@@ -66,7 +66,7 @@ namespace Photobook.ViewModels
 
 
                     var EventFromServer = new NewEvent();
-                    EventFromServer.EventName = "Bryllup ved Jane og Lorte Lars";
+                    EventFromServer.Name = "Oskar og Signes skilsmissefest";
                     EventFromServer.StartDate = DateTime.Today;
                     EventFromServer.EndDate = DateTime.Today;
 
