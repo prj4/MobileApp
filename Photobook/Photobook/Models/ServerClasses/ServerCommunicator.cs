@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
 using System.Text;
@@ -22,6 +23,7 @@ namespace Photobook.Models
     public interface IServerCommunicator
     {
         Task<bool> SendDataReturnIsValid(object o, DataType d);
+        Task<string> SendDataReturnResponse(object o, DataType d);
     }
 
     public class ServerCommunicator : IServerCommunicator
@@ -31,9 +33,16 @@ namespace Photobook.Models
         private ParserFactory parsFactory;
         private UrlFactory urlFactory;
         private HttpClient client;
+        private CookieContainer cookies;
+        private HttpClientHandler handler;
         public ServerCommunicator()
         {
-            client = new HttpClient();
+            
+            cookies = new CookieContainer();
+            handler = new HttpClientHandler();
+            handler.CookieContainer = cookies;
+
+            client = new HttpClient(handler);
             parsFactory = new ParserFactory();
             urlFactory = new UrlFactory();
         }
@@ -47,7 +56,14 @@ namespace Photobook.Models
             return await SendJSON(data, urlFactory.Generate(dataType));
         }
 
-       
+        public async Task<string> SendDataReturnResponse(object o, DataType d)
+        {
+            IJSONParser parser = parsFactory.Generate(d);
+            var data = parser.ParsedData(o);
+
+            return await (SendJSON(data, urlFactory.Generate(d))) ? Response : null;
+        }
+            
 
         private async Task<bool> SendJSON(string JSON, string Url)
         {
@@ -55,6 +71,7 @@ namespace Photobook.Models
 
             var response = await client.PostAsync(Url,
                 new StringContent(JSON, Encoding.UTF8, "application/json"));
+            
 
             try
             {

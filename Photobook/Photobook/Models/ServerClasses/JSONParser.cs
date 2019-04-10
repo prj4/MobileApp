@@ -53,9 +53,14 @@ namespace Photobook.Models
                 Debug.WriteLine(e.Message);
                 return "";
             }
-            
 
-            return JsonConvert.SerializeObject(tmpUser);
+            ServerUser su = new ServerUser
+            {
+                Name = tmpUser.UserName,
+                Pin = tmpUser.Pin
+            };
+
+            return JsonConvert.SerializeObject(su);
 
         }
     }
