@@ -59,7 +59,7 @@ namespace Photobook.ViewModels
 
            if (await Com.SendDataReturnIsValid(GuestUser, DataType.User))
            {
-
+               var info = Com.ResponseObject;
                var rootPage = Navigation.NavigationStack.FirstOrDefault();
                if (rootPage != null)
                {
@@ -68,9 +68,10 @@ namespace Photobook.ViewModels
 
 
                    var EventFromServer = new NewEvent();
-                   EventFromServer.Name = "Oskar og Signes skilsmissefest";
-                   EventFromServer.StartDate = DateTime.Today;
-                   EventFromServer.EndDate = DateTime.Today;
+                   EventFromServer.Name = info.name;
+                   EventFromServer.StartDate = info.Event.startDate;
+                   EventFromServer.EndDate = info.Event.endDate;
+                   EventFromServer.Description = info.Event.description;
 
                    Navigation.InsertPageBefore(new Event(EventFromServer, false),
                        Navigation.NavigationStack.First());

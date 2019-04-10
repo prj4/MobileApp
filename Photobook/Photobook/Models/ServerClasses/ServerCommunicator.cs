@@ -22,14 +22,16 @@ namespace Photobook.Models
     
     public interface IServerCommunicator
     {
+        ServerResponse ResponseObject { get; }
         Task<bool> SendDataReturnIsValid(object o, DataType d);
-        Task<string> SendDataReturnResponse(object o, DataType d);
+        Task<ServerResponse> SendDataReturnResponse(object o, DataType d);
     }
 
     public class ServerCommunicator : IServerCommunicator
     {
-        
-        private string Response { get; set; }
+
+        private string Response;
+        public ServerResponse ResponseObject { get; private set; }
         private ParserFactory parsFactory;
         private UrlFactory urlFactory;
         private HttpClient client;
@@ -56,21 +58,38 @@ namespace Photobook.Models
             return await SendJSON(data, urlFactory.Generate(dataType));
         }
 
-        public async Task<string> SendDataReturnResponse(object o, DataType d)
+        public async Task<ServerResponse> SendDataReturnResponse(object o, DataType d)
         {
             IJSONParser parser = parsFactory.Generate(d);
             var data = parser.ParsedData(o);
 
-            return await (SendJSON(data, urlFactory.Generate(d))) ? Response : null;
+            return await (SendJSON(data, urlFactory.Generate(d))) ? ResponseObject : null;
         }
             
 
         private async Task<bool> SendJSON(string JSON, string Url)
         {
             Debug.WriteLine(JSON + DateTime.Now.ToString("ss.fff"), "JSON_DATA:");
+            ResponseObject = null;
 
             var response = await client.PostAsync(Url,
                 new StringContent(JSON, Encoding.UTF8, "application/json"));
+            
+            var cookies = handler.CookieContainer.GetCookies(new Uri(Url));
+
+            foreach (var cookie in cookies)
+            {
+                Debug.WriteLine(cookie.ToString(), "COOKIE");
+            }
+
+            try
+            {
+                ResponseObject = JsonConvert.DeserializeObject<ServerResponse>(await response.Content.ReadAsStringAsync());
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message, "Deserialize exception");
+            }
             
 
             try

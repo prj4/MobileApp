@@ -38,8 +38,6 @@ namespace Photobook.ViewModels
                 ShowLogoutBtn = false;
             else
                 ShowLogoutBtn = true;
-
-            PIN = "1234";
         }
 
         public bool ShowTopBar
