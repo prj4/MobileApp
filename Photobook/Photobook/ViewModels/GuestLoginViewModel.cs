@@ -10,6 +10,7 @@ using Photobook.Models.ServerDataClasses;
 using Prism.Commands;
 using Xamarin.Forms;
 using Photobook.View;
+using Xamarin.Forms.Internals;
 
 namespace Photobook.ViewModels
 {
@@ -33,6 +34,11 @@ namespace Photobook.ViewModels
         {
             GuestUser = new GuestUser();
             LogIns = SettingsManager.GetAllActiveUsers();
+
+            foreach (var log in LogIns)
+            {
+                LoginInfo += log.UserName;
+            }
         }
 
         public GuestUser GuestUser
