@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Photobook.Models;
+using Photobook.Models.ServerClasses;
+using Photobook.Models.ServerDataClasses;
 using Prism.Commands;
 using Xamarin.Forms;
 using Photobook.View;
@@ -14,6 +17,7 @@ namespace Photobook.ViewModels
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public List<GuestUser> LogIns { get; set; }
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -28,6 +32,7 @@ namespace Photobook.ViewModels
         public GuestLoginViewModel()
         {
             GuestUser = new GuestUser();
+            LogIns = SettingsManager.GetAllActiveUsers();
         }
 
         public GuestUser GuestUser
@@ -55,12 +60,20 @@ namespace Photobook.ViewModels
 
         private async void Login_Execute()
         {
-           IServerCommunicator Com = new ServerCommunicator();
+           IServerDataHandler Data = new ServerDataHandler();
+           IServerCommunicator Com = new ServerCommunicator(Data);
 
            if (await Com.SendDataReturnIsValid(GuestUser, DataType.User))
            {
-               var info = Com.ResponseObject;
+               var message = Data.LatestMessage;
+               var parser = FromJSONFactory.Generate(ServerData.Event);
+
+               ServerEvent info = (ServerEvent)await parser.DeserialisedData(message);
+
+               SettingsManager.SaveInstance(GuestUser.UserName, Data.LatestReceivedCookies);
+
                var rootPage = Navigation.NavigationStack.FirstOrDefault();
+               LogIns.Add(GuestUser);
                if (rootPage != null)
                {
                    // Det event brugeren er tilknyttet skal her hentes ned fra serveren, og gives som input parameter

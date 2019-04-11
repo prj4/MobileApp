@@ -4,11 +4,10 @@ using System.Text;
 
 namespace Photobook.Models
 {
+    
     public class ParserFactory
     {
-        
-
-        public IJSONParser Generate(DataType d)
+        public static IJSONParser Generate(DataType d)
         {
             switch (d)
             {

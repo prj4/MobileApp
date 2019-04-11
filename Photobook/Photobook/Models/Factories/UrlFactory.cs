@@ -8,11 +8,11 @@ namespace Photobook.Models
     public class UrlFactory
     {
 
-        private string NewUserServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/RegisterHost";
-        private string NewEventUrl = "https://photobookwebapi1.azurewebsites.net/api/Event/Create";
-        private string UserServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/RegisterGuest";
-        private string ImageUploadUrl = "https://postman-echo.com/post";
-        public string Generate(DataType d)
+        private static string NewUserServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/RegisterHost";
+        private static string NewEventUrl = "https://photobookwebapi1.azurewebsites.net/api/Event/Create";
+        private static string UserServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/RegisterGuest";
+        private static string ImageUploadUrl = "https://postman-echo.com/post";
+        public static string Generate(DataType d)
         {
             switch (d)
             {

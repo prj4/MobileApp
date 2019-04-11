@@ -34,16 +34,16 @@ namespace Photobook.Models
             await Application.Current.SavePropertiesAsync();
         }
 
-        public static List<User> GetAllActiveUsers()
+        public static List<GuestUser> GetAllActiveUsers()
         {
-            List<User> list = null;
+            List<GuestUser> list = null;
             try
             {
-                list = (List<User>)Application.Current.Properties[UserList];
+                list = (List<GuestUser>)Application.Current.Properties[UserList];
             }
             catch (KeyNotFoundException e)
             {
-                list = new List<User>();
+                list = new List<GuestUser>();
                 SaveActiveUserList(list);
                 return list;
             }
@@ -51,7 +51,7 @@ namespace Photobook.Models
             return list;
         }
 
-        public static async void SaveActiveUserList(List<User> current)
+        public static async void SaveActiveUserList(List<GuestUser> current)
         {
             Application.Current.Properties[UserList] = current;
             await Application.Current.SavePropertiesAsync();

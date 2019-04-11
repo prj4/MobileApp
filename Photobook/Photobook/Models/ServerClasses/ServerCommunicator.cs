@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Photobook.Models.ServerClasses;
 using Xamarin.Forms;
 
 namespace Photobook.Models
@@ -17,86 +18,61 @@ namespace Photobook.Models
         User,
         NewEvent,
         Picture,
-        Video
+        Video,
     };
     
     public interface IServerCommunicator
     {
-        ServerResponse ResponseObject { get; }
         Task<bool> SendDataReturnIsValid(object o, DataType d);
-        Task<ServerResponse> SendDataReturnResponse(object o, DataType d);
     }
 
     public class ServerCommunicator : IServerCommunicator
     {
 
         private string Response;
-        public ServerResponse ResponseObject { get; private set; }
-        private ParserFactory parsFactory;
-        private UrlFactory urlFactory;
         private HttpClient client;
         private CookieContainer cookies;
-        private HttpClientHandler handler;
+        private HttpClientHandler clientHandler;
+        private IServerDataHandler dataHandler;
         public ServerCommunicator()
         {
-            
             cookies = new CookieContainer();
-            handler = new HttpClientHandler();
-            handler.CookieContainer = cookies;
+            clientHandler = new HttpClientHandler();
+            clientHandler.CookieContainer = cookies;
 
-            client = new HttpClient(handler);
-            parsFactory = new ParserFactory();
-            urlFactory = new UrlFactory();
+            client = new HttpClient(clientHandler);
+            dataHandler = new ServerDataHandler();
+        }
+
+        public ServerCommunicator(IServerDataHandler _dataHandler)
+        {
+            cookies = new CookieContainer();
+            clientHandler = new HttpClientHandler();
+            clientHandler.CookieContainer = cookies;
+
+            client = new HttpClient(clientHandler);
+            dataHandler = _dataHandler;
         }
 
         public async Task<bool> SendDataReturnIsValid(object dataToSend, DataType dataType)
         {
-            IJSONParser parser = parsFactory.Generate(dataType);
+            IJSONParser parser = ParserFactory.Generate(dataType);
             var data = parser.ParsedData(dataToSend);
-            
-            
-            return await SendJSON(data, urlFactory.Generate(dataType));
-        }
 
-        public async Task<ServerResponse> SendDataReturnResponse(object o, DataType d)
-        {
-            IJSONParser parser = parsFactory.Generate(d);
-            var data = parser.ParsedData(o);
+            Debug.WriteLine(data + DateTime.Now.ToString("ss.fff"), "JSON_DATA:");
 
-            return await (SendJSON(data, urlFactory.Generate(d))) ? ResponseObject : null;
-        }
-            
+            var response = await client.PostAsync(UrlFactory.Generate(dataType),
+                new StringContent(data, Encoding.UTF8, "application/json"));
 
-        private async Task<bool> SendJSON(string JSON, string Url)
-        {
-            Debug.WriteLine(JSON + DateTime.Now.ToString("ss.fff"), "JSON_DATA:");
-            ResponseObject = null;
+            var cookies = clientHandler.CookieContainer.GetCookies(new Uri(UrlFactory.Generate(dataType)));
 
-            var response = await client.PostAsync(Url,
-                new StringContent(JSON, Encoding.UTF8, "application/json"));
-            
-            var cookies = handler.CookieContainer.GetCookies(new Uri(Url));
-
-            foreach (var cookie in cookies)
-            {
-                Debug.WriteLine(cookie.ToString(), "COOKIE");
-            }
-
-            try
-            {
-                ResponseObject = JsonConvert.DeserializeObject<ServerResponse>(await response.Content.ReadAsStringAsync());
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message, "Deserialize exception");
-            }
-            
+            dataHandler.LatestMessage = response;
+            dataHandler.LatestReceivedCookies = cookies;
 
             try
             {
                 response.EnsureSuccessStatusCode();
                 Response = await response.Content.ReadAsStringAsync();
-
                 Debug.WriteLine(Response + DateTime.Now.ToString("ss.fff"), "SERVER_RESPONSE:");
                 return true;
             }
@@ -106,7 +82,8 @@ namespace Photobook.Models
                     "HttpRequestException");
                 return false;
             }
-        }
+        } 
 
+      
     }
 }
