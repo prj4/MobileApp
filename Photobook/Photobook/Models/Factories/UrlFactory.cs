@@ -19,7 +19,6 @@ namespace Photobook.Models
                 case DataType.NewUser:
                 {
                     return NewUserServerUrl;
-                    
                 }
                 case DataType.User:
                 {
