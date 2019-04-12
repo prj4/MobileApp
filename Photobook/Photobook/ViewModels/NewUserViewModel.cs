@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 using System.Transactions;
 using Prism.Commands;
@@ -11,6 +12,7 @@ using System.Runtime.CompilerServices;
 using Photobook.View;
 using Xamarin.Forms;
 using System.Linq;
+using Photobook.Models.ServerClasses;
 
 namespace Photobook.ViewModels
 {
@@ -18,6 +20,7 @@ namespace Photobook.ViewModels
     {
         public INavigation Navigation;
 
+        private IServerDataHandler dataHandler;
         private IServerCommunicator Com;
         private bool loggedIn = false;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -30,7 +33,8 @@ namespace Photobook.ViewModels
         public NewUserViewModel()
         {
             user = new User();
-            Com = new ServerCommunicator();
+            dataHandler = new ServerDataHandler();
+            Com = new ServerCommunicator(dataHandler);
             SuccesTxt = "";
         }
         
@@ -94,6 +98,12 @@ namespace Photobook.ViewModels
 
                     if (await Com.SendDataReturnIsValid(User, DataType.NewUser))
                     {
+                        SettingsManager.SaveInstance($"{User.Username}Cookie", dataHandler.LatestReceivedCookies);
+                        foreach (var cook in dataHandler.LatestReceivedCookies)
+                        {
+                            Debug.WriteLine($"{cook.ToString()}", "Cookiedata");
+                        }
+                        Debug.WriteLine($"{User.Username}Cookie", "Saved cookie");
                         var rootPage = Navigation.NavigationStack.FirstOrDefault();
                         if (rootPage != null)
                         {

@@ -24,6 +24,7 @@ namespace Photobook.Models
     public interface IServerCommunicator
     {
         Task<bool> SendDataReturnIsValid(object o, DataType d);
+        void AddCookies(CookieCollection _cookies);
     }
 
     public class ServerCommunicator : IServerCommunicator
@@ -54,6 +55,12 @@ namespace Photobook.Models
             dataHandler = _dataHandler;
         }
 
+        public void AddCookies(CookieCollection _cookies)
+        {
+            
+            cookies.Add(_cookies);
+        }
+
         public async Task<bool> SendDataReturnIsValid(object dataToSend, DataType dataType)
         {
             IJSONParser parser = ParserFactory.Generate(dataType);
@@ -61,8 +68,18 @@ namespace Photobook.Models
 
             Debug.WriteLine(data + DateTime.Now.ToString("ss.fff"), "JSON_DATA:");
 
-            var response = await client.PostAsync(UrlFactory.Generate(dataType),
-                new StringContent(data, Encoding.UTF8, "application/json"));
+            HttpResponseMessage response = null;
+            try
+            {
+                response = await client.PostAsync(UrlFactory.Generate(dataType),
+                    new StringContent(data, Encoding.UTF8, "application/json"));
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                
+            } 
+            
 
             var cookies = clientHandler.CookieContainer.GetCookies(new Uri(UrlFactory.Generate(dataType)));
 

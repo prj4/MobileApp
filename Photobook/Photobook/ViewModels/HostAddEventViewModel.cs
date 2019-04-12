@@ -7,6 +7,7 @@ using Prism.Commands;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Net;
 
 namespace Photobook.ViewModels
 {
@@ -99,8 +100,18 @@ namespace Photobook.ViewModels
 
         private async void CreateEvent_Execute()
         {
+            Debug.WriteLine($"{_user.Username}Cookie", "Saved cookie");
 
-            IServerCommunicator Com  = new ServerCommunicator();
+           
+            var cookie = (CookieCollection)SettingsManager.GetSavedInstance($"{_user.Username}Cookie");
+
+            foreach (var cook in cookie)
+            {
+                Debug.WriteLine($"{cook.ToString()}", "Cookiedata");
+            }
+
+            IServerCommunicator Com = new ServerCommunicator();
+            Com.AddCookies(cookie);
 
             if (await Com.SendDataReturnIsValid(_newEvent, DataType.NewEvent))
             {
