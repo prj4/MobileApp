@@ -13,6 +13,7 @@ namespace Photobook.Models
         NewUser,
         User,
         NewEvent,
+        Host,
         Picture,
         Video,
     };

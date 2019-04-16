@@ -23,6 +23,10 @@ namespace Photobook.Models
                 {
                     return new NewEventParser();
                 }
+                case DataType.Host:
+                {
+                    return new HostParser();
+                }
                 default:
                     return null;
             }

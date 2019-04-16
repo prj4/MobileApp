@@ -39,6 +39,31 @@ namespace Photobook.Models
         }
     }
 
+    public class HostParser : IJSONParser
+    {
+        public string ParsedData(object u)
+        {
+            User tmpUser = new User();
+            try
+            {
+                tmpUser = (User) u;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                
+            }
+
+            ServerHost host = new ServerHost
+            {
+                Password = tmpUser.Password,
+                UserName = tmpUser.Email
+            };
+
+            return JsonConvert.SerializeObject(host);
+        }
+    }
+
     public class UserParser : IJSONParser
     {
         public string ParsedData(object u)
