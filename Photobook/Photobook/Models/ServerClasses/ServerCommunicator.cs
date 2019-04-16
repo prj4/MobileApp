@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Photobook.Models.ServerClasses;
-using Xamarin.Forms;
 
 namespace Photobook.Models
 {
@@ -67,6 +63,8 @@ namespace Photobook.Models
             var data = parser.ParsedData(dataToSend);
 
             Debug.WriteLine(data + DateTime.Now.ToString("ss.fff"), "JSON_DATA:");
+            if (cookies.Count > 0)
+                clientHandler.UseCookies = true;
 
             HttpResponseMessage response = null;
             try
@@ -78,13 +76,21 @@ namespace Photobook.Models
             {
                 Debug.WriteLine(e);
                 
-            } 
+            }
+
+            try
+            {
+                var responseCookies = clientHandler.CookieContainer.GetCookies(new Uri(UrlFactory.Generate(dataType)));
+
+                dataHandler.LatestMessage = response;
+                dataHandler.LatestReceivedCookies = responseCookies;
+            }
+            catch (NullReferenceException e)
+            {
+                Debug.WriteLine(e.Message, "CookieError");
+            }
+
             
-
-            var cookies = clientHandler.CookieContainer.GetCookies(new Uri(UrlFactory.Generate(dataType)));
-
-            dataHandler.LatestMessage = response;
-            dataHandler.LatestReceivedCookies = cookies;
 
             try
             {

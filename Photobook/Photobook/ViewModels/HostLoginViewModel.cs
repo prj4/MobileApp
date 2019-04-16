@@ -11,7 +11,18 @@ namespace Photobook.ViewModels
 {
     public class HostLoginViewModel : INotifyPropertyChanged
     {
+        private User user;
+        public string Email
+        {
+            get { return user.Email;}
+            set { user.Email = value; }
+        }
 
+        public string Username
+        {
+            get { return user.Username; }
+            set { user.Username = value; }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -42,13 +53,12 @@ namespace Photobook.ViewModels
             // Den bruger data der hentes, skal sendes videre til næste view. Som er HostMenu.
             // Brugeren hente ned og bruger data tilføres et bruger objekt. 
 
-            var tempUsr = new User();
-            tempUsr.Username = "Troels Blikspand";
+            
 
             var rootPage = Navigation.NavigationStack.FirstOrDefault();
             if (rootPage != null)
             {
-                Navigation.InsertPageBefore(new HostMainMenu(tempUsr), Navigation.NavigationStack.First());
+                Navigation.InsertPageBefore(new HostMainMenu(user), Navigation.NavigationStack.First());
                 Navigation.PopToRootAsync();
             }
 

@@ -19,14 +19,14 @@
             <StackLayout Margin="0,0,0,10" Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
                 <Label Style="{StaticResource h1}" Text="Opret event" />
                 <Label Style="{StaticResource pTxt}" Text="For at dine gæster kan logge ind på det oprettede event, skal de bruge den 4 cifrede PIN-kode" />
-                <Label TextColor="red" Text="Du har indtastst mere end 50 ord i beskrivelsen!" IsEnabled="{Binding isErrorMessageEnabled, Mode=TwoWay}"/>
+                <Label TextColor="red" Text="Du har indtastet mere end 50 ord i beskrivelsen!" IsEnabled="{Binding isErrorMessageEnabled, Mode=TwoWay}"/>
             </StackLayout>
     
             <ScrollView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
                 <Grid Padding="0,0,0,10"> 
                     <StackLayout>
                         <Label Text="Event navn"  TextColor="White"/>
-                        <Entry HorizontalTextAlignment="Start" Keyboard="Text" Text="{Binding NewEvent.EventName}" x:Name="HostUsername" Placeholder="Barnedåb, fest..." TextColor="White" PlaceholderColor="White" />
+                        <Entry HorizontalTextAlignment="Start" Keyboard="Text" Text="{Binding NewEvent.Name}" x:Name="HostUsername" Placeholder="Barnedåb, fest..." TextColor="White" PlaceholderColor="White" />
                         
                         <Label Text="Lokation"  TextColor="White"/>
                         <Entry HorizontalTextAlignment="Start" Keyboard="Text" Text="{Binding NewEvent.Location}" Placeholder="Skanderborgvej 92, 2 st, 8000 Aarhus" TextColor="White" PlaceholderColor="White" />
