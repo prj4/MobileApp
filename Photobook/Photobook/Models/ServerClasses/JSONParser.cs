@@ -13,30 +13,28 @@ namespace Photobook.Models
         string ParsedData(object o);
     }
 
-    public class NewUserParser : IJSONParser
+    public class NewHostParser : IJSONParser
     {
         public string ParsedData(object u)
         {
-            User tmpUser;
+            Host tmpHost;
             try
             {
-                tmpUser = (User)u;
+                tmpHost = (Host)u;
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 return "";
             }
+
+            var content = new Dictionary<string, string>();
+            content.Add("Name", tmpHost.Username);
+            content.Add("Password", tmpHost.Password);
+            content.Add("Email", tmpHost.Email);
+
+            return JsonConvert.SerializeObject(content);
             
-            ServerNewUser newUser = new ServerNewUser
-            {
-                Name = tmpUser.Username,
-                Email = tmpUser.Email,
-                Password = tmpUser.Password
-            };
-
-
-            return JsonConvert.SerializeObject(newUser);
         }
     }
 
@@ -44,10 +42,10 @@ namespace Photobook.Models
     {
         public string ParsedData(object u)
         {
-            User tmpUser = new User();
+            Host tmpHost = new Host();
             try
             {
-                tmpUser = (User)u;
+                tmpHost = (Host)u;
             }
             catch (Exception e)
             {
@@ -55,24 +53,22 @@ namespace Photobook.Models
 
             }
 
-
-
             var content = new Dictionary<string, string>();
-            content.Add("Name", "Oskar");
-            content.Add("Password", "12345678");
-            
+            content.Add("UserName", tmpHost.Username);
+            content.Add("Password", tmpHost.Password);
+
             return JsonConvert.SerializeObject(content);
         }
     }
 
-    public class UserParser : IJSONParser
+    public class GuestParser : IJSONParser
     {
         public string ParsedData(object u)
         {
-            GuestUser tmpUser;
+            Guest tmpUser;
             try
             {
-                tmpUser = (GuestUser) u;
+                tmpUser = (Guest) u;
             }
             catch (Exception e)
             {
@@ -80,13 +76,11 @@ namespace Photobook.Models
                 return "";
             }
 
-            ServerUser su = new ServerUser
-            {
-                Name = tmpUser.UserName,
-                Pin = tmpUser.Pin
-            };
+            var content = new Dictionary<string, string>();
+            content.Add("UserName", tmpUser.UserName);
+            content.Add("Pin", tmpUser.Pin);
 
-            return JsonConvert.SerializeObject(su);
+            return JsonConvert.SerializeObject(content);
 
         }
     }
