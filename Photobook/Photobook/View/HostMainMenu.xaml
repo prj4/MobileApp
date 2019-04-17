@@ -35,7 +35,7 @@
             
                 <ScrollView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                     <Grid Padding="0,10,0,10">
-                        <ListView ItemsSource="{Binding Events}" x:Name="listView" BackgroundColor="#f2f2f2" HasUnevenRows="true" SelectedItem="{Binding SelectedEvent, Mode=TwoWay}" >
+                    <ListView ItemsSource="{Binding Events}" x:Name="listView" BackgroundColor="#f2f2f2" HasUnevenRows="true" ItemTapped="{Binding SelectedEvent, Mode=TwoWay}" SelectedItem="{Binding SelectedEvent, Mode=TwoWay}" >
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
@@ -47,9 +47,9 @@
                                             <Label TextColor="Black" FontAttributes="Bold" Text="{Binding EventName}"/>
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="Dato:" />
-                                                <Label Text="{Binding StartDate.Date}"/>
+                                                <Label Text="{Binding StartDate, Mode=TwoWay}"/>
                                                  <Label Text="-"/>
-                                                <Label Text="{Binding EndDate.Date}"/>
+                                                <Label Text="{Binding EndDate, Mode=TwoWay}"/>
                                             </StackLayout>
                                         </StackLayout>
                                     </ViewCell>

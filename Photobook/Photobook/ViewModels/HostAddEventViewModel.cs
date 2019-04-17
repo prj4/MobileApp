@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using Prism.Commands;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Photobook.ViewModels
 {
@@ -25,9 +26,11 @@ namespace Photobook.ViewModels
         private ObservableCollection<NewEvent> _events;
         private DateTime _startDate = new DateTime();
         private DateTime _endDate = new DateTime();
+        private TimeSpan _startTime = new TimeSpan();
+        private TimeSpan _endTime = new TimeSpan();
 
 
-        private bool _isErrorMessageEnabled;
+        private bool _isErrorMessageEnabled = false;
         public bool isErrorMessageEnabled
         {
             get { return _isErrorMessageEnabled; }
@@ -40,6 +43,19 @@ namespace Photobook.ViewModels
             _events = events;
             isErrorMessageEnabled = false;
         }
+
+        public TimeSpan StartTime
+        {
+            get { return _startTime; }
+            set { _startTime = value; NotifyPropertyChanged(); }
+        }
+
+        public TimeSpan EndTime
+        {
+            get { return _endTime; }
+            set { _endTime = value; NotifyPropertyChanged(); }
+        }
+
 
         public DateTime MinDate
         {
@@ -65,26 +81,19 @@ namespace Photobook.ViewModels
 
         public DateTime StartDate
         {
-            get { return NewEvent.StartDate.Date; }
+            get { return NewEvent.StartDate; }
             set 
             {
-                if (NewEvent.StartDate == null)
-                    NewEvent.StartDate = DateTime.Today;
-                else
-                    NewEvent.StartDate = value; NotifyPropertyChanged();
+                NewEvent.StartDate = value; NotifyPropertyChanged();
             }
         }
 
         public DateTime EndDate
         {
-            get { return NewEvent.EndDate.Date; }
+            get { return NewEvent.EndDate;}
             set 
             {
-                if (NewEvent.EndDate == null)
-                    NewEvent.EndDate = DateTime.Today;
-                else
-                    NewEvent.EndDate = value; NotifyPropertyChanged();
-
+                NewEvent.EndDate = value; NotifyPropertyChanged();
             }
         }
 
@@ -112,6 +121,8 @@ namespace Photobook.ViewModels
             }
             else
             {
+                StartDate = StartDate + StartTime;
+                EndDate = EndDate + EndTime;
                 isErrorMessageEnabled = false;
                 _events.Add(NewEvent);
                 Navigation.PopModalAsync();

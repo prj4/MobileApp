@@ -19,7 +19,7 @@
             <StackLayout Margin="0,0,0,10" Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
                 <Label Style="{StaticResource h1}" Text="Opret event" />
                 <Label Style="{StaticResource pTxt}" Text="For at dine gæster kan logge ind på det oprettede event, skal de bruge den 4 cifrede PIN-kode" />
-                <Label TextColor="red" Text="Du har indtastst mere end 50 ord i beskrivelsen!" IsEnabled="{Binding isErrorMessageEnabled, Mode=TwoWay}"/>
+                <Label TextColor="red" Text="Du har indtastst mere end 50 ord i beskrivelsen!" IsVisible="{Binding isErrorMessageEnabled, Mode=TwoWay}"/>
             </StackLayout>
     
             <ScrollView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
@@ -43,7 +43,7 @@
                         
                         <Label Text="Start tidspunkt"  TextColor="White"/>
                         <TimePicker 
-                            Time="{Binding NewEvent.StartTime}"
+                            Time="{Binding StartTime}"
                             Format="T"
                             TextColor="White"
                         />
@@ -58,7 +58,7 @@
                         
                          <Label Text="Slut tidspunkt"  TextColor="White"/>
                         <TimePicker 
-                            Time="{Binding NewEvent.EndTime}"
+                            Time="{Binding EndTime}"
                             Format="T"
                             TextColor="White"
                         />

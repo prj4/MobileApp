@@ -62,7 +62,7 @@ namespace Photobook.ViewModels
 
         public string Date 
         {
-            get { return $"Dato: {_event.StartDate.Date.ToString()} - {_event.EndDate.Date.ToString()}"; }
+            get { return $"Dato: {_event.StartDate} - {_event.EndDate}"; }
             private set { }
         }
 
