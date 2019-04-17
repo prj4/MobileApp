@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using System.Text;
+
 namespace Photobook.Models
 {
-    public class GuestUser
+    public class Guest
     {
-        public GuestUser()
+        public Guest()
         {
+            
         }
-
+        
         public string UserName { get; set; }
         public string Pin { get; set; }
-
     }
 }

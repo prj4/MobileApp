@@ -44,7 +44,7 @@
                                         </ViewCell.ContextActions>
                                     
                                         <StackLayout Orientation="Vertical" Padding="8,10,0,10" >
-                                            <Label TextColor="Black" FontAttributes="Bold" Text="{Binding EventName}"/>
+                                            <Label TextColor="Black" FontAttributes="Bold" Text="{Binding Name, Mode=TwoWay}"/>
                                             <StackLayout Orientation="Horizontal">
                                                 <Label Text="Dato:" />
                                                 <Label Text="{Binding StartDate, Mode=TwoWay}"/>
