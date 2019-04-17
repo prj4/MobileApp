@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
 using Xamarin.Forms;
@@ -46,21 +47,21 @@ namespace Photobook.Models
             User tmpUser = new User();
             try
             {
-                tmpUser = (User) u;
+                tmpUser = (User)u;
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                
+
             }
 
-            ServerHost host = new ServerHost
-            {
-                Password = tmpUser.Password,
-                UserName = tmpUser.Email
-            };
 
-            return JsonConvert.SerializeObject(host);
+
+            var content = new Dictionary<string, string>();
+            content.Add("Name", "Oskar");
+            content.Add("Password", "12345678");
+            
+            return JsonConvert.SerializeObject(content);
         }
     }
 
