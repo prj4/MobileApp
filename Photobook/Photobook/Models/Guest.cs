@@ -12,7 +12,7 @@ namespace Photobook.Models
             
         }
         
-        public string UserName { get; set; }
+        public string Username { get; set; }
         public string Pin { get; set; }
     }
 }

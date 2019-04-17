@@ -9,9 +9,9 @@ namespace Photobook.View
 {
     public partial class HostAddEvent : ContentPage
     {
-        public HostAddEvent(User user, ObservableCollection<NewEvent> events)
+        public HostAddEvent(Host host, ObservableCollection<NewEvent> events)
         {
-            var vm = new HostAddEventViewModel(user, events);
+            var vm = new HostAddEventViewModel(host, events);
             vm.Navigation = Navigation;
             BindingContext = vm;
 

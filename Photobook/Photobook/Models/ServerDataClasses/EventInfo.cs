@@ -12,8 +12,8 @@ namespace Photobook.Models.ServerDataClasses
         public string name { get; set; }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
-        public List<GuestUser> guests { get; set; }
-        public List<User> host { get; set; }
+        public List<Guest> guests { get; set; }
+        public List<Host> host { get; set; }
         public List<string> pictures { get; set; }
     }
 }

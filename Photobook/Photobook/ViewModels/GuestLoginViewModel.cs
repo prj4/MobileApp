@@ -18,7 +18,7 @@ namespace Photobook.ViewModels
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public List<GuestUser> LogIns { get; set; }
+        public List<Guest> LogIns { get; set; }
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -26,25 +26,25 @@ namespace Photobook.ViewModels
         }
 
         public INavigation Navigation;
-        private GuestUser _guestUser;
+        private Guest _guest;
         private string _loginInfo;
 
 
         public GuestLoginViewModel()
         {
-            GuestUser = new GuestUser();
+            Guest = new Guest();
             LogIns = SettingsManager.GetAllActiveUsers();
 
             foreach (var log in LogIns)
             {
-                LoginInfo += log.UserName;
+                LoginInfo += log.Username;
             }
         }
 
-        public GuestUser GuestUser
+        public Guest Guest
         {
-            get { return _guestUser; }
-            set { _guestUser = value; NotifyPropertyChanged(); }
+            get { return _guest; }
+            set { _guest = value; NotifyPropertyChanged(); }
         }
 
         public string LoginInfo
@@ -53,9 +53,9 @@ namespace Photobook.ViewModels
             set { _loginInfo = value; NotifyPropertyChanged(); }
         }
 
-        bool AreDetailsValid(GuestUser user)
+        bool AreDetailsValid(Guest guest)
         {
-            return (!string.IsNullOrWhiteSpace(user.UserName) && !string.IsNullOrWhiteSpace(user.Pin) && user.Pin.Length == 4);
+            return (!string.IsNullOrWhiteSpace(guest.Username) && !string.IsNullOrWhiteSpace(guest.Pin) && guest.Pin.Length == 4);
         }
 
         private ICommand _guestLoginCommand;
@@ -69,17 +69,17 @@ namespace Photobook.ViewModels
            IServerDataHandler Data = new ServerDataHandler();
            IServerCommunicator Com = new ServerCommunicator(Data);
 
-           if (await Com.SendDataReturnIsValid(GuestUser, DataType.User))
+           if (await Com.SendDataReturnIsValid(Guest, DataType.User))
            {
                var message = Data.LatestMessage;
                var parser = FromJSONFactory.Generate(ServerData.Event);
 
                ServerEvent info = (ServerEvent)await parser.DeserialisedData(message);
 
-               SettingsManager.SaveInstance(GuestUser.UserName, Data.LatestReceivedCookies);
+               SettingsManager.SaveInstance(Guest.Username, Data.LatestReceivedCookies);
 
                var rootPage = Navigation.NavigationStack.FirstOrDefault();
-               LogIns.Add(GuestUser);
+               LogIns.Add(Guest);
                if (rootPage != null)
                {
                    // Det event brugeren er tilknyttet skal her hentes ned fra serveren, og gives som input parameter

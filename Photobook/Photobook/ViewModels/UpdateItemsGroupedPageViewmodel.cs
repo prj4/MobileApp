@@ -25,8 +25,8 @@ namespace Photobook.ViewModels
         static int insertId = 0;
 
 
-        private ObservableCollection<Grouping<string, User>> _users;
-        public ObservableCollection<Grouping<string, User>> Users
+        private ObservableCollection<Grouping<string, Guest>> _users;
+        public ObservableCollection<Grouping<string, Guest>> Users
         {
             get { return _users; }
             set 
@@ -38,7 +38,7 @@ namespace Photobook.ViewModels
 
         public void ReloadData()
         {
-            var exampleData = new ObservableCollection<User>();
+            var exampleData = new ObservableCollection<Guest>();
             /*
             for (int grId = 0; grId < 5; grId++)
             {
@@ -50,32 +50,17 @@ namespace Photobook.ViewModels
                 }
             }
             */
-
-            User user1 = new User();
-            user1.Username = "Hans Larsen";
-            user1.Images = new ObservableCollection<string>();
-            user1.Images.Add("url1");
-            user1.Images.Add("url22");
-            user1.Images.Add("url3");
-            user1.Images.Add("url4");
-            user1.Images.Add("url5");
-            exampleData.Add(user1);
-
-
-            exampleData.Add(new User() { ImageUrl = "https://images.pexels.com/photos/1957155/pexels-photo-1957155.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260", Username = "Hans Petersen", Date = DateTime.Now });
-            exampleData.Add(new User() { ImageUrl = "https://images.pexels.com/photos/1957155/pexels-photo-1957155.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260", Username = "Hans Larsen", Date = DateTime.Now });
-            exampleData.Add(new User() { ImageUrl = "https://images.pexels.com/photos/1957155/pexels-photo-1957155.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260", Username = "Tove A", Date = DateTime.Now });
-            exampleData.Add(new User() { ImageUrl = "https://images.pexels.com/photos/1957155/pexels-photo-1957155.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260", Username = "Lars DS", Date = DateTime.Now });
-            exampleData.Add(new User() { ImageUrl = "https://images.pexels.com/photos/1957155/pexels-photo-1957155.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260", Username = "Åse AS", Date = DateTime.Now });
-           
-            var sorted = exampleData
-                .OrderBy(item => item.Username)
-                .ThenBy(item => item.Username.Length)
-                .GroupBy(item => item.Username)
-                .Select(itemGroup => new Grouping<string, User>(itemGroup.Key, itemGroup));
-
-            Users = new ObservableCollection<Grouping<string, User>>(sorted);
         }
+
+
+        //    var sorted = exampleData
+        //        .OrderBy(item => item.Username)
+        //        .ThenBy(item => item.Username.Length)
+        //        .GroupBy(item => item.Username)
+        //        .Select(itemGroup => new Grouping<string, Host>(itemGroup.Key, itemGroup));
+
+        //    Users = new ObservableCollection<Grouping<string, User>>(sorted);
+        //}
 
 
         public ICommand ItemTappedCommand { get; set; }
@@ -88,7 +73,7 @@ namespace Photobook.ViewModels
             ItemTappedCommand = new Command((param) =>
             {
 
-                var user = LastTappedUser as User;
+                var user = LastTappedUser as Guest;
                 if (user != null)
                     System.Diagnostics.Debug.WriteLine("Tapped {0}", user.Username);
 
@@ -97,7 +82,7 @@ namespace Photobook.ViewModels
             AddCommand = new Command((param) =>
             {
                 insertId++;
-                Users[0].Insert(10, new User() { Username = string.Format("New {0}", insertId) });
+                Users[0].Insert(10, new Guest() { Username = string.Format("New {0}", insertId) });
             });
 
         }

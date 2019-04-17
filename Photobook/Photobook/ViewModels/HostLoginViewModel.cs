@@ -13,7 +13,7 @@ namespace Photobook.ViewModels
 {
     public class HostLoginViewModel : INotifyPropertyChanged
     {
-        public User User { get; set; } = new User();
+        public Host Host { get; set; } = new Host();
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -47,7 +47,7 @@ namespace Photobook.ViewModels
             IServerDataHandler handler = new ServerDataHandler();
             IServerCommunicator Com = new ServerCommunicator(handler);
 
-            if (await Com.SendDataReturnIsValid(User, DataType.Host))
+            if (await Com.SendDataReturnIsValid(Host, DataType.Host))
             {
                 
 
@@ -58,7 +58,7 @@ namespace Photobook.ViewModels
                 var rootPage = Navigation.NavigationStack.FirstOrDefault();
                 if (rootPage != null)
                 {
-                    User updatedUser = new User
+                    Host updatedUser = new Host()
                     {
                         Email = ServerHost.email,
                         Username = ServerHost.name

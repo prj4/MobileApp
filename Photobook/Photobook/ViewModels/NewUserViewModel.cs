@@ -32,19 +32,19 @@ namespace Photobook.ViewModels
 
         public NewUserViewModel()
         {
-            user = new User();
+            host = new Host();
             dataHandler = new ServerDataHandler();
             Com = new ServerCommunicator(dataHandler);
             SuccesTxt = "";
         }
         
 
-        private User user;
+        private Host host;
 
-        public User User
+        public Host Host
         {
-            get { return user; }
-            set { user = value; NotifyPropertyChanged(); ((Command)NewUserCommand).ChangeCanExecute(); }
+            get { return host; }
+            set { host = value; NotifyPropertyChanged(); ((Command)NewUserCommand).ChangeCanExecute(); }
         }
 
 
@@ -79,16 +79,16 @@ namespace Photobook.ViewModels
             loggedIn = false;
             if(loggedIn)
             {
-                await Navigation.PushAsync(new HostMainMenu(User));
+                await Navigation.PushAsync(new HostMainMenu(Host));
             }
             else
             {
-                if (User.Password == PasswordValidation)
+                if (Host.Password == PasswordValidation)
                 {
                     SuccesTxt = "";
                     try
                     {
-                        User.Validate();
+                        Host.Validate();
                     }
                     catch (Exception e)
                     {
@@ -96,23 +96,23 @@ namespace Photobook.ViewModels
                         return;
                     }
 
-                    if (await Com.SendDataReturnIsValid(User, DataType.NewUser))
+                    if (await Com.SendDataReturnIsValid(Host, DataType.NewUser))
                     {
-                        SettingsManager.SaveInstance($"{User.Username}Cookie", dataHandler.LatestReceivedCookies);
+                        SettingsManager.SaveInstance($"{Host.Username}Cookie", dataHandler.LatestReceivedCookies);
                         foreach (var cook in dataHandler.LatestReceivedCookies)
                         {
                             Debug.WriteLine($"{cook.ToString()}", "Cookiedata");
                         }
-                        Debug.WriteLine($"{User.Username}Cookie", "Saved cookie");
+                        Debug.WriteLine($"{Host.Username}Cookie", "Saved cookie");
                         var rootPage = Navigation.NavigationStack.FirstOrDefault();
                         if (rootPage != null)
                         {
-                            Navigation.InsertPageBefore(new HostMainMenu(User), Navigation.NavigationStack.First());
+                            Navigation.InsertPageBefore(new HostMainMenu(Host), Navigation.NavigationStack.First());
                             await Navigation.PopToRootAsync();
                         }
                         else
                         {
-                            await Navigation.PushAsync(new HostMainMenu(User));
+                            await Navigation.PushAsync(new HostMainMenu(Host));
                         }
                     }
                     else

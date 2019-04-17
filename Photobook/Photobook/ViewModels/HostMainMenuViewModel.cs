@@ -23,33 +23,33 @@ namespace Photobook.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private User _user;
-        public HostMainMenuViewModel(User user)
+        private Host _host;
+        public HostMainMenuViewModel(Host host)
         {
             _selectedEvent = null;
 
-            if (user != null)
-                _user = user;
+            if (host != null)
+                _host = host;
             else
             {
-                _user = new User();
-                _user.Username = "Troels Bleicken";
+                _host = new Host();
+                _host.Username = "Troels Bleicken";
             }
             
 
         }
 
-        public User User
+        public Host Host
         {
-            get { return _user; }
-            set { _user = value; NotifyPropertyChanged(); }
+            get { return _host; }
+            set { _host = value; NotifyPropertyChanged(); }
         }
 
         public string Gesture
         {
             get
             {
-                return $"Hej {User.Username}!";
+                return $"Hej {Host.Username}!";
             }
         }
 
@@ -137,7 +137,7 @@ namespace Photobook.ViewModels
         private void AddEvent_Execute()
         {
             _selectedEvent = null;
-            Navigation.PushModalAsync(new HostAddEvent(User, Events));
+            Navigation.PushModalAsync(new HostAddEvent(Host, Events));
 
         }
 

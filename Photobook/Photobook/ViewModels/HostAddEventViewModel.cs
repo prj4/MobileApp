@@ -24,7 +24,7 @@ namespace Photobook.ViewModels
         public INavigation Navigation;
 
         private NewEvent _newEvent = new NewEvent();
-        private User _user;
+        private Host _host;
         private ObservableCollection<NewEvent> _events;
         private DateTime _startDate = new DateTime();
         private DateTime _endDate = new DateTime();
@@ -39,9 +39,9 @@ namespace Photobook.ViewModels
             set { _isErrorMessageEnabled = value;  NotifyPropertyChanged(); }
         }
 
-        public HostAddEventViewModel(User user, ObservableCollection<NewEvent> events)
+        public HostAddEventViewModel(Host host, ObservableCollection<NewEvent> events)
         {
-            _user = user;
+            _host = host;
             _events = events;
             isErrorMessageEnabled = false;
         }
@@ -109,10 +109,10 @@ namespace Photobook.ViewModels
 
         private async void CreateEvent_Execute()
         {
-            Debug.WriteLine($"{_user.Username}Cookie", "Saved cookie");
+            Debug.WriteLine($"{_host.Username}Cookie", "Saved cookie");
 
            
-            var cookie = (CookieCollection)SettingsManager.GetSavedInstance($"{_user.Username}Cookie");
+            var cookie = (CookieCollection)SettingsManager.GetSavedInstance($"{_host.Username}Cookie");
 
             foreach (var cook in cookie)
             {

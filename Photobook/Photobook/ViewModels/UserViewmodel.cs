@@ -21,13 +21,13 @@ namespace Photobook.ViewModels
         }
 
 
-        private ObservableCollection<User> _users;
-        public ObservableCollection<User> Users
+        private ObservableCollection<Host> _hosts;
+        public ObservableCollection<Host> Hosts
         {
-            get { return _users; }
+            get { return _hosts; }
             set
             {
-                _users = value;
+                _hosts = value;
                 NotifyPropertyChanged();
             }
         }
@@ -45,17 +45,6 @@ namespace Photobook.ViewModels
 
         public UserViewmodel()
         {
-
-            tekst = new ObservableCollection<string>();
-            Users = new ObservableCollection<User>();
-
-            Users.Add(new User() { ImageUrl = "https://images.pexels.com/photos/1957155/pexels-photo-1957155.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260", Username = "Hans Petersen", Date = DateTime.Now });
-            Users.Add(new User() { ImageUrl = "https://images.pexels.com/photos/1957155/pexels-photo-1957155.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260", Username = "Hans Larsen", Date = DateTime.Now });
-            Users.Add(new User() { ImageUrl = "https://images.pexels.com/photos/1957155/pexels-photo-1957155.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260", Username = "Hans A", Date = DateTime.Now });
-            Users.Add(new User() { ImageUrl = "https://images.pexels.com/photos/1957155/pexels-photo-1957155.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260", Username = "Hans DS", Date = DateTime.Now });
-            Users.Add(new User() { ImageUrl = "https://images.pexels.com/photos/1957155/pexels-photo-1957155.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260", Username = "Hans AS", Date = DateTime.Now});
-
-
             AddCommand = new Command((param) =>
             {
                 tekst.Add("Ny tekst streng!!!");
