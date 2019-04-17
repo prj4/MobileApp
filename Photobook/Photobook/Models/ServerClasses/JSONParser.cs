@@ -77,7 +77,7 @@ namespace Photobook.Models
             }
 
             var content = new Dictionary<string, string>();
-            content.Add("UserName", tmpUser.UserName);
+            content.Add("UserName", tmpUser.Username);
             content.Add("Pin", tmpUser.Pin);
 
             return JsonConvert.SerializeObject(content);
@@ -89,10 +89,10 @@ namespace Photobook.Models
     {
         public string ParsedData(object ne)
         {
-            NewEvent newEvent;
+            Event newEvent;
             try
             {
-                newEvent = (NewEvent) ne;
+                newEvent = (Event) ne;
             }
             catch (Exception e)
             {

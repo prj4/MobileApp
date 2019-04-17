@@ -86,13 +86,13 @@ namespace Photobook.ViewModels
                    // Det event brugeren er tilknyttet skal laves om til et NewEvent objekt og gives med som parameter. 
 
 
-                   var EventFromServer = new NewEvent();
+                   var EventFromServer = new Event();
                    EventFromServer.Name = info.name;
                    EventFromServer.StartDate = info.Event.startDate;
                    EventFromServer.EndDate = info.Event.endDate;
                    EventFromServer.Description = info.Event.description;
 
-                   Navigation.InsertPageBefore(new Event(EventFromServer, false),
+                   Navigation.InsertPageBefore(new ShowEvent(EventFromServer, false),
                        Navigation.NavigationStack.First());
                    Navigation.PopToRootAsync();
                }

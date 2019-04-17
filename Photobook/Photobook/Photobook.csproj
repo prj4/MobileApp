@@ -44,6 +44,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="View\ShowEvent.xaml.cs">
+      <DependentUpon>ShowEvent.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Update="View\HostMainMenu.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Photobook.Models;
 using System.Linq;
 using Photobook.View;
+using Event = Photobook.Models.Event;
 
 namespace Photobook.ViewModels
 {
@@ -21,7 +22,7 @@ namespace Photobook.ViewModels
         }
 
         public INavigation Navigation;
-        private NewEvent _event;
+        private Event _event;
         private string _pin;
         private string _date;
         private string _startDate;
@@ -29,7 +30,7 @@ namespace Photobook.ViewModels
         private bool _showTopBar;
         private bool _showLogoutBtn;
 
-        public EventViewModel(NewEvent newEvent, bool ShowNavBar)
+        public EventViewModel(Event newEvent, bool ShowNavBar)
         {
             _event = newEvent;
             ShowTopBar = ShowNavBar;

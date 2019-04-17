@@ -8,6 +8,7 @@ using Photobook.View;
 using System.Collections.ObjectModel;
 using Photobook.Models;
 using System.Linq;
+using Event = Photobook.Models.Event;
 
 namespace Photobook.ViewModels
 {
@@ -57,8 +58,8 @@ namespace Photobook.ViewModels
 
         #region Event liste
 
-        private ObservableCollection<NewEvent> _events = new ObservableCollection<NewEvent>();
-        public ObservableCollection<NewEvent> Events
+        private ObservableCollection<Event> _events = new ObservableCollection<Event>();
+        public ObservableCollection<Event> Events
         {
             get { return _events; }
             set { _events = value; NotifyPropertyChanged(); }
@@ -83,8 +84,8 @@ namespace Photobook.ViewModels
             }
         }
 
-        private NewEvent _selectedEvent;
-        public NewEvent SelectedEvent
+        private Event _selectedEvent;
+        public Event SelectedEvent
         {
             get { return _selectedEvent; }
             set 
@@ -95,7 +96,7 @@ namespace Photobook.ViewModels
 
                 // Skriv til server om at få info om dette event
                 TestText = _selectedEvent.Name;
-                Navigation.PushAsync(new Event(_selectedEvent, true));
+                Navigation.PushAsync(new ShowEvent(_selectedEvent, true));
             }
         }
 

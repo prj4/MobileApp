@@ -6,9 +6,9 @@ using Xamarin.Forms;
 
 namespace Photobook.View
 {
-    public partial class Event : ContentPage
+    public partial class ShowEvent : ContentPage
     {
-        public Event(NewEvent newEvent, bool ShowTopBar)
+        public ShowEvent(Event newEvent, bool ShowTopBar)
         {
             var vm = new EventViewModel(newEvent, ShowTopBar);
             vm.Navigation = Navigation;

@@ -1,16 +1,16 @@
 ﻿using System;
 namespace Photobook.Models
 {
-    public class NewEvent
+    public class Event
     {
-        public NewEvent(DateTime start, DateTime end, string name)
+        public Event(DateTime start, DateTime end, string name)
         {
             StartDate = start;
             EndDate = end;
             Name = name;
         }
 
-        public NewEvent()
+        public Event()
         {
         }
 

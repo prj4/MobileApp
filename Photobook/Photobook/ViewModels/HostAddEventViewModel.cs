@@ -23,9 +23,9 @@ namespace Photobook.ViewModels
 
         public INavigation Navigation;
 
-        private NewEvent _newEvent = new NewEvent();
+        private Event _newEvent = new Event();
         private Host _host;
-        private ObservableCollection<NewEvent> _events;
+        private ObservableCollection<Event> _events;
         private DateTime _startDate = new DateTime();
         private DateTime _endDate = new DateTime();
         private TimeSpan _startTime = new TimeSpan();
@@ -39,7 +39,7 @@ namespace Photobook.ViewModels
             set { _isErrorMessageEnabled = value;  NotifyPropertyChanged(); }
         }
 
-        public HostAddEventViewModel(Host host, ObservableCollection<NewEvent> events)
+        public HostAddEventViewModel(Host host, ObservableCollection<Event> events)
         {
             _host = host;
             _events = events;
@@ -64,7 +64,7 @@ namespace Photobook.ViewModels
             get { return DateTime.Today.Date; }
         }
 
-        public NewEvent NewEvent
+        public Event NewEvent
         {
             get { return _newEvent; }
             set { _newEvent = value; NotifyPropertyChanged(); }
