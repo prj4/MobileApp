@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Photobook.Models.ServerClasses;
-using Xamarin.Forms;
 
 namespace Photobook.Models
 {
@@ -17,6 +13,7 @@ namespace Photobook.Models
         NewUser,
         User,
         NewEvent,
+        Host,
         Picture,
         Video,
     };
@@ -24,6 +21,7 @@ namespace Photobook.Models
     public interface IServerCommunicator
     {
         Task<bool> SendDataReturnIsValid(object o, DataType d);
+        void AddCookies(CookieCollection _cookies);
     }
 
     public class ServerCommunicator : IServerCommunicator
@@ -54,20 +52,46 @@ namespace Photobook.Models
             dataHandler = _dataHandler;
         }
 
+        public void AddCookies(CookieCollection _cookies)
+        {
+            
+            cookies.Add(_cookies);
+        }
+
         public async Task<bool> SendDataReturnIsValid(object dataToSend, DataType dataType)
         {
             IJSONParser parser = ParserFactory.Generate(dataType);
             var data = parser.ParsedData(dataToSend);
 
             Debug.WriteLine(data + DateTime.Now.ToString("ss.fff"), "JSON_DATA:");
+            if (cookies.Count > 0)
+                clientHandler.UseCookies = true;
 
-            var response = await client.PostAsync(UrlFactory.Generate(dataType),
-                new StringContent(data, Encoding.UTF8, "application/json"));
+            HttpResponseMessage response = null;
+            try
+            {
+                response = await client.PostAsync(UrlFactory.Generate(dataType),
+                    new StringContent(data, Encoding.UTF8, "application/json"));
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                
+            }
 
-            var cookies = clientHandler.CookieContainer.GetCookies(new Uri(UrlFactory.Generate(dataType)));
+            try
+            {
+                var responseCookies = clientHandler.CookieContainer.GetCookies(new Uri(UrlFactory.Generate(dataType)));
 
-            dataHandler.LatestMessage = response;
-            dataHandler.LatestReceivedCookies = cookies;
+                dataHandler.LatestMessage = response;
+                dataHandler.LatestReceivedCookies = responseCookies;
+            }
+            catch (NullReferenceException e)
+            {
+                Debug.WriteLine(e.Message, "CookieError");
+            }
+
+            
 
             try
             {

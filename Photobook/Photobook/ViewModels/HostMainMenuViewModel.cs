@@ -35,9 +35,7 @@ namespace Photobook.ViewModels
                 _user = new User();
                 _user.Username = "Troels Bleicken";
             }
-
-
-
+            
 
         }
 

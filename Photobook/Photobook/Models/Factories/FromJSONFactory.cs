@@ -6,7 +6,8 @@ namespace Photobook.Models
 {
     public enum ServerData
     {
-        Event
+        Event,
+        Host
     }
     public class FromJSONFactory
     {
@@ -17,6 +18,10 @@ namespace Photobook.Models
                 case ServerData.Event:
                 {
                     return new EventFromJSONParser();
+                }
+                case ServerData.Host:
+                {
+                    return new HostFromJSONParser();
                 }
                 default:
                 {

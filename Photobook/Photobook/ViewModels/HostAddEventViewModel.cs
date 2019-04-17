@@ -7,6 +7,8 @@ using Prism.Commands;
 using System.Windows.Input;
 using System.Collections.ObjectModel;
 using System.Runtime.InteropServices.ComTypes;
+using System.Diagnostics;
+using System.Net;
 
 namespace Photobook.ViewModels
 {
@@ -105,9 +107,30 @@ namespace Photobook.ViewModels
             get { return _createEventCommand ?? (_createEventCommand = new DelegateCommand(CreateEvent_Execute)); }
         }
 
-        private void CreateEvent_Execute()
+        private async void CreateEvent_Execute()
         {
+            Debug.WriteLine($"{_user.Username}Cookie", "Saved cookie");
 
+           
+            var cookie = (CookieCollection)SettingsManager.GetSavedInstance($"{_user.Username}Cookie");
+
+            foreach (var cook in cookie)
+            {
+                Debug.WriteLine($"{cook.ToString()}", "Cookiedata");
+            }
+
+            IServerCommunicator Com = new ServerCommunicator();
+            Com.AddCookies(cookie);
+
+            if (await Com.SendDataReturnIsValid(_newEvent, DataType.NewEvent))
+            {
+                Debug.WriteLine("Succes", "NEW_EVENT");
+            }
+            else
+            {
+                Debug.WriteLine("Failure", "NEW_EVENT");
+            }        
+            
 
             // Når der trykkes "Opret event knappen"
             // Her skal data fra NewEvent.StartDate; NewEvent.EndDate; NewEvent.EventName
@@ -115,7 +138,7 @@ namespace Photobook.ViewModels
             // Her kunne vi evt. bruge "SMS" eller "EMAIL" funktionen Poul snakkede om i essentials
             // Så når der trykkes på knappen, laves der en PIN kode og sendes også en sms til brugere med denne PIN
 
-            if(_newEvent.Description.Length > 50)
+            if (_newEvent.Description.Length > 50)
             {
                 isErrorMessageEnabled = true;
             }

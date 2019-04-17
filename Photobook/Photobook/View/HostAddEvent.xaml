@@ -26,7 +26,7 @@
                 <Grid Padding="0,0,0,10"> 
                     <StackLayout>
                         <Label Text="Event navn"  TextColor="White"/>
-                        <Entry HorizontalTextAlignment="Start" Keyboard="Text" Text="{Binding NewEvent.EventName}" x:Name="HostUsername" Placeholder="Barnedåb, fest..." TextColor="White" PlaceholderColor="White" />
+                        <Entry HorizontalTextAlignment="Start" Keyboard="Text" Text="{Binding NewEvent.Name}" x:Name="HostUsername" Placeholder="Barnedåb, fest..." TextColor="White" PlaceholderColor="White" />
                         
                         <Label Text="Lokation"  TextColor="White"/>
                         <Entry HorizontalTextAlignment="Start" Keyboard="Text" Text="{Binding NewEvent.Location}" Placeholder="Skanderborgvej 92, 2 st, 8000 Aarhus" TextColor="White" PlaceholderColor="White" />

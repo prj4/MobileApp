@@ -21,4 +21,14 @@ namespace Photobook.Models
             return JsonConvert.DeserializeObject<ServerEvent>(data);
         }
     }
+
+    public class HostFromJSONParser : IFromJSONParser
+    {
+        public async Task<object> DeserialisedData(HttpResponseMessage msg)
+        {
+            var data = await msg.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<ServerHostResponse>(data);
+        }
+    }
 }
