@@ -23,16 +23,9 @@ namespace Photobook.View
             MainStack.Children.Add(btn);
             btn.Clicked += (sender, args) =>
             {
-                IServerCommunicator com = new ServerCommunicator();
-                NewEvent e = new NewEvent{
-                    Description = "Her er der fest",
-                    Location = "Hos Oskar",
-                    StartDate = DateTime.ParseExact("20190409", "yyyyMMdd", CultureInfo.InvariantCulture),
-                    EndDate =  DateTime.ParseExact("20190410", "yyyyMMdd", CultureInfo.InvariantCulture),
-                    Name = "Stor fest"
-                };
+                IJSONParser j = new HostParser();
 
-                com.SendDataReturnIsValid(e, DataType.NewEvent);
+                Debug.WriteLine(j.ParsedData(null), "KeyValue");
             };
 #endif
         }
