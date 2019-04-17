@@ -89,7 +89,7 @@ namespace Photobook.Models
     {
         public string ParsedData(object ne)
         {
-            Event newEvent;
+            Event newEvent = new Event();
             try
             {
                 newEvent = (Event) ne;
@@ -99,7 +99,14 @@ namespace Photobook.Models
                 return "";
             }
 
-            return JsonConvert.SerializeObject(newEvent);
+            var content = new Dictionary<string, string>();
+            content.Add("Name", newEvent.Name);
+            content.Add("Description", newEvent.Description);
+            content.Add("Location", newEvent.Location);
+            content.Add("StartDate", newEvent.StartDate.ToString("yyyyMMddHHmm"));
+            content.Add("EndDate", newEvent.EndDate.ToString("yyyyMMddHHmm"));
+
+            return JsonConvert.SerializeObject(content);
         }
     }
 }

@@ -13,11 +13,11 @@ namespace Photobook.Models
             {
                 case DataType.NewUser:
                 {
-                  return new NewUserParser();
+                  return new NewHostParser();
                 }
                 case DataType.User:
                 {
-                    return new UserParser();
+                    return new HostParser();
                 }
                 case DataType.NewEvent:
                 {
