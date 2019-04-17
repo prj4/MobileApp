@@ -16,7 +16,7 @@ using Photobook.Models.ServerClasses;
 
 namespace Photobook.ViewModels
 {
-    public class NewUserViewModel : INotifyPropertyChanged
+    public class NewHostViewModel : INotifyPropertyChanged
     {
         public INavigation Navigation;
 
@@ -30,7 +30,7 @@ namespace Photobook.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public NewUserViewModel()
+        public NewHostViewModel()
         {
             host = new Host();
             dataHandler = new ServerDataHandler();

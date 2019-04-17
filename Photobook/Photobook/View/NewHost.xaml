@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             x:Class="Photobook.View.NewUser"
+             x:Class="Photobook.View.NewHost"
              xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
              xmlns:vm="clr-namespace:Photobook.ViewModels">
 
@@ -47,11 +47,11 @@
                    
                 <StackLayout Grid.Row="1" Grid.Column="0" x:Name="MainStack" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Margin="70">
                     <Label Margin="0,0,0,10" HorizontalOptions="CenterAndExpand" Text="Opret bruger" TextColor="White" />
-                    
-                    <Entry HorizontalTextAlignment="Center" Keyboard="Text" Text="{Binding User.Username, Mode=TwoWay}" x:Name="HostUsername" Placeholder="Dit fulde navn" TextColor="White" PlaceholderColor="White" />
-                    <Entry HorizontalTextAlignment="Center" Keyboard="Text" Text="{Binding User.Password, Mode=TwoWay}" x:Name="HostPassword" Placeholder="Kodeord" TextColor="White" PlaceholderColor="White" IsPassword="true" />
+
+                    <Entry HorizontalTextAlignment="Center" Keyboard="Text" Text="{Binding Host.Username, Mode=TwoWay}" x:Name="HostUsername" Placeholder="Dit fulde navn" TextColor="White" PlaceholderColor="White" />
+                    <Entry HorizontalTextAlignment="Center" Keyboard="Text" Text="{Binding Host.Password, Mode=TwoWay}" x:Name="HostPassword" Placeholder="Kodeord" TextColor="White" PlaceholderColor="White" IsPassword="true" />
                     <Entry HorizontalTextAlignment="Center" Keyboard="Text" Text="{Binding PasswordValidation, Mode=TwoWay}" x:Name="HostPasswordVerification" Placeholder="Gentag kodeord" TextColor="White" PlaceholderColor="White" IsPassword="true" />
-                    <Entry HorizontalTextAlignment="Center" Keyboard="Email" Text="{Binding User.Email, Mode=TwoWay}" Placeholder="Email" TextColor="White" PlaceholderColor="White" />
+                    <Entry HorizontalTextAlignment="Center" Keyboard="Email" Text="{Binding Host.Email, Mode=TwoWay}" Placeholder="Email" TextColor="White" PlaceholderColor="White" />
 
 
                     <Label IsVisible="True" HorizontalTextAlignment="Center" HorizontalOptions="CenterAndExpand" Text="{Binding SuccesTxt, Mode=TwoWay}" TextColor="Red"></Label>

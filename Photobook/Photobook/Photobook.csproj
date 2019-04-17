@@ -21,7 +21,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="MarkupExtensions\" />
-    <Folder Include="ViewModels\" />
     <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
@@ -44,6 +43,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="View\NewHost.xaml.cs">
+      <DependentUpon>NewHost.xaml</DependentUpon>
+    </Compile>
     <Compile Update="View\ShowEvent.xaml.cs">
       <DependentUpon>ShowEvent.xaml</DependentUpon>
     </Compile>

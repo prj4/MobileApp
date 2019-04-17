@@ -46,7 +46,7 @@ namespace Photobook.ViewModels
 
         private void CreateUser_Execute()
         {
-            Navigation.PushAsync(new NewUser(new NewUserViewModel()));
+            Navigation.PushAsync(new NewHost(new NewHostViewModel()));
         }
 
 

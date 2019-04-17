@@ -42,8 +42,8 @@
                 
                    
                 <StackLayout Grid.Row="1" Grid.Column="0" x:Name="MainStack" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Margin="70">
-                    <Entry HorizontalTextAlignment="Center" Keyboard="Email" Text="{Binding User.Email, Mode=TwoWay}" Placeholder="Email" TextColor="White" PlaceholderColor="White" />
-                    <Entry HorizontalTextAlignment="Center" Keyboard="Text" Text="{Binding User.Password, Mode=TwoWay}" x:Name="HostPassword" Placeholder="Kodeord" TextColor="White" PlaceholderColor="White" IsPassword="true" />
+                    <Entry HorizontalTextAlignment="Center" Keyboard="Email" Text="{Binding Host.Email, Mode=TwoWay}" Placeholder="Email" TextColor="White" PlaceholderColor="White" />
+                    <Entry HorizontalTextAlignment="Center" Keyboard="Text" Text="{Binding Host.Password, Mode=TwoWay}" x:Name="HostPassword" Placeholder="Kodeord" TextColor="White" PlaceholderColor="White" IsPassword="true" />
                     <Label Margin="0,0,0,10" HorizontalOptions="CenterAndExpand" Text="Log ind for at oprette et event" TextColor="White" />
                     <Button Padding="10" Margin="0,0,0,10" BackgroundColor="White" Text="Log ind" Command="{Binding Path=LoginCommand}"/>
                 </StackLayout>

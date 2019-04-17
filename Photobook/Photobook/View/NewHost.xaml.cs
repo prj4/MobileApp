@@ -6,9 +6,9 @@ using Xamarin.Forms;
 
 namespace Photobook.View
 {
-    public partial class NewUser : ContentPage
+    public partial class NewHost : ContentPage
     {
-        public NewUser(NewUserViewModel vm)
+        public NewHost(NewHostViewModel vm)
         {
             vm.Navigation = Navigation;
             BindingContext = vm;
