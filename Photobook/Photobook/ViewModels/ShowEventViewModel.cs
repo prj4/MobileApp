@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 using Prism.Commands;
@@ -125,11 +127,25 @@ namespace Photobook.ViewModels
         {
             IMediaPicker Med = new CrossMediaPicker();
 
-            string videoPath = await Med.SelectPhoto();
+            string photoPath = await Med.SelectPhoto();
 
-            if (videoPath != "Null")
+            if (photoPath != "Null")
             {
+                IServerCommunicator Com = new ServerCommunicator();
+                PhotoToServer ps = new PhotoToServer
+                {
+                    Path = photoPath,
+                    Pin = _pin
+                };
 
+                if (await Com.SendDataReturnIsValid(ps, DataType.Picture))
+                {
+                    Debug.WriteLine("Succes", "IMAGE_TO_SERVER");
+                }
+                else
+                {
+                    Debug.WriteLine("Failure", "IMAGE_TO_SERVER");
+                }
             }
         }
         private ICommand _uploadVideoCommand;

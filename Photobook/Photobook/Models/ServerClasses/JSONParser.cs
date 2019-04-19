@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
@@ -38,6 +39,23 @@ namespace Photobook.Models
         }
     }
 
+    public class PhotoParser : IJSONParser
+    {
+        public string ParsedData(object f)
+        {
+            PhotoToServer ps = (PhotoToServer) f;
+
+            var bytes = File.ReadAllBytes(ps.Path);
+            var asString = Convert.ToBase64String(bytes);
+
+            var content = new Dictionary<string, string>();
+            content.Add("pictureString", asString);
+            content.Add("eventPin", ps.Pin);
+
+            return JsonConvert.SerializeObject(content);
+        }
+    }
+
     public class HostParser : IJSONParser
     {
         public string ParsedData(object u)
@@ -54,7 +72,7 @@ namespace Photobook.Models
             }
 
             var content = new Dictionary<string, string>();
-            content.Add("UserName", tmpHost.Username);
+            content.Add("UserName", tmpHost.Email);
             content.Add("Password", tmpHost.Password);
 
             return JsonConvert.SerializeObject(content);

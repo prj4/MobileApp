@@ -8,7 +8,7 @@ namespace Photobook.Models
     public class UrlFactory
     {
 
-        private static string NewUserServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/RegisterHost";
+        private static string NewHostServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/Host";
         private static string NewEventUrl = "https://photobookwebapi1.azurewebsites.net/api/Event/Create";
         private static string UserServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/RegisterGuest";
         private static string ImageUploadUrl = "https://postman-echo.com/post";
@@ -19,7 +19,7 @@ namespace Photobook.Models
             {
                 case DataType.NewUser:
                 {
-                    return NewUserServerUrl;
+                    return NewHostServerUrl;
                 }
                 case DataType.User:
                 {

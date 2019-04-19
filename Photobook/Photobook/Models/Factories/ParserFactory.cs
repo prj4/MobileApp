@@ -27,6 +27,10 @@ namespace Photobook.Models
                 {
                     return new HostParser();
                 }
+                case DataType.Picture:
+                {
+                    return new PhotoParser();
+                }
                 default:
                     return null;
             }

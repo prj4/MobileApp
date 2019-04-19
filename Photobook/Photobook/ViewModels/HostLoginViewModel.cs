@@ -50,7 +50,6 @@ namespace Photobook.ViewModels
             if (await Com.SendDataReturnIsValid(Host, DataType.Host))
             {
                 
-
                 IFromJSONParser Parser = FromJSONFactory.Generate(ServerData.Host);
 
                 var ServerHost = (ServerHostResponse)await Parser.DeserialisedData(handler.LatestMessage);
@@ -65,7 +64,7 @@ namespace Photobook.ViewModels
                     };
                     SettingsManager.SaveInstance($"Cookie{updatedUser.Username}", handler.LatestReceivedCookies);
                     Navigation.InsertPageBefore(new HostMainMenu(updatedUser), Navigation.NavigationStack.First());
-                    Navigation.PopToRootAsync();
+                    await Navigation.PopToRootAsync();
                 }
             }
 

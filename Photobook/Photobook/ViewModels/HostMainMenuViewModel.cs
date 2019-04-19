@@ -121,7 +121,7 @@ namespace Photobook.ViewModels
         {
             Events.Remove(SelectedEvent);
             TestText = _selectedEvent.Name;
-
+            
             NotifyPropertyChanged("Events");
         }
 

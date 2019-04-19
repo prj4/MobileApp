@@ -76,8 +76,35 @@ namespace Photobook.Models
             catch (Exception e)
             {
                 Debug.WriteLine(e);
-                
+                return false;
             }
+
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException e)
+            {
+                Debug.WriteLine($"{e.Message}, {DateTime.Now.ToString("yy;MM;dd;HH;mm;ss")}",
+                    "HttpRequestException");
+                return false;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message, "Servercommunicator exception:");
+            }
+
+            try
+            {
+                Response = await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return false;
+            }
+            
+            Debug.WriteLine(Response + DateTime.Now.ToString("ss.fff"), "SERVER_RESPONSE:");
 
             try
             {
@@ -91,21 +118,7 @@ namespace Photobook.Models
                 Debug.WriteLine(e.Message, "CookieError");
             }
 
-            
-
-            try
-            {
-                response.EnsureSuccessStatusCode();
-                Response = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine(Response + DateTime.Now.ToString("ss.fff"), "SERVER_RESPONSE:");
-                return true;
-            }
-            catch (HttpRequestException e)
-            {
-                Debug.WriteLine($"{e.Message}, {DateTime.Now.ToString("yy;MM;dd;HH;mm;ss")}",
-                    "HttpRequestException");
-                return false;
-            }
+            return response.IsSuccessStatusCode;
         } 
 
       
