@@ -63,7 +63,9 @@ namespace Photobook.Models
             IJSONParser parser = ParserFactory.Generate(dataType);
             var data = parser.ParsedData(dataToSend);
 
-            Debug.WriteLine(data + DateTime.Now.ToString("ss.fff"), "JSON_DATA:");
+            if(!(dataType == DataType.Picture || dataType == DataType.Video))
+                Debug.WriteLine(data + DateTime.Now.ToString("ss.fff"), "JSON_DATA:");
+
             if (cookies.Count > 0)
                 clientHandler.UseCookies = true;
 
