@@ -21,11 +21,25 @@ namespace Photobook.View
             Button btn = new Button();
             btn.Text = "Troels' store testknap";
             MainStack.Children.Add(btn);
-            btn.Clicked += (sender, args) =>
+            btn.Clicked += async (sender, args) =>
             {
-                IJSONParser j = new HostParser();
+                ICameraAPI med = new CrossCamera();
+                string path = await med.TakePhoto();
+                IServerCommunicator Com = new ServerCommunicator();
+                PhotoToServer ps = new PhotoToServer
+                {
+                    Path = path,
+                    Pin = "2"
+                };
 
-                Debug.WriteLine(j.ParsedData(null), "KeyValue");
+                if (await Com.SendDataReturnIsValid(ps, DataType.Picture))
+                {
+                    Debug.WriteLine("Succes", "IMAGE_TO_SERVER");
+                }
+                else
+                {
+                    Debug.WriteLine("Failure", "IMAGE_TO_SERVER");
+                }
             };
 #endif
         }
