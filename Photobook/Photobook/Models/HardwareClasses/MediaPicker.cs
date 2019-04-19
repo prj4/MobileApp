@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
+using Plugin.Media;
 using Plugin.Media.Abstractions;
 
 namespace Photobook.Models
@@ -17,12 +18,10 @@ namespace Photobook.Models
     {
         public async Task<string> SelectPhoto()
         {
-            var path = await Plugin.Media.CrossMedia.Current.PickPhotoAsync(new PickMediaOptions
-            {
+            await CrossMedia.Current.Initialize();
+            var path = await Plugin.Media.CrossMedia.Current.PickPhotoAsync();
 
-            });
-
-            string returnPath = (path == null) ? "Null" : path.AlbumPath;
+            string returnPath = (path == null) ? "Null" : path.Path;
             Debug.WriteLine(returnPath, "PHOTO_SELECTPATH");
             return returnPath;
         }
@@ -31,7 +30,7 @@ namespace Photobook.Models
         {
             var path = await Plugin.Media.CrossMedia.Current.PickVideoAsync();
 
-            string returnPath = (path == null) ? "Null" : path.AlbumPath;
+            string returnPath = (path == null) ? "Null" : path.Path;
             Debug.WriteLine(returnPath, "VIDEO_SELECTPATH");
             return returnPath;
         }

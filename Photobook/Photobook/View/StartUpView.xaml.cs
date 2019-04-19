@@ -23,8 +23,8 @@ namespace Photobook.View
             MainStack.Children.Add(btn);
             btn.Clicked += async (sender, args) =>
             {
-                ICameraAPI med = new CrossCamera();
-                string path = await med.TakePhoto();
+                IMediaPicker med = new CrossMediaPicker();
+                string path = await med.SelectPhoto();
                 IServerCommunicator Com = new ServerCommunicator();
                 PhotoToServer ps = new PhotoToServer
                 {
