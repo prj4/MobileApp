@@ -21,8 +21,7 @@ namespace Photobook
 
         protected override void OnStart()
         {
-            //MainPage = new NavigationPage(new StartUpView());
-            MainPage = new NavigationPage(new EventSeeImages());
+            MainPage = new NavigationPage(new StartUpView());
         }
 
         protected override void OnSleep()

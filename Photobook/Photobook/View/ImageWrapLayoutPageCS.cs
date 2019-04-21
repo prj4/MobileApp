@@ -49,9 +49,16 @@ namespace ImageWrapLayout
         {
             try
             {
-                var requestUri = "https://docs.xamarin.com/demo/stock.json";
-                string result = await _client.GetStringAsync(requestUri);
-                return JsonConvert.DeserializeObject<ImageList>(result);
+                //var requestUri = "https://docs.xamarin.com/demo/stock.json";
+                //string result = await _client.GetStringAsync(requestUri);
+                //return JsonConvert.DeserializeObject<ImageList>(result);
+                return new ImageList()
+                {
+                    Photos =
+                    {
+                        "https://photobookwebapi1.azurewebsites.net/api/Picture/rine2164bk/4"
+                    }
+                };
             }
             catch (Exception ex)
             {
