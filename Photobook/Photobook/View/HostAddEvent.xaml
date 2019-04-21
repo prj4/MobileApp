@@ -26,13 +26,13 @@
                 <Grid Padding="0,0,0,10"> 
                     <StackLayout>
                         <Label Text="Event navn"  TextColor="White"/>
-                        <Entry HorizontalTextAlignment="Start" Keyboard="Text" Text="{Binding Event.Name}" x:Name="HostUsername" Placeholder="Barnedåb, fest..." TextColor="White" PlaceholderColor="White" />
+                        <Entry HorizontalTextAlignment="Start" Keyboard="Text" Text="{Binding NewEvent.Name}" x:Name="HostUsername" Placeholder="Barnedåb, fest..." TextColor="White" PlaceholderColor="White" />
                         
                         <Label Text="Lokation"  TextColor="White"/>
-                        <Entry HorizontalTextAlignment="Start" Keyboard="Text" Text="{Binding Event.Location}" Placeholder="Skanderborgvej 92, 2 st, 8000 Aarhus" TextColor="White" PlaceholderColor="White" />
+                        <Entry HorizontalTextAlignment="Start" Keyboard="Text" Text="{Binding NewEvent.Location}" Placeholder="Skanderborgvej 92, 2 st, 8000 Aarhus" TextColor="White" PlaceholderColor="White" />
                         
                         <Label Text="Beskrivelse"  TextColor="White"/>
-                        <Editor Keyboard="Text" Text="{Binding Event.Description}" Placeholder="Max. 50 ord" TextColor="White" PlaceholderColor="White" />
+                        <Editor Text="{Binding Description}" Placeholder="Max. 50 ord" TextColor="White" PlaceholderColor="White" />
                         
                         <Label Text="Start dato"  TextColor="White"/>
                         <DatePicker 

@@ -1,29 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Photobook.Layout;
 using Photobook.Models;
-using Photobook.ViewModels;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
-
-
-namespace Photobook.View
+namespace ImageWrapLayout
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class EventSeeImages : ContentPage
+    public class ImageWrapLayoutPageCS : ContentPage
 	{
         HttpClient _client;
+        WrapLayout _wrapLayout;
 
-        public EventSeeImages()
-        {
-            InitializeComponent();
+		public ImageWrapLayoutPageCS()
+		{
+			_wrapLayout = new WrapLayout();
+
+			Content = new ScrollView
+			{
+				Margin = new Thickness(20, 35, 20, 20),
+				Content = _wrapLayout
+			};
+
             _client = new HttpClient();
         }
 
@@ -40,7 +40,7 @@ namespace Photobook.View
                     {
                         Source = ImageSource.FromUri(new Uri(photo + string.Format("?width={0}&height={0}&mode=max", Device.RuntimePlatform == Device.UWP ? 120 : 240)))
                     };
-                    wrapLayout.Children.Add(image);
+                    _wrapLayout.Children.Add(image);
                 }
             }
         }

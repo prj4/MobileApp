@@ -117,6 +117,17 @@ namespace Photobook.ViewModels
             }
         }
 
+        private ICommand _seeImagesCommand;
+        public ICommand SeeImagesCommand
+        {
+            get { return _seeImagesCommand ?? (_seeImagesCommand = new DelegateCommand(SeeImages_Execute)); }
+        }
+
+        private async void SeeImages_Execute()
+        {
+            await Navigation.PushAsync(new EventSeeImages());
+        }
+
         private ICommand _uploadPictureCommand;
         public ICommand UploadPictureCommand
         {
