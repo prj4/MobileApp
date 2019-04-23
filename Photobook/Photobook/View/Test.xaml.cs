@@ -12,6 +12,7 @@ namespace Photobook.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Test : ContentPage
     {
+        
         public Test()
         {
             var vm = new TestViewModel();

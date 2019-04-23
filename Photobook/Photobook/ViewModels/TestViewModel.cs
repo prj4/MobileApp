@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
 using Photobook.Models;
+using Photobook.View;
 using Prism.Commands;
 using Prism.Navigation.Xaml;
 using Xamarin.Forms;
@@ -45,6 +46,32 @@ namespace Photobook.ViewModels
                 "https://farm1.staticflickr.com/44/117598011_250aa8ffb1.jpg",
                 "https://farm8.staticflickr.com/7524/15620725287_3357e9db03.jpg",
                 "https://farm9.staticflickr.com/8351/8299022203_de0cb894b0.jpg",
+                "https://images.unsplash.com/photo-1555863040-89ea8aa29a36?ixlib=rb-1.2.1&auto=format&fit=crop&w=1191&q=80",
+                "https://photobookwebapi1.azurewebsites.net/api/Picture/rine2164bk/4",
+                "https://farm9.staticflickr.com/8625/15806486058_7005d77438.jpg",
+                "https://farm5.staticflickr.com/4011/4308181244_5ac3f8239b.jpg",
+                "https://farm8.staticflickr.com/7423/8729135907_79599de8d8.jpg",
+                "https://farm3.staticflickr.com/2475/4058009019_ecf305f546.jpg",
+                "https://farm6.staticflickr.com/5117/14045101350_113edbe20b.jpg",
+                "https://farm2.staticflickr.com/1227/1116750115_b66dc3830e.jpg",
+                "https://farm8.staticflickr.com/7351/16355627795_204bf423e9.jpg",
+                "https://farm1.staticflickr.com/44/117598011_250aa8ffb1.jpg",
+                "https://farm8.staticflickr.com/7524/15620725287_3357e9db03.jpg",
+                "https://farm9.staticflickr.com/8351/8299022203_de0cb894b0.jpg",
+                "https://images.unsplash.com/photo-1555863040-89ea8aa29a36?ixlib=rb-1.2.1&auto=format&fit=crop&w=1191&q=80",
+                "https://photobookwebapi1.azurewebsites.net/api/Picture/rine2164bk/4",
+                "https://farm9.staticflickr.com/8625/15806486058_7005d77438.jpg",
+                "https://farm5.staticflickr.com/4011/4308181244_5ac3f8239b.jpg",
+                "https://farm8.staticflickr.com/7423/8729135907_79599de8d8.jpg",
+                "https://farm3.staticflickr.com/2475/4058009019_ecf305f546.jpg",
+                "https://farm6.staticflickr.com/5117/14045101350_113edbe20b.jpg",
+                "https://farm2.staticflickr.com/1227/1116750115_b66dc3830e.jpg",
+                "https://farm8.staticflickr.com/7351/16355627795_204bf423e9.jpg",
+                "https://farm1.staticflickr.com/44/117598011_250aa8ffb1.jpg",
+                "https://farm8.staticflickr.com/7524/15620725287_3357e9db03.jpg",
+                "https://farm9.staticflickr.com/8351/8299022203_de0cb894b0.jpg",
+                "https://images.unsplash.com/photo-1555863040-89ea8aa29a36?ixlib=rb-1.2.1&auto=format&fit=crop&w=1191&q=80",
+                "https://photobookwebapi1.azurewebsites.net/api/Picture/rine2164bk/4"
             };
             int number = 0;
             for (int n = 0; n < images.Length; n++)
@@ -53,7 +80,7 @@ namespace Photobook.ViewModels
                 var item = new TestImage()
                 {
                     ImageUrl = images[n],
-                    FileName = string.Format("image_{0}.jpg", number)
+                    FileName = string.Format("Oskar, gudesønnen")
                 };
 
                 list.Add(item);
@@ -62,13 +89,18 @@ namespace Photobook.ViewModels
             Items = list;
         }
 
+
         private TestImage _selectedImage;
         public TestImage SelectedImg
         {
             get
             {
-                Debug.WriteLine(_selectedImage.ImageUrl); return _selectedImage; }
-            set { _selectedImage = value; NotifyPropertyChanged(); Debug.WriteLine(_selectedImage.ImageUrl);}
+                return _selectedImage;
+            }
+            set
+            {
+                _selectedImage = value;
+            }
         }
 
         private ObservableCollection<TestImage> _items;
@@ -76,6 +108,34 @@ namespace Photobook.ViewModels
         {
             get { return _items; }
             set { _items = value; NotifyPropertyChanged(); }
+        }
+
+
+        private object _lastTappedItem;
+        public object LastTappedItem
+        {
+            get { return _lastTappedItem; }
+            set { _lastTappedItem = value; NotifyPropertyChanged(); }
+        }
+
+
+
+        private ICommand _itemTappedCommand;
+        public ICommand ItemTappedCommand
+        {
+            get { return _itemTappedCommand ?? (_itemTappedCommand = new DelegateCommand(itemTapped_Execute)); }
+        }
+
+        private void itemTapped_Execute()
+        {
+            Debug.WriteLine("Tapped!!");
+            var item = LastTappedItem as TestImage;
+            if (item != null)
+            {
+                System.Diagnostics.Debug.WriteLine("Tapped {0}", item.ImageUrl);
+                    Navigation.PushAsync(new EventSeeSingleImage(item));
+            }
+
         }
 
 

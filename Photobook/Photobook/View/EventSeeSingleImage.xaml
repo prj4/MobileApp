@@ -1,12 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Photobook.View.EventSeeSingleImage">
+             x:Class="Photobook.View.EventSeeSingleImage"
+             BackgroundColor="#0e122a">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="{Binding ImageUrl, Mode=TwoWay}"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+               Source="{Binding Image.ImageUrl}">
+            </Image>
+            <Label TextColor="White" Margin="0,0,0,20" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" Grid.Row="1" Text="{Binding PictureTaker}"/>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

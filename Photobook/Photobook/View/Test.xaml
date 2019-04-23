@@ -2,8 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Photobook.View.Test"
+
              xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
-             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             BackgroundColor="#0e122a">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="download.png" Text="Download" Command="{Binding DownloadAllCommand}" />
@@ -35,7 +37,7 @@
                                                     Source="{Binding ImageUrl}" />-->
 
                         <Label x:Name="Label" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="End"
-                               BackgroundColor="Silver" Opacity="0.5" Text="{Binding FileName}"/>
+                               BackgroundColor="White" Opacity="0.5" Text="{Binding FileName}"/>
                     </Grid>
                 </DataTemplate>
             </flv:FlowListView.FlowColumnTemplate>
