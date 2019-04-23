@@ -49,21 +49,16 @@ namespace Photobook.ViewModels
 
             if (await Com.SendDataReturnIsValid(Host, DataType.Host))
             {
-                
-                IFromJSONParser Parser = FromJSONFactory.Generate(ServerData.Host);
 
-                var ServerHost = (ServerHostResponse)await Parser.DeserialisedData(handler.LatestMessage);
+                IFromJSONParser Parser = new FromJsonParser();
+
+                var ServerHost = await Parser.DeserializedData<Host>(handler.LatestMessage);
 
                 var rootPage = Navigation.NavigationStack.FirstOrDefault();
                 if (rootPage != null)
                 {
-                    Host updatedUser = new Host()
-                    {
-                        Email = ServerHost.email,
-                        Username = ServerHost.name
-                    };
-                    SettingsManager.SaveInstance($"Cookie{updatedUser.Username}", handler.LatestReceivedCookies);
-                    Navigation.InsertPageBefore(new HostMainMenu(updatedUser), Navigation.NavigationStack.First());
+                    SettingsManager.SaveInstance($"Cookie{ServerHost.Username}", handler.LatestReceivedCookies);
+                    Navigation.InsertPageBefore(new HostMainMenu(ServerHost), Navigation.NavigationStack.First());
                     await Navigation.PopToRootAsync();
                 }
             }
