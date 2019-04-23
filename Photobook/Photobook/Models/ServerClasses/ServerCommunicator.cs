@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Photobook.Models.ServerClasses;
 
 namespace Photobook.Models
@@ -22,6 +25,7 @@ namespace Photobook.Models
     {
         Task<bool> SendDataReturnIsValid(object o, DataType d);
         void AddCookies(CookieCollection _cookies);
+
     }
 
     public class ServerCommunicator : IServerCommunicator
@@ -94,6 +98,7 @@ namespace Photobook.Models
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message, "Servercommunicator exception:");
+                return false;
             }
 
             try
@@ -121,7 +126,21 @@ namespace Photobook.Models
             }
 
             return response.IsSuccessStatusCode;
-        } 
+        }
+
+        public async void GetImages()
+        {
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            dic.Add("eventPin", "2");
+
+            string toServer = JsonConvert.SerializeObject(dic);
+
+            var response =
+                await client.GetAsync(
+                    "https://photobookwebapi1.azurewebsites.net/api/Picture/Ids" + '/' + $"{toServer}");
+            Debug.WriteLine(await response.Content.ReadAsStringAsync());
+        }
 
       
     }
