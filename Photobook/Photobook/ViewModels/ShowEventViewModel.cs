@@ -25,10 +25,6 @@ namespace Photobook.ViewModels
 
         public INavigation Navigation;
         private Event _event;
-        private string _pin;
-        private string _date;
-        private string _startDate;
-        private string _endDate;
         private bool _showTopBar;
         private bool _showLogoutBtn;
 
@@ -73,8 +69,7 @@ namespace Photobook.ViewModels
 
         public string PIN
         {
-            get { return $"PIN: {_pin}"; }
-            set { _pin = value; NotifyPropertyChanged(); }
+            get { return $"PIN: Test {_event.Pin}"; }
         }
 
         public string Description
@@ -146,7 +141,7 @@ namespace Photobook.ViewModels
                 PhotoToServer ps = new PhotoToServer
                 {
                     Path = photoPath,
-                    Pin = _pin
+                    Pin = _event.Pin
                 };
 
                 if (await Com.SendDataReturnIsValid(ps, DataType.Picture))
