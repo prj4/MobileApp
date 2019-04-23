@@ -8,7 +8,7 @@
              BackgroundColor="#0e122a">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Icon="download.png" Text="Download" Command="{Binding DownloadAllCommand}" />
+        <ToolbarItem Text="Download all" Command="{Binding DownloadAllCommand}" />
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>

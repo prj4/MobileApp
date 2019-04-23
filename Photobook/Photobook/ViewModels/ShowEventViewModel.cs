@@ -125,7 +125,7 @@ namespace Photobook.ViewModels
 
         private async void SeeImages_Execute()
         {
-            await Navigation.PushAsync(new EventSeeImages());
+            await Navigation.PushAsync(new Test(_event));
         }
 
         private ICommand _uploadPictureCommand;

@@ -17,6 +17,7 @@ namespace Photobook.ViewModels
     public class TestViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private ServerCommunicator serverCommunicator;
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -24,9 +25,11 @@ namespace Photobook.ViewModels
         }
 
         public INavigation Navigation;
-
-        public TestViewModel()
+        private Event _event;
+        public TestViewModel(Event loadEvent)
         {
+            _event = loadEvent;
+            serverCommunicator = new ServerCommunicator();
             ReloadData();
         }
 
@@ -34,37 +37,21 @@ namespace Photobook.ViewModels
         public void ReloadData()
         {
             var list = new ObservableCollection<TestImage>();
+            // serverCommunicator.GetImages(_event);
+            // Her skal alle Id'er hentes
+            // Så tænker jeg, at for alle ID'er der er, så skal de bare hentes således:
+            // photobookwebapi1.azurewebsites.net{eventpin]/id
+            // Så et for loop, der henter alle, indsætter ID'et i URL'en
+            // Og indsætter det rigtige ID til sidst
+            // Dvs. at for at vise billedet skal jeg bare have et link som dette: 
+            // https://photobookwebapi1.azurewebsites.net/api/Picture/rine2164bk/4
+
+            // Hvert link indsættes "Items"
+            // Eventuel "FileName" bør være navnet på brugeren der har taget billedet
+
+            // Alt det her under er bare dummy data
 
             string[] images = {
-                "https://farm9.staticflickr.com/8625/15806486058_7005d77438.jpg",
-                "https://farm5.staticflickr.com/4011/4308181244_5ac3f8239b.jpg",
-                "https://farm8.staticflickr.com/7423/8729135907_79599de8d8.jpg",
-                "https://farm3.staticflickr.com/2475/4058009019_ecf305f546.jpg",
-                "https://farm6.staticflickr.com/5117/14045101350_113edbe20b.jpg",
-                "https://farm2.staticflickr.com/1227/1116750115_b66dc3830e.jpg",
-                "https://farm8.staticflickr.com/7351/16355627795_204bf423e9.jpg",
-                "https://farm1.staticflickr.com/44/117598011_250aa8ffb1.jpg",
-                "https://farm8.staticflickr.com/7524/15620725287_3357e9db03.jpg",
-                "https://farm9.staticflickr.com/8351/8299022203_de0cb894b0.jpg",
-                "https://images.unsplash.com/photo-1555863040-89ea8aa29a36?ixlib=rb-1.2.1&auto=format&fit=crop&w=1191&q=80",
-                "https://photobookwebapi1.azurewebsites.net/api/Picture/rine2164bk/4",
-                "https://farm9.staticflickr.com/8625/15806486058_7005d77438.jpg",
-                "https://farm5.staticflickr.com/4011/4308181244_5ac3f8239b.jpg",
-                "https://farm8.staticflickr.com/7423/8729135907_79599de8d8.jpg",
-                "https://farm3.staticflickr.com/2475/4058009019_ecf305f546.jpg",
-                "https://farm6.staticflickr.com/5117/14045101350_113edbe20b.jpg",
-                "https://farm2.staticflickr.com/1227/1116750115_b66dc3830e.jpg",
-                "https://farm8.staticflickr.com/7351/16355627795_204bf423e9.jpg",
-                "https://farm1.staticflickr.com/44/117598011_250aa8ffb1.jpg",
-                "https://farm8.staticflickr.com/7524/15620725287_3357e9db03.jpg",
-                "https://farm9.staticflickr.com/8351/8299022203_de0cb894b0.jpg",
-                "https://images.unsplash.com/photo-1555863040-89ea8aa29a36?ixlib=rb-1.2.1&auto=format&fit=crop&w=1191&q=80",
-                "https://photobookwebapi1.azurewebsites.net/api/Picture/rine2164bk/4",
-                "https://farm9.staticflickr.com/8625/15806486058_7005d77438.jpg",
-                "https://farm5.staticflickr.com/4011/4308181244_5ac3f8239b.jpg",
-                "https://farm8.staticflickr.com/7423/8729135907_79599de8d8.jpg",
-                "https://farm3.staticflickr.com/2475/4058009019_ecf305f546.jpg",
-                "https://farm6.staticflickr.com/5117/14045101350_113edbe20b.jpg",
                 "https://farm2.staticflickr.com/1227/1116750115_b66dc3830e.jpg",
                 "https://farm8.staticflickr.com/7351/16355627795_204bf423e9.jpg",
                 "https://farm1.staticflickr.com/44/117598011_250aa8ffb1.jpg",
@@ -73,10 +60,9 @@ namespace Photobook.ViewModels
                 "https://images.unsplash.com/photo-1555863040-89ea8aa29a36?ixlib=rb-1.2.1&auto=format&fit=crop&w=1191&q=80",
                 "https://photobookwebapi1.azurewebsites.net/api/Picture/rine2164bk/4"
             };
-            int number = 0;
+
             for (int n = 0; n < images.Length; n++)
             {
-                number++;
                 var item = new TestImage()
                 {
                     ImageUrl = images[n],
@@ -89,19 +75,6 @@ namespace Photobook.ViewModels
             Items = list;
         }
 
-
-        private TestImage _selectedImage;
-        public TestImage SelectedImg
-        {
-            get
-            {
-                return _selectedImage;
-            }
-            set
-            {
-                _selectedImage = value;
-            }
-        }
 
         private ObservableCollection<TestImage> _items;
         public ObservableCollection<TestImage> Items

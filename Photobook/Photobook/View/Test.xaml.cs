@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Photobook.Models;
 using Photobook.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -13,9 +14,9 @@ namespace Photobook.View
     public partial class Test : ContentPage
     {
         
-        public Test()
+        public Test(Event loadEvent)
         {
-            var vm = new TestViewModel();
+            var vm = new TestViewModel(loadEvent);
             vm.Navigation = Navigation;
             BindingContext = vm;
             InitializeComponent();
