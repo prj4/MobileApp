@@ -74,9 +74,11 @@ namespace Photobook.ViewModels
            if (await Com.SendDataReturnIsValid(_guest, DataType.Guest))
            {
                var message = Data.LatestMessage;
-               var parser = FromJSONFactory.Generate(ServerData.Event);
+               IFromJSONParser parser = new FromJsonParser();
 
-               ServerEvent info = (ServerEvent)await parser.DeserialisedData(message);
+               Event eventFromServer = await parser.DeserializedData<Event>(message);
+                
+               
 
                SettingsManager.SaveInstance(Guest.Username, Data.LatestReceivedCookies);
 
@@ -86,15 +88,9 @@ namespace Photobook.ViewModels
                {
                    // Det event brugeren er tilknyttet skal her hentes ned fra serveren, og gives som input parameter
                    // Det event brugeren er tilknyttet skal laves om til et NewEvent objekt og gives med som parameter. 
+;
 
-
-                   var EventFromServer = new Event();
-                   EventFromServer.Name = info.name;
-                   EventFromServer.StartDate = info.Event.startDate;
-                   EventFromServer.EndDate = info.Event.endDate;
-                   EventFromServer.Description = info.Event.description;
-
-                   Navigation.InsertPageBefore(new ShowEvent(EventFromServer, false),
+                   Navigation.InsertPageBefore(new ShowEvent(eventFromServer, false),
                        Navigation.NavigationStack.First());
                    Navigation.PopToRootAsync();
                }

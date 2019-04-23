@@ -95,7 +95,7 @@ namespace Photobook.Models
             }
 
             var content = new Dictionary<string, string>();
-            content.Add("UserName", tmpUser.Username);
+            content.Add("Name", tmpUser.Username);
             content.Add("Pin", tmpUser.Pin);
 
             return JsonConvert.SerializeObject(content);
