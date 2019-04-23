@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -28,11 +29,13 @@ namespace Photobook.ViewModels
         public INavigation Navigation;
         private Guest _guest = new Guest();
         private string _loginInfo;
+        private Event eventFromServer;
 
 
         public GuestLoginViewModel()
         {
             Guest = new Guest();
+            eventFromServer = new Event();
             LogIns = SettingsManager.GetAllActiveUsers();
 
             foreach (var log in LogIns)
@@ -76,8 +79,7 @@ namespace Photobook.ViewModels
                var message = Data.LatestMessage;
                IFromJSONParser parser = new FromJsonParser();
 
-               Event eventFromServer = await parser.DeserializedData<Event>(message);
-                
+               eventFromServer = await parser.DeserializedData<Event>(message);
                
 
                SettingsManager.SaveInstance(Guest.Username, Data.LatestReceivedCookies);

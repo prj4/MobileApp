@@ -17,7 +17,6 @@ namespace Photobook.ViewModels
     public class TestViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ServerCommunicator serverCommunicator;
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -29,7 +28,6 @@ namespace Photobook.ViewModels
         public TestViewModel(Event loadEvent)
         {
             _event = loadEvent;
-            serverCommunicator = new ServerCommunicator();
             ReloadData();
         }
 
@@ -37,7 +35,6 @@ namespace Photobook.ViewModels
         public async void ReloadData()
         {
             var list = new ObservableCollection<TestImage>();
-
             var com = new ServerCommunicator();
 
             Event e = new Event
@@ -50,7 +47,13 @@ namespace Photobook.ViewModels
 
             foreach (var id in ids)
             {
-                completeUrl.Add("https://photobookwebapi1.azurewebsites.net/api/Picture/" + $"{e.Pin}/{id}");
+                var item = new TestImage()
+                {
+                    ImageUrl = "https://photobookwebapi1.azurewebsites.net/api/Picture/" + $"{e.Pin}/{id}",
+                    FileName = string.Format("Oskar, gudesønnen")
+                };
+                list.Add(item);
+                //completeUrl.Add("https://photobookwebapi1.azurewebsites.net/api/Picture/" + $"{e.Pin}/{id}");
             }
 
             // serverCommunicator.GetImages(_event);
@@ -69,26 +72,26 @@ namespace Photobook.ViewModels
 
 
 
-            string[] images = {
-                "https://farm2.staticflickr.com/1227/1116750115_b66dc3830e.jpg",
-                "https://farm8.staticflickr.com/7351/16355627795_204bf423e9.jpg",
-                "https://farm1.staticflickr.com/44/117598011_250aa8ffb1.jpg",
-                "https://farm8.staticflickr.com/7524/15620725287_3357e9db03.jpg",
-                "https://farm9.staticflickr.com/8351/8299022203_de0cb894b0.jpg",
-                "https://images.unsplash.com/photo-1555863040-89ea8aa29a36?ixlib=rb-1.2.1&auto=format&fit=crop&w=1191&q=80",
-                "https://photobookwebapi1.azurewebsites.net/api/Picture/rine2164bk/4"
-            };
+            //string[] images = {
+            //    "https://farm2.staticflickr.com/1227/1116750115_b66dc3830e.jpg",
+            //    "https://farm8.staticflickr.com/7351/16355627795_204bf423e9.jpg",
+            //    "https://farm1.staticflickr.com/44/117598011_250aa8ffb1.jpg",
+            //    "https://farm8.staticflickr.com/7524/15620725287_3357e9db03.jpg",
+            //    "https://farm9.staticflickr.com/8351/8299022203_de0cb894b0.jpg",
+            //    "https://images.unsplash.com/photo-1555863040-89ea8aa29a36?ixlib=rb-1.2.1&auto=format&fit=crop&w=1191&q=80",
+            //    "https://photobookwebapi1.azurewebsites.net/api/Picture/rine2164bk/4"
+            //};
 
-            for (int n = 0; n < images.Length; n++)
-            {
-                var item = new TestImage()
-                {
-                    ImageUrl = images[n],
-                    FileName = string.Format("Oskar, gudesønnen")
-                };
+            //for (int n = 0; n < images.Length; n++)
+            //{
+            //    var item = new TestImage()
+            //    {
+            //        ImageUrl = images[n],
+            //        FileName = string.Format("Oskar, gudesønnen")
+            //    };
 
-                list.Add(item);
-            }
+            //    list.Add(item);
+            //}
 
             Items = list;
         }
@@ -119,7 +122,6 @@ namespace Photobook.ViewModels
 
         private void itemTapped_Execute()
         {
-            Debug.WriteLine("Tapped!!");
             var item = LastTappedItem as TestImage;
             if (item != null)
             {
