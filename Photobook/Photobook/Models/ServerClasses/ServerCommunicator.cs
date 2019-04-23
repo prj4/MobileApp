@@ -128,17 +128,12 @@ namespace Photobook.Models
             return response.IsSuccessStatusCode;
         }
 
-        public async void GetImages()
+        public async void GetImages(Photobook.Models.Event e)
         {
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            Dictionary<string, string> dic = new Dictionary<string, string>();
-            dic.Add("eventPin", "2");
-
-            string toServer = JsonConvert.SerializeObject(dic);
 
             var response =
                 await client.GetAsync(
-                    "https://photobookwebapi1.azurewebsites.net/api/Picture/Ids" + '/' + $"{toServer}");
+                    "https://photobookwebapi1.azurewebsites.net/api/Picture/Ids" + '/' + $"{e.Pin}");
             Debug.WriteLine(await response.Content.ReadAsStringAsync());
         }
 

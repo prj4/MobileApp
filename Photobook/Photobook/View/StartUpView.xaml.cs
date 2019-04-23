@@ -25,7 +25,11 @@ namespace Photobook.View
             btn.Clicked += async (sender, args) =>
             {
                 ServerCommunicator com = new ServerCommunicator();
-                com.GetImages();
+                Event e = new Event
+                {
+                    Pin = "2"
+                };
+                com.GetImages(e);
 
             };
 #endif
