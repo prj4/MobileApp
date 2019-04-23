@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO.Compression;
+using System.Net;
 using System.Net.Http;
 using Newtonsoft.Json;
 using Photobook.Models;
@@ -23,14 +24,12 @@ namespace Photobook.View
             MainStack.Children.Add(btn);
             btn.Clicked += async (sender, args) =>
             {
-                Guest testGuest = new Guest
+                ServerCommunicator com = new ServerCommunicator();
+                Event e = new Event
                 {
-                    Pin = "2",
-                    Username = "Troels"
+                    Pin = "2"
                 };
-                IServerCommunicator com = new ServerCommunicator();
-
-                await com.SendDataReturnIsValid(testGuest, DataType.Guest);
+                com.GetImages(e);
 
             };
 #endif
