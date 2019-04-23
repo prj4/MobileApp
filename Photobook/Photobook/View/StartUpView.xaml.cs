@@ -27,9 +27,14 @@ namespace Photobook.View
                 ServerCommunicator com = new ServerCommunicator();
                 Event e = new Event
                 {
-                    Pin = "2"
+                    Pin = "1"
                 };
-                com.GetImages(e);
+                var rep = await com.GetImages(e);
+
+                foreach (var VARIABLE in rep)
+                {
+                    Debug.WriteLine(VARIABLE, "Image:");
+                }
 
             };
 #endif

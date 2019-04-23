@@ -34,9 +34,25 @@ namespace Photobook.ViewModels
         }
 
         public string url;
-        public void ReloadData()
+        public async void ReloadData()
         {
             var list = new ObservableCollection<TestImage>();
+
+            var com = new ServerCommunicator();
+
+            Event e = new Event
+            {
+                Pin = "1"
+            };
+
+            var ids = await com.GetImages(e);
+            var completeUrl = new List<string>();
+
+            foreach (var id in ids)
+            {
+                completeUrl.Add("https://photobookwebapi1.azurewebsites.net/api/Picture/" + $"{e.Pin}/{id}");
+            }
+
             // serverCommunicator.GetImages(_event);
             // Her skal alle Id'er hentes
             // Så tænker jeg, at for alle ID'er der er, så skal de bare hentes således:
@@ -50,6 +66,8 @@ namespace Photobook.ViewModels
             // Eventuel "FileName" bør være navnet på brugeren der har taget billedet
 
             // Alt det her under er bare dummy data
+
+
 
             string[] images = {
                 "https://farm2.staticflickr.com/1227/1116750115_b66dc3830e.jpg",

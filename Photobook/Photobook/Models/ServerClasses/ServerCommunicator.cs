@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Photobook.Models.ServerClasses;
+using Photobook.Models.ServerDataClasses;
 
 namespace Photobook.Models
 {
@@ -128,13 +129,19 @@ namespace Photobook.Models
             return response.IsSuccessStatusCode;
         }
 
-        public async void GetImages(Photobook.Models.Event e)
+        public async Task<List<string>> GetImages(Photobook.Models.Event e)
         {
-
             var response =
                 await client.GetAsync(
                     "https://photobookwebapi1.azurewebsites.net/api/Picture/Ids" + '/' + $"{e.Pin}");
-            Debug.WriteLine(await response.Content.ReadAsStringAsync());
+
+            var rep = await response.Content.ReadAsStringAsync();
+
+            Debug.WriteLine(rep, "Images");
+            RootObject result =
+                JsonConvert.DeserializeObject<RootObject>(rep);
+
+            return result.PictureList;
         }
 
       
