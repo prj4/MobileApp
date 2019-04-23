@@ -26,12 +26,14 @@ namespace Photobook.Droid
             ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera);
 
             Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, new Bundle());
+
             //Xamarin.FormsMaps.Init(this, savedInstanceState);
         }
 
         //Fra Plugin.Permission
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
+
             PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }

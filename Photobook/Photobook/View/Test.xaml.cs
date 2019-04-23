@@ -15,8 +15,8 @@ namespace Photobook.View
         public Test()
         {
             var vm = new TestViewModel();
+            vm.Navigation = Navigation;
             BindingContext = vm;
-
             InitializeComponent();
         }
     }

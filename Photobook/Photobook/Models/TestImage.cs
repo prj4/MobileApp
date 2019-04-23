@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
+using System.Windows.Input;
+using Photobook.View;
 using Xamarin.Forms;
 
 namespace Photobook.Models
@@ -8,6 +11,9 @@ namespace Photobook.Models
     public class TestImage
     {
         public string ImageUrl { get; set; }
-        public ImageSource ImgUri = ImageSource.FromUri(new Uri("https://photobookwebapi1.azurewebsites.net/api/Picture/rine2164bk/4"));
+
+        public string FileName { get; set; }
+
+
     }
 }

@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Windows.Input;
 using Photobook.Models;
+using Prism.Commands;
+using Prism.Navigation.Xaml;
 using Xamarin.Forms;
 
 namespace Photobook.ViewModels
@@ -17,6 +21,8 @@ namespace Photobook.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public INavigation Navigation;
 
         public TestViewModel()
         {
@@ -40,18 +46,29 @@ namespace Photobook.ViewModels
                 "https://farm8.staticflickr.com/7524/15620725287_3357e9db03.jpg",
                 "https://farm9.staticflickr.com/8351/8299022203_de0cb894b0.jpg",
             };
-
+            int number = 0;
             for (int n = 0; n < images.Length; n++)
             {
+                number++;
                 var item = new TestImage()
                 {
-                    ImageUrl = images[n]
+                    ImageUrl = images[n],
+                    FileName = string.Format("image_{0}.jpg", number)
                 };
 
                 list.Add(item);
             }
 
             Items = list;
+        }
+
+        private TestImage _selectedImage;
+        public TestImage SelectedImg
+        {
+            get
+            {
+                Debug.WriteLine(_selectedImage.ImageUrl); return _selectedImage; }
+            set { _selectedImage = value; NotifyPropertyChanged(); Debug.WriteLine(_selectedImage.ImageUrl);}
         }
 
         private ObservableCollection<TestImage> _items;
@@ -61,8 +78,18 @@ namespace Photobook.ViewModels
             set { _items = value; NotifyPropertyChanged(); }
         }
 
-        public ImageSource ImgUri = ImageSource.FromUri(new Uri("https://photobookwebapi1.azurewebsites.net/api/Picture/rine2164bk/4"));
 
+        private ICommand _downloadAllCommand;
+        public ICommand DownloadAllCommand
+        {
+            get { return _downloadAllCommand ?? (_downloadAllCommand = new DelegateCommand(DownloadAll_Execute)); }
+        }
+
+        private void DownloadAll_Execute()
+        {
+
+            // Download all images.
+        }
 
     }
 }
