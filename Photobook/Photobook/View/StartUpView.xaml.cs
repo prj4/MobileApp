@@ -23,23 +23,15 @@ namespace Photobook.View
             MainStack.Children.Add(btn);
             btn.Clicked += async (sender, args) =>
             {
-                IMediaPicker med = new CrossMediaPicker();
-                string path = await med.SelectPhoto();
-                IServerCommunicator Com = new ServerCommunicator();
-                PhotoToServer ps = new PhotoToServer
+                Guest testGuest = new Guest
                 {
-                    Path = path,
-                    Pin = "2"
+                    Pin = "2",
+                    Username = "Troels"
                 };
+                IServerCommunicator com = new ServerCommunicator();
 
-                if (await Com.SendDataReturnIsValid(ps, DataType.Picture))
-                {
-                    Debug.WriteLine("Succes", "IMAGE_TO_SERVER");
-                }
-                else
-                {
-                    Debug.WriteLine("Failure", "IMAGE_TO_SERVER");
-                }
+                await com.SendDataReturnIsValid(testGuest, DataType.Guest);
+
             };
 #endif
         }

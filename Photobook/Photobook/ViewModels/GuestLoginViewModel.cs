@@ -26,7 +26,7 @@ namespace Photobook.ViewModels
         }
 
         public INavigation Navigation;
-        private Guest _guest;
+        private Guest _guest = new Guest();
         private string _loginInfo;
 
 
@@ -39,6 +39,8 @@ namespace Photobook.ViewModels
             {
                 LoginInfo += log.Username;
             }
+
+            
         }
 
         public Guest Guest
@@ -69,7 +71,7 @@ namespace Photobook.ViewModels
            IServerDataHandler Data = new ServerDataHandler();
            IServerCommunicator Com = new ServerCommunicator(Data);
 
-           if (await Com.SendDataReturnIsValid(Guest, DataType.User))
+           if (await Com.SendDataReturnIsValid(_guest, DataType.Guest))
            {
                var message = Data.LatestMessage;
                var parser = FromJSONFactory.Generate(ServerData.Event);

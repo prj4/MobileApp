@@ -11,7 +11,7 @@ namespace Photobook.Models
     public enum DataType
     {
         NewUser,
-        User,
+        Guest,
         NewEvent,
         Host,
         Picture,

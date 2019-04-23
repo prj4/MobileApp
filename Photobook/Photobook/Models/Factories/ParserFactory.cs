@@ -15,9 +15,9 @@ namespace Photobook.Models
                 {
                   return new NewHostParser();
                 }
-                case DataType.User:
+                case DataType.Guest:
                 {
-                    return new HostParser();
+                    return new GuestParser();
                 }
                 case DataType.NewEvent:
                 {

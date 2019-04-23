@@ -10,7 +10,7 @@ namespace Photobook.Models
 
         private static string NewHostServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/Host";
         private static string NewEventUrl = "https://photobookwebapi1.azurewebsites.net/api/Event/Create";
-        private static string UserServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/RegisterGuest";
+        private static string GuestServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/Guest";
         private static string ImageUploadUrl = "https://postman-echo.com/post";
         private static string HostLoginUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/Login";
         private static string PictureUrl = "https://photobookwebapi1.azurewebsites.net/api/Picture";
@@ -22,9 +22,9 @@ namespace Photobook.Models
                 {
                     return NewHostServerUrl;
                 }
-                case DataType.User:
+                case DataType.Guest:
                 {
-                    return UserServerUrl;
+                    return GuestServerUrl;
                 }
                 case DataType.NewEvent:
                 {
