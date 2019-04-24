@@ -29,12 +29,27 @@ namespace Photobook.ViewModels
         private bool _showTopBar;
         private bool _showLogoutBtn;
         private IMediaUploader MedUploader;
+        private Guest _guest;
 
         public EventViewModel(Event newEvent, bool ShowNavBar)
         {
             _event = newEvent;
             ShowTopBar = ShowNavBar;
-            MedUploader = new MediaUploader();
+            _guest = new Guest();
+            MedUploader = new MediaUploader(_guest);
+            MedUploader.NotifyDone += NotifyDoneHandler;
+            if (ShowNavBar)
+                ShowLogoutBtn = false;
+            else
+                ShowLogoutBtn = true;
+        }
+
+        public EventViewModel(Event newEvent, Guest currentGuest, bool ShowNavBar)
+        {
+            _event = newEvent;
+            _guest = currentGuest;
+            ShowTopBar = ShowNavBar;
+            MedUploader = new MediaUploader(_guest);
             MedUploader.NotifyDone += NotifyDoneHandler;
             if (ShowNavBar)
                 ShowLogoutBtn = false;
@@ -181,7 +196,7 @@ namespace Photobook.ViewModels
             string path = await Cam.TakePhoto();
             if (path != "Null")
             {
-
+                MedUploader.SendMedia(path, _event.Pin, DataType.Picture);
             }
         }
 

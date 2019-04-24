@@ -76,7 +76,7 @@ namespace Photobook.ViewModels
                eventFromServer = await parser.DeserializedData<Event>(message);
                
 
-               SettingsManager.SaveInstance(Guest.Username, Data.LatestReceivedCookies);
+               SettingsManager.SaveInstance($"Cookie{Guest.Username}", Data.LatestReceivedCookies);
 
                var rootPage = Navigation.NavigationStack.FirstOrDefault();
                if (rootPage != null)
@@ -85,7 +85,7 @@ namespace Photobook.ViewModels
                    // Det event brugeren er tilknyttet skal laves om til et NewEvent objekt og gives med som parameter. 
 ;
 
-                   Navigation.InsertPageBefore(new ShowEvent(eventFromServer, false),
+                   Navigation.InsertPageBefore(new ShowEvent(eventFromServer, _guest, false),
                        Navigation.NavigationStack.First());
                    Navigation.PopToRootAsync();
                }

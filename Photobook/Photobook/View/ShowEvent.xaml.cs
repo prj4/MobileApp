@@ -16,5 +16,14 @@ namespace Photobook.View
 
             InitializeComponent();
         }
+
+        public ShowEvent(Event newEvent, Guest currentGuest, bool ShowTopBar)
+        {
+            var vm = new EventViewModel(newEvent, currentGuest, ShowTopBar);
+            vm.Navigation = Navigation;
+            BindingContext = vm;
+
+            InitializeComponent();
+        }
     }
 }

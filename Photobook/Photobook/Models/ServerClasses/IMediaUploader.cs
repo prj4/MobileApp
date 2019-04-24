@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Threading;
 
@@ -20,6 +21,11 @@ namespace Photobook.Models
     public class MediaUploader : IMediaUploader
     {
         public event ServerNotice NotifyDone;
+        private Guest currentGuest;
+        public MediaUploader(Guest g)
+        {
+            currentGuest = g;
+        }
         public void SendMedia(string path, string eventId, DataType d)
         {
            Thread t = new Thread(() => SendThread(path, eventId, d));
@@ -35,6 +41,9 @@ namespace Photobook.Models
                 Path = path,
                 Pin = eventId
             };
+            CookieCollection cookies = (CookieCollection)SettingsManager.GetSavedInstance($"Cookie{currentGuest.Username}");
+
+            com.AddCookies(cookies);
 
             bool success = await com.SendDataReturnIsValid(ps, DataType.Picture);
 
