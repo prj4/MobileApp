@@ -41,7 +41,7 @@ namespace Photobook.Models
                 Path = path,
                 Pin = eventId
             };
-            CookieCollection cookies = (CookieCollection)SettingsManager.GetSavedInstance($"Cookie{currentGuest.Username}");
+            CookieCollection cookies = await SettingsManager.GetCookies($"{currentGuest.Username}");
 
             com.AddCookies(cookies);
 

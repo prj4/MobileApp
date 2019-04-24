@@ -26,6 +26,8 @@ namespace Photobook.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::PCLStorage.Resource.String.ApplicationName = global::Photobook.Droid.Resource.String.ApplicationName;
+			global::PCLStorage.Resource.String.Hello = global::Photobook.Droid.Resource.String.Hello;
 			global::Xamarin.Essentials.Resource.Attribute.alpha = global::Photobook.Droid.Resource.Attribute.alpha;
 			global::Xamarin.Essentials.Resource.Attribute.coordinatorLayoutStyle = global::Photobook.Droid.Resource.Attribute.coordinatorLayoutStyle;
 			global::Xamarin.Essentials.Resource.Attribute.font = global::Photobook.Droid.Resource.Attribute.font;
@@ -7880,6 +7882,12 @@ namespace Photobook.Droid
 		
 		public partial class String
 		{
+			
+			// aapt resource value: 0x7f0a0060
+			public const int ApplicationName = 2131361888;
+			
+			// aapt resource value: 0x7f0a005f
+			public const int Hello = 2131361887;
 			
 			// aapt resource value: 0x7f0a0029
 			public const int abc_action_bar_home_description = 2131361833;
