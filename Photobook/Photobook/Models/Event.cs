@@ -17,7 +17,6 @@ namespace Photobook.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string Pin { get; set; }
-
         public string Name { get; set; }
         public string Location { get; set; }
         public string Description { get; set; }

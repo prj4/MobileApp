@@ -69,7 +69,7 @@ namespace Photobook.ViewModels
 
         public string PIN
         {
-            get { return $"PIN: Test {_event.Pin}"; }
+            get { return $"PIN: {_event.Pin}"; }
         }
 
         public string Description
