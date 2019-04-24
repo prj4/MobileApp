@@ -19,7 +19,6 @@ namespace Photobook.ViewModels
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public List<Guest> LogIns { get; set; }
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -36,12 +35,7 @@ namespace Photobook.ViewModels
         {
             Guest = new Guest();
             eventFromServer = new Event();
-            LogIns = SettingsManager.GetAllActiveUsers();
-
-            foreach (var log in LogIns)
-            {
-                LoginInfo += log.Username;
-            }
+            
 
             
         }
@@ -60,7 +54,7 @@ namespace Photobook.ViewModels
 
         bool AreDetailsValid(Guest guest)
         {
-            return (!string.IsNullOrWhiteSpace(guest.Username) && !string.IsNullOrWhiteSpace(guest.Pin) && guest.Pin.Length == 4);
+            return (!string.IsNullOrWhiteSpace(guest.Username) && !string.IsNullOrWhiteSpace(guest.Pin));
         }
 
         private ICommand _guestLoginCommand;
@@ -85,7 +79,6 @@ namespace Photobook.ViewModels
                SettingsManager.SaveInstance(Guest.Username, Data.LatestReceivedCookies);
 
                var rootPage = Navigation.NavigationStack.FirstOrDefault();
-               LogIns.Add(Guest);
                if (rootPage != null)
                {
                    // Det event brugeren er tilknyttet skal her hentes ned fra serveren, og gives som input parameter

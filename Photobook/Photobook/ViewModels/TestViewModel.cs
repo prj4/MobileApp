@@ -37,20 +37,15 @@ namespace Photobook.ViewModels
             var list = new ObservableCollection<TestImage>();
             var com = new ServerCommunicator();
 
-            Event e = new Event
-            {
-                Pin = "1"
-            };
-
-            var ids = await com.GetImages(e);
+            var ids = await com.GetImages(_event);
             var completeUrl = new List<string>();
 
             foreach (var id in ids)
             {
                 var item = new TestImage()
                 {
-                    ImageUrl = "https://photobookwebapi1.azurewebsites.net/api/Picture/" + $"{e.Pin}/{id}",
-                    FileName = string.Format("Oskar, gudesønnen")
+                    ImageUrl = "https://photobookwebapi1.azurewebsites.net/api/Picture/" + $"{_event.Pin}/{id}",
+                    FileName = string.Format($"Id: {id}")
                 };
                 list.Add(item);
                 //completeUrl.Add("https://photobookwebapi1.azurewebsites.net/api/Picture/" + $"{e.Pin}/{id}");
@@ -125,7 +120,7 @@ namespace Photobook.ViewModels
             var item = LastTappedItem as TestImage;
             if (item != null)
             {
-                System.Diagnostics.Debug.WriteLine("Tapped {0}", item.ImageUrl);
+                System.Diagnostics.Debug.WriteLine($"Tapped {item.ImageUrl}");
                     Navigation.PushAsync(new EventSeeSingleImage(item));
             }
 

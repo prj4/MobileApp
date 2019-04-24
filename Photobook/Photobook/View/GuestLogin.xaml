@@ -36,7 +36,7 @@
 
 
             <Entry Text="{Binding Guest.Username}" HorizontalTextAlignment="Center" Keyboard="Text" x:Name="usernameEntry" Placeholder="Dit fulde navn" TextColor="White" PlaceholderColor="White" />
-            <Entry Text="{Binding Guest.Pin}" HorizontalTextAlignment="Center" Keyboard="Numeric" x:Name="passwordEntry" Placeholder="PIN kode til event" TextColor="White" PlaceholderColor="White" IsPassword="true" />
+            <Entry Text="{Binding Guest.Pin}" HorizontalTextAlignment="Center" Keyboard="Text" x:Name="passwordEntry" Placeholder="PIN kode til event" TextColor="White" PlaceholderColor="White" IsPassword="true" />
             
             <Label HorizontalTextAlignment="Center" HorizontalOptions="Center" Text="{Binding LoginInfo}" TextColor="Red" />
             <Button Padding="10" BackgroundColor="White" Text="Log ind" Command="{Binding GuestLoginCommand, Mode=TwoWay}"/>

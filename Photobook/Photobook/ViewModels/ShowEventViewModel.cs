@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Photobook.Models;
 using System.Linq;
 using Photobook.View;
+using Xamarin.Forms.Internals;
 using Event = Photobook.Models.Event;
 
 namespace Photobook.ViewModels
@@ -27,16 +28,26 @@ namespace Photobook.ViewModels
         private Event _event;
         private bool _showTopBar;
         private bool _showLogoutBtn;
+        private IMediaUploader MedUploader;
 
         public EventViewModel(Event newEvent, bool ShowNavBar)
         {
             _event = newEvent;
             ShowTopBar = ShowNavBar;
-
+            MedUploader = new MediaUploader();
+            MedUploader.NotifyDone += NotifyDoneHandler;
             if (ShowNavBar)
                 ShowLogoutBtn = false;
             else
                 ShowLogoutBtn = true;
+        }
+
+        private void NotifyDoneHandler(MediaEventArgs e)
+        {
+            Page p = new Page();
+            p.IsVisible = true;
+            string status = e.SendSucceeded ? "succeeded" : "failed";
+            p.DisplayAlert("Upload", $"Upload {status}!", "Ok");
         }
 
         public bool ShowTopBar
@@ -137,21 +148,7 @@ namespace Photobook.ViewModels
 
             if (photoPath != "Null")
             {
-                IServerCommunicator Com = new ServerCommunicator();
-                PhotoToServer ps = new PhotoToServer
-                {
-                    Path = photoPath,
-                    Pin = _event.Pin
-                };
-
-                if (await Com.SendDataReturnIsValid(ps, DataType.Picture))
-                {
-                    Debug.WriteLine("Succes", "IMAGE_TO_SERVER");
-                }
-                else
-                {
-                    Debug.WriteLine("Failure", "IMAGE_TO_SERVER");
-                }
+                MedUploader.SendMedia(photoPath, _event.Pin, DataType.Picture);
             }
         }
         private ICommand _uploadVideoCommand;
