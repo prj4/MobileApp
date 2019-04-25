@@ -41,6 +41,14 @@
             <Label HorizontalTextAlignment="Center" HorizontalOptions="Center" Text="{Binding LoginInfo}" TextColor="Red" />
             <Button Padding="10" BackgroundColor="White" Text="Log ind" Command="{Binding GuestLoginCommand, Mode=TwoWay}"/>
             
+            <ListView ItemsSource="{Binding ActiveGuests}" HorizontalOptions="Center" SelectedItem="{Binding Guest}"
+                      >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding Username}"></TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
             
         </StackLayout>
         

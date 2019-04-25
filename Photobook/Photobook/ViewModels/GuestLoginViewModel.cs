@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Photobook.Models;
 using Photobook.Models.ServerClasses;
-using Photobook.Models.ServerDataClasses;
 using Prism.Commands;
 using Xamarin.Forms;
 using Photobook.View;
-using Xamarin.Forms.Internals;
 
 namespace Photobook.ViewModels
 {
@@ -29,15 +25,26 @@ namespace Photobook.ViewModels
         private Guest _guest = new Guest();
         private string _loginInfo;
         private Event eventFromServer;
-
+        private List<Guest> activeGuests;
+        public List<Guest> ActiveGuests
+        {
+            get { return activeGuests; }
+            set { activeGuests = value; }
+        }
 
         public GuestLoginViewModel()
         {
             Guest = new Guest();
             eventFromServer = new Event();
             
+            InitializeGuests();
+        }
 
-            
+        private async void InitializeGuests()
+        {
+            activeGuests = new List<Guest>();
+            activeGuests.Add(new Guest{Username = "Benny"});
+            activeGuests.Add(new Guest{Username = "Viktor"});
         }
 
         public Guest Guest
@@ -76,7 +83,7 @@ namespace Photobook.ViewModels
                eventFromServer = await parser.DeserializedData<Event>(message);
                
 
-               SettingsManager.SaveInstance($"Cookie{Guest.Username}", Data.LatestReceivedCookies);
+               SettingsManager.SaveCookie(Data.LatestReceivedCookies, _guest.Username);
 
                var rootPage = Navigation.NavigationStack.FirstOrDefault();
                if (rootPage != null)
