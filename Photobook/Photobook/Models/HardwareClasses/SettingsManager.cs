@@ -15,30 +15,13 @@ namespace Photobook.Models
         private static readonly string CookieFolderName = "Cookies";
         private static readonly string SaveFolderName = "photobookSaves";
         private static readonly string UserFolderName = "Users";
-        public static object GetSavedInstance(string id)
-        {
-            object o = null;
-            try
-            {
-                o = Application.Current.Properties[id];
-            }
-            catch (KeyNotFoundException e)
-            {
-                return null;
-            }
-            catch(Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-
-            return o;
-        }
+        
 
         public static async void SaveCookie(CookieCollection c, string username)
         {
 
             IFolder cookieFolder = await GetToCookieFolder();
-            IFile file = await cookieFolder.CreateFileAsync(username, CreationCollisionOption.ReplaceExisting);
+            IFile file = await cookieFolder.CreateFileAsync(username, CreationCollisionOption.OpenIfExists);
             
             
 
@@ -52,16 +35,6 @@ namespace Photobook.Models
             await file.WriteAllTextAsync(cookies.Remove(cookies.Length -1));
         }
 
-        public static async void SaveInstance(string id, object instance)
-        {
-            if (id.Contains("Cookie"))
-            {
-                CookieCollection cc = (CookieCollection) instance;
-                var name = id.Substring(id.IndexOf(CookieFolderName) + CookieFolderName.Length);
-                SaveCookie(cc, name);
-            }
-            
-        }
 
         private static async Task<IFolder> GetToUserFolder()
         {

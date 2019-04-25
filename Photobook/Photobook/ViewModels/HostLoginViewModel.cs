@@ -57,7 +57,7 @@ namespace Photobook.ViewModels
                 var rootPage = Navigation.NavigationStack.FirstOrDefault();
                 if (rootPage != null)
                 {
-                    SettingsManager.SaveInstance($"Cookie{ServerHost.Username}", handler.LatestReceivedCookies);
+                    SettingsManager.SaveCookie(handler.LatestReceivedCookies, ServerHost.Name);
                     Navigation.InsertPageBefore(new HostMainMenu(ServerHost), Navigation.NavigationStack.First());
                     await Navigation.PopToRootAsync();
                 }

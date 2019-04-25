@@ -98,12 +98,8 @@ namespace Photobook.ViewModels
 
                     if (await Com.SendDataReturnIsValid(Host, DataType.NewUser))
                     {
-                        SettingsManager.SaveInstance($"{Host.Username}Cookie", dataHandler.LatestReceivedCookies);
-                        foreach (var cook in dataHandler.LatestReceivedCookies)
-                        {
-                            Debug.WriteLine($"{cook.ToString()}", "Cookiedata");
-                        }
-                        Debug.WriteLine($"{Host.Username}Cookie", "Saved cookie");
+                        SettingsManager.SaveCookie(dataHandler.LatestReceivedCookies, host.Name);
+                        
                         var rootPage = Navigation.NavigationStack.FirstOrDefault();
                         if (rootPage != null)
                         {

@@ -34,7 +34,7 @@ namespace Photobook.ViewModels
             else
             {
                 _host = new Host();
-                _host.Username = "Troels Bleicken";
+                _host.Name = "Troels Bleicken";
             }
             
 
@@ -50,7 +50,7 @@ namespace Photobook.ViewModels
         {
             get
             {
-                return $"Hej {Host.Username}!";
+                return $"Hej {Host.Name}!";
             }
         }
 

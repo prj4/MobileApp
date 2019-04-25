@@ -30,7 +30,7 @@ namespace Photobook.Models
             }
 
             var content = new Dictionary<string, string>();
-            content.Add("Name", tmpHost.Username);
+            content.Add("Name", tmpHost.Name);
             content.Add("Password", tmpHost.Password);
             content.Add("Email", tmpHost.Email);
 

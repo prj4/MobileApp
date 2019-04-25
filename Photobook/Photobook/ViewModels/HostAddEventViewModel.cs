@@ -109,29 +109,8 @@ namespace Photobook.ViewModels
 
         private async void CreateEvent_Execute()
         {
-            Debug.WriteLine($"{_host.Username}Cookie", "Saved cookie");
 
            
-            var cookie = (CookieCollection)SettingsManager.GetSavedInstance($"{_host.Username}Cookie");
-
-            foreach (var cook in cookie)
-            {
-                Debug.WriteLine($"{cook.ToString()}", "Cookiedata");
-            }
-
-            IServerCommunicator Com = new ServerCommunicator();
-            Com.AddCookies(cookie);
-
-            if (await Com.SendDataReturnIsValid(_newEvent, DataType.NewEvent))
-            {
-                Debug.WriteLine("Succes", "NEW_EVENT");
-            }
-            else
-            {
-                Debug.WriteLine("Failure", "NEW_EVENT");
-            }        
-            
-
             // Når der trykkes "Opret event knappen"
             // Her skal data fra NewEvent.StartDate; NewEvent.EndDate; NewEvent.EventName
             // Og klassen "User" sendes til serveren, for at oprette event til den pågældende bruger, med Event info
@@ -147,8 +126,23 @@ namespace Photobook.ViewModels
                 StartDate = StartDate + StartTime;
                 EndDate = EndDate + EndTime;
                 isErrorMessageEnabled = false;
+            }
+
+            var cookie = await SettingsManager.GetCookies(_host.Name);
+
+
+            IServerCommunicator Com = new ServerCommunicator();
+            Com.AddCookies(cookie);
+
+            if (await Com.SendDataReturnIsValid(_newEvent, DataType.NewEvent))
+            {
+                Debug.WriteLine("Succes", "NEW_EVENT");
                 _events.Add(NewEvent);
                 Navigation.PopModalAsync();
+            }
+            else
+            {
+                Debug.WriteLine("Failure", "NEW_EVENT");
             }
 
         }
