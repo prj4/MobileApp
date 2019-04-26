@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Net.Http;
 using Newtonsoft.Json;
+using PCLStorage;
 using Photobook.Models;
-using Xamarin.Essentials;
+using Photobook.Models.ServerClasses;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration;
+using FileSystem = Xamarin.Essentials.FileSystem;
 
 namespace Photobook.View
 {
@@ -24,17 +27,29 @@ namespace Photobook.View
             MainStack.Children.Add(btn);
             btn.Clicked += async (sender, args) =>
             {
-                ServerCommunicator com = new ServerCommunicator();
-                Event e = new Event
-                {
-                    Pin = "1"
-                };
-                var rep = await com.GetImages(e);
+                IServerDataHandler handler = new ServerDataHandler();
+                IServerCommunicator com = new ServerCommunicator(handler);
+                await com.SendDataReturnIsValid(new Guest { Pin = "1234", Username = new Random().Next(100, 500).ToString() }
+                    , DataType.Guest);
 
-                foreach (var VARIABLE in rep)
+                IMediaDownloader downloader = new MediaDownloader(handler.LatestReceivedCookies);
+                downloader.DownloadReady += (e) =>
                 {
-                    Debug.WriteLine(VARIABLE, "Image:");
-                }
+                    if (e.StatusOk)
+                    {
+                        Debug.WriteLine(DependencyService.Get<IFileDirectoryAPI>().GetImagePath() + "/img2.PNG");
+                        File.WriteAllBytes(DependencyService.Get<IFileDirectoryAPI>().GetImagePath() + "/img2.PNG", e.FileBytes);
+                        
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Error");
+                    }
+                };
+
+                
+                downloader.DownloadSingleImage("https://photobookwebapi1.azurewebsites.net/api/Picture/1234/22");
+
 
             };
 #endif

@@ -23,29 +23,42 @@ namespace Photobook.Models
 
     public class MediaDownloader : IMediaDownloader
     {
+        private CookieCollection cookies;
+        public MediaDownloader(CookieCollection _cookies)
+        {
+            cookies = _cookies;
+        }
         public void DownloadSingleImage(string url)
         {
-            Task downloadTask = DownloadImage(url);
-            downloadTask.Start();
-
+            Parallel.Invoke(() => DownloadImage(url));
+            
         }
 
         public event ImageDownload DownloadReady;
 
         public void DownloadAllImages(List<string> urls)
         {
-            foreach (var url in urls)
-            {
-                Task donwloadTask = DownloadImage(url);
-                donwloadTask.Start();
-            }
+            Parallel.ForEach(urls, (url) => { DownloadImage(url); });
         }
 
-        private async Task  DownloadImage(string url)
+        private async void DownloadImage(string url)
         {
-            HttpClient _httpClient = new HttpClient();
+            HttpClient _httpClient;
+            if (cookies != null)
+            {
+                HttpClientHandler clientHandler = new HttpClientHandler();
+                clientHandler.CookieContainer = new CookieContainer();
+                clientHandler.CookieContainer.Add(cookies);
+                _httpClient = new HttpClient(clientHandler);
+            }
+            else
+            {
+                return;
+            }
+            
             ImageDownloadEventArgs image = new ImageDownloadEventArgs();
-           
+            
+
             try
             {
                 using (var httpResponse = await _httpClient.GetAsync(url))

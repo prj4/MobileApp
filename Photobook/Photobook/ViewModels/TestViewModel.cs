@@ -26,29 +26,24 @@ namespace Photobook.ViewModels
         }
 
         private List<string> UrlList = new List<string>();
-        private IMediaDownloader Downloader = new MediaDownloader();
+        private IMediaDownloader Downloader;
         public INavigation Navigation;
         private Event _event;
         public TestViewModel(Event loadEvent)
         {
             _event = loadEvent;
             ReloadData();
-            Downloader.DownloadReady += Downloader_DownloadReady;
         }
 
-        private async void Downloader_DownloadReady(ImageDownloadEventArgs e)
+        private void Downloader_DownloadReady(ImageDownloadEventArgs e)
         {
             if (e.StatusOk)
             {
-                IFolder saveFolder = FileSystem.Current.LocalStorage;
-                IFolder folder = await saveFolder.CreateFolderAsync(Environment.GetFolderPath(
-                        Environment.SpecialFolder.CommonPictures),
-                    CreationCollisionOption.OpenIfExists);
-                IFolder imageFolder = await folder.CreateFolderAsync("Photobook",
-                    CreationCollisionOption.OpenIfExists);
+                var rootPath = DependencyService.Get<IFileDirectoryAPI>().GetImagePath();
+                var fileName = $"photobook{DateTime.Now.ToString("yyyyMMddHHmmss")}.PNG";
+                var fullPath = $"{rootPath}/{fileName}";
 
-                File.WriteAllBytes(imageFolder.Path, e.FileBytes);
-                Debug.WriteLine(imageFolder.Path);
+                File.WriteAllBytes(fullPath, e.FileBytes);
             }
         }
         
@@ -59,6 +54,7 @@ namespace Photobook.ViewModels
             
             UrlList  = await com.GetImages(_event);
             
+
 
             foreach (var id in UrlList)
             {
@@ -153,9 +149,10 @@ namespace Photobook.ViewModels
             get { return _downloadAllCommand ?? (_downloadAllCommand = new DelegateCommand(DownloadAll_Execute)); }
         }
 
-        private void DownloadAll_Execute()
+        private async void DownloadAll_Execute()
         {
-            
+            Downloader = new MediaDownloader(await SettingsManager.GetCookies(_event.Pin));
+            Downloader.DownloadReady += Downloader_DownloadReady;
 
             if(UrlList != null)
                 Downloader.DownloadAllImages(UrlList);
