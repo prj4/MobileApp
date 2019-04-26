@@ -5,84 +5,70 @@
              xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
              NavigationPage.HasNavigationBar="true"
              >
-    
-        
-    
-    <AbsoluteLayout>
-         <Image 
+    <ContentPage.Content>
+        <Grid RowSpacing="1" ColumnSpacing="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Image 
             Source="{local:EmbeddedImage Photobook.Images.bg.png}"
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand"
             Aspect="AspectFill"
-            AbsoluteLayout.LayoutFlags="All"
-            AbsoluteLayout.LayoutBounds="0,0,1,1">
+            Grid.Row="0"
+            Grid.Column="0"
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="1"
+        >
         </Image>
-        
-        
-        
+
         <Image
             Source="{local:EmbeddedImage Photobook.Images.Logo.png}"
-            AbsoluteLayout.LayoutFlags="All"
-            >
-            
-            <Image.AbsoluteLayout.LayoutBounds>
-                <OnPlatform x:TypeArguments="Rectangle" 
-                            iOS="0.5, 0.15, 0.7, 0.1" 
-                            Android="0.5, 0.06, 0.7, 0.1" 
-                            /> 
-            </Image.AbsoluteLayout.LayoutBounds>
-        </Image>
-        
-        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" AbsoluteLayout.LayoutBounds="0.5, 0.5, 0.65, 1" AbsoluteLayout.LayoutFlags="All">
-            <Label HorizontalTextAlignment="Center" HorizontalOptions="Center" Text="Log ind på begivenhed" TextColor="White" />
+            Grid.Row="0"
+            Grid.Column="0"
+            Margin="0,20,0,0"
+        >
 
+        </Image>
+
+            <StackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Margin="70,70,70,0">
+            <Label HorizontalTextAlignment="Center" HorizontalOptions="Center" Text="Log ind på begivenhed" TextColor="White" />
 
             <Entry Text="{Binding Guest.Username}" HorizontalTextAlignment="Center" Keyboard="Text" x:Name="usernameEntry" Placeholder="Dit fulde navn" TextColor="White" PlaceholderColor="White" />
             <Entry Text="{Binding Guest.Pin}" HorizontalTextAlignment="Center" Keyboard="Text" x:Name="passwordEntry" Placeholder="PIN kode til event" TextColor="White" PlaceholderColor="White" IsPassword="true" />
-            
+
             <Label HorizontalTextAlignment="Center" HorizontalOptions="Center" Text="{Binding LoginInfo}" TextColor="Red" />
-            <Button Padding="10" BackgroundColor="White" Text="Log ind" Command="{Binding GuestLoginCommand, Mode=TwoWay}"/>
-            
-            <ListView ItemsSource="{Binding ActiveGuests}" HorizontalOptions="Center" SelectedItem="{Binding Guest}"
-                      >
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <TextCell Text="{Binding Username}"></TextCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            
+            <Button BackgroundColor="White" Text="Log ind" Command="{Binding GuestLoginCommand, Mode=TwoWay}"/>
         </StackLayout>
-        
-        <Image
-            VerticalOptions="EndAndExpand"
-            AbsoluteLayout.LayoutFlags="All"
-            AbsoluteLayout.LayoutBounds="0.5, 0, 1, 1"
-            
-            >
-            <Image.Aspect>
-                <OnPlatform x:TypeArguments="Aspect" 
-                            Android="Fill"
-                            iOS="AspectFit"
-                            />
-            </Image.Aspect>
-            
-            <Image.Source>
-                <OnPlatform x:TypeArguments="FileImageSource"
-                            iOS="bottom_bg.png"
-                            Android="bottom_bg.png"
-                />
-            </Image.Source>
-        </Image>
-        
-        
-        <Button 
-            Text=""
-            AbsoluteLayout.LayoutFlags="All"
-            AbsoluteLayout.LayoutBounds="0.5, 1, 1, 0.1"
-            TextColor="White"
-            FontAttributes="Bold"
-            BackgroundColor="Transparent"
-            
-            
-        />
-    </AbsoluteLayout>
+
+        <ScrollView Grid.Row="2" Grid.Column="0" Margin="70,0,70,70" VerticalOptions="End">
+            <Grid Padding="0,10,0,10">
+                <ListView ItemsSource="{Binding ActiveGuests}" x:Name="listView" BackgroundColor="#f2f2f2" HasUnevenRows="true" SelectedItem="{Binding Guest, Mode=TwoWay}" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Vertical" Padding="8,10,0,10" >
+                                    <Label TextColor="Black" FontAttributes="Bold" Text="{Binding Name, Mode=TwoWay}"/>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding Username, Mode=TwoWay}"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </ScrollView>
+        </Grid>
+
+         
+
+    </ContentPage.Content>
 </ContentPage>

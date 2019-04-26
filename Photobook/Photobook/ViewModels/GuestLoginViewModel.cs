@@ -90,7 +90,6 @@ namespace Photobook.ViewModels
                {
                    // Det event brugeren er tilknyttet skal her hentes ned fra serveren, og gives som input parameter
                    // Det event brugeren er tilknyttet skal laves om til et NewEvent objekt og gives med som parameter. 
-;
 
                    Navigation.InsertPageBefore(new ShowEvent(eventFromServer, _guest, false),
                        Navigation.NavigationStack.First());
