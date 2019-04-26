@@ -136,6 +136,8 @@ namespace Photobook.Models
                     "https://photobookwebapi1.azurewebsites.net/api/Picture/Ids" + '/' + $"{e.Pin}");
 
             var rep = await response.Content.ReadAsStringAsync();
+            if(rep == null)
+                return new List<string>();
 
             Debug.WriteLine(rep, "Images");
             RootObject result =

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
+using PCLStorage;
 using Photobook.Models;
 using Photobook.View;
 using Prism.Commands;
@@ -23,24 +25,42 @@ namespace Photobook.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private List<string> UrlList = new List<string>();
+        private IMediaDownloader Downloader = new MediaDownloader();
         public INavigation Navigation;
         private Event _event;
         public TestViewModel(Event loadEvent)
         {
             _event = loadEvent;
             ReloadData();
+            Downloader.DownloadReady += Downloader_DownloadReady;
         }
 
-        public string url;
+        private async void Downloader_DownloadReady(ImageDownloadEventArgs e)
+        {
+            if (e.StatusOk)
+            {
+                IFolder saveFolder = FileSystem.Current.LocalStorage;
+                IFolder folder = await saveFolder.CreateFolderAsync(Environment.GetFolderPath(
+                        Environment.SpecialFolder.CommonPictures),
+                    CreationCollisionOption.OpenIfExists);
+                IFolder imageFolder = await folder.CreateFolderAsync("Photobook",
+                    CreationCollisionOption.OpenIfExists);
+
+                File.WriteAllBytes(imageFolder.Path, e.FileBytes);
+                Debug.WriteLine(imageFolder.Path);
+            }
+        }
+        
         public async void ReloadData()
         {
             var list = new ObservableCollection<TestImage>();
             var com = new ServerCommunicator();
+            
+            UrlList  = await com.GetImages(_event);
+            
 
-            var ids = await com.GetImages(_event);
-            var completeUrl = new List<string>();
-
-            foreach (var id in ids)
+            foreach (var id in UrlList)
             {
                 var item = new TestImage()
                 {
@@ -135,8 +155,10 @@ namespace Photobook.ViewModels
 
         private void DownloadAll_Execute()
         {
+            
 
-            // Download all images.
+            if(UrlList != null)
+                Downloader.DownloadAllImages(UrlList);
         }
 
     }
