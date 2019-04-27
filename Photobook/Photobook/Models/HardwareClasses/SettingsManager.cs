@@ -45,7 +45,7 @@ namespace Photobook.Models
                 CreationCollisionOption.OpenIfExists);
         }
 
-        public static async Task<List<Guest>> GetAllActiveUsers()
+        public static async Task<List<GuestAtEvent>> GetAllActiveUsers()
         {
 
             IFolder userFolder = await GetToUserFolder();
@@ -56,19 +56,27 @@ namespace Photobook.Models
             string guestString = await file.ReadAllTextAsync();
 
             if(guestString == String.Empty)
-                return new List<Guest>();
+                return new List<GuestAtEvent>();
 
             var guests = guestString.Split('|');
             
-            var list = new List<Guest>();
+            var list = new List<GuestAtEvent>();
 
             foreach (var guest in guests)
             {
-                Guest tmp = JsonConvert.DeserializeObject<Guest>(guest);
-                list.Add(tmp);
+                GuestAtEvent tmp = JsonConvert.DeserializeObject<GuestAtEvent>(guest);
+                if (EventIsActive(tmp))
+                {
+                    list.Add(tmp);
+                }
             }
 
             return list;
+        }
+
+        private static bool EventIsActive(GuestAtEvent e)
+        {
+            return !(e.EventInfo.EndDate < DateTime.Now);
         }
 
         public static async Task<CookieCollection> GetCookies(string id)
@@ -104,7 +112,7 @@ namespace Photobook.Models
                 CreationCollisionOption.OpenIfExists);
         }
 
-        public static async void SaveActiveGuestList(List<Guest> current)
+        public static async void SaveActiveGuestList(List<GuestAtEvent> current)
         {
             string guests = String.Empty;
 
@@ -118,7 +126,7 @@ namespace Photobook.Models
             IFile guestFile = await userFolder.CreateFileAsync(GuestFileName, 
                 CreationCollisionOption.OpenIfExists);
 
-            await guestFile.WriteAllTextAsync(guests);
+            await guestFile.WriteAllTextAsync(guests.Remove(guests.Length -1));
 
         }
         

@@ -24,12 +24,23 @@ namespace Photobook.ViewModels
         public INavigation Navigation;
         private Guest _guest = new Guest();
         private string _loginInfo;
+        private GuestAtEvent current;
         private Event eventFromServer;
-        private List<Guest> activeGuests;
-        public List<Guest> ActiveGuests
+        private List<GuestAtEvent> activeGuests;
+        public List<GuestAtEvent> ActiveGuests
         {
             get { return activeGuests; }
             set { activeGuests = value; }
+        }
+
+        public GuestAtEvent Current
+        {
+            get { return current;}
+            set
+            {
+                current = value;
+                _guest = current.GuestInfo;
+            }
         }
 
         public GuestLoginViewModel()
@@ -42,9 +53,7 @@ namespace Photobook.ViewModels
 
         private async void InitializeGuests()
         {
-            activeGuests = new List<Guest>();
-            activeGuests.Add(new Guest{Username = "Benny"});
-            activeGuests.Add(new Guest{Username = "Viktor"});
+            activeGuests = await SettingsManager.GetAllActiveUsers();
         }
 
         public Guest Guest
@@ -72,6 +81,7 @@ namespace Photobook.ViewModels
 
         private async void Login_Execute()
         {
+
            IServerDataHandler Data = new ServerDataHandler();
            IServerCommunicator Com = new ServerCommunicator(Data);
 
@@ -84,6 +94,13 @@ namespace Photobook.ViewModels
                
 
                SettingsManager.SaveCookie(Data.LatestReceivedCookies, _guest.Username);
+               current = new GuestAtEvent
+               {
+                   EventInfo = eventFromServer,
+                   GuestInfo = _guest
+               };
+               activeGuests.Add(current);
+               SettingsManager.SaveActiveGuestList(activeGuests);
 
                var rootPage = Navigation.NavigationStack.FirstOrDefault();
                if (rootPage != null)

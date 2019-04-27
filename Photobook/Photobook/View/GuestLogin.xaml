@@ -50,17 +50,22 @@
 
         <ScrollView Grid.Row="2" Grid.Column="0" Margin="70,0,70,70" VerticalOptions="End">
             <Grid Padding="0,10,0,10">
-                <ListView ItemsSource="{Binding ActiveGuests}" x:Name="listView" BackgroundColor="#f2f2f2" HasUnevenRows="true" SelectedItem="{Binding Guest, Mode=TwoWay}" >
+                <ListView ItemsSource="{Binding ActiveGuests}" BackgroundColor="#f2f2f2" 
+                          HasUnevenRows="true" 
+                          SelectedItem="{Binding Current, Mode=TwoWay}"
+                          SelectionMode="Single">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <ViewCell>
-                                <StackLayout Orientation="Vertical" Padding="8,10,0,10" >
-                                    <Label TextColor="Black" FontAttributes="Bold" Text="{Binding Name, Mode=TwoWay}"/>
+                            <TextCell Text="{Binding Presentation}" />
+                            <!--<ViewCell>
+                                    <StackLayout Orientation="Vertical" Padding="8,10,0,10" >
+                                    <Label TextColor="Black" FontAttributes="Bold" Text="{Binding Presentation, 
+                                        Mode=OneWay}"/>
                                     <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding Username, Mode=TwoWay}"/>
+                                        <Label Text="{Binding Presentation, Mode=TwoWay}"/>
                                     </StackLayout>
                                 </StackLayout>
-                            </ViewCell>
+                            </ViewCell>-->
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
