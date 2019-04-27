@@ -15,11 +15,11 @@ namespace Photobook.Models
         private static readonly string CookieFolderName = "Cookies";
         private static readonly string SaveFolderName = "photobookSaves";
         private static readonly string UserFolderName = "Users";
-        
+        public static CookieCollection CurrentCookies { get; private set; }
 
         public static async void SaveCookie(CookieCollection c, string username)
         {
-
+            CurrentCookies = c;
             IFolder cookieFolder = await GetToCookieFolder();
             IFile file = await cookieFolder.CreateFileAsync(username, CreationCollisionOption.OpenIfExists);
             
@@ -91,6 +91,7 @@ namespace Photobook.Models
                 cc.Add(new Cookie(cookie[0], cookie[1], cookie[2], cookie[3]));
             }
 
+            CurrentCookies = cc;
             return cc;
         }
 

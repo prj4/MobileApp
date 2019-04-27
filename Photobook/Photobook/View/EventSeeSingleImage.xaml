@@ -4,7 +4,7 @@
              x:Class="Photobook.View.EventSeeSingleImage"
              BackgroundColor="#0e122a">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Download" Command="{Binding DownloadAllCommand}" />
+        <ToolbarItem Text="Download" Command="{Binding DownloadSingleCommand}" />
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
