@@ -16,6 +16,5 @@ namespace Photobook.ViewModels
         {
             
         }
-
     }
 }

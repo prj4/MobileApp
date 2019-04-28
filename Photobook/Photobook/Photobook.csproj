@@ -53,6 +53,9 @@
     <Compile Update="View\ShowEvent.xaml.cs">
       <DependentUpon>ShowEvent.xaml</DependentUpon>
     </Compile>
+    <Compile Update="View\ShowImagesView.xaml.cs">
+      <DependentUpon>ShowImagesView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="View\EventSeeImages.xaml">
@@ -67,7 +70,7 @@
     <EmbeddedResource Update="View\SeeImages.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="View\Test.xaml">
+    <EmbeddedResource Update="View\ShowImagesView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

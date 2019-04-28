@@ -154,7 +154,7 @@ namespace Photobook.ViewModels
             Downloader = new MediaDownloader(await SettingsManager.GetCookies(_event.Pin));
             Downloader.DownloadReady += Downloader_DownloadReady;
 
-            if(UrlList != null)
+            if(UrlList != null && UrlList.Count > 0)
                 Downloader.DownloadAllImages(UrlList);
         }
 

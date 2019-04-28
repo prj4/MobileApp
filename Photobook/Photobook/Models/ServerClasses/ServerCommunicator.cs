@@ -103,8 +103,7 @@ namespace Photobook.Models
             }
             catch (HttpRequestException e)
             {
-                if(errorHandler != null)
-                    errorHandler.Handle(response);
+                errorHandler?.Handle(response);
 
                 Debug.WriteLine($"{e.Message}, {DateTime.Now.ToString("yy;MM;dd;HH;mm;ss")}",
                     "HttpRequestException");
@@ -152,7 +151,7 @@ namespace Photobook.Models
                     "https://photobookwebapi1.azurewebsites.net/api/Picture/Ids" + '/' + $"{e.Pin}");
 
             var rep = await response.Content.ReadAsStringAsync();
-            if(rep == null)
+            if(String.IsNullOrEmpty(rep))
                 return new List<string>();
 
             Debug.WriteLine(rep, "Images");

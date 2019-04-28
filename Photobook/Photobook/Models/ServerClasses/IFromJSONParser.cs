@@ -34,6 +34,7 @@ namespace Photobook.Models
             }
             catch (Exception e)
             {
+                
                 Debug.WriteLine(e.Message, "From Json Error");
                 Environment.Exit(0);
             }
