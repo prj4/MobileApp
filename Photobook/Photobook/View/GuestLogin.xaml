@@ -45,7 +45,8 @@
             <Entry Text="{Binding Guest.Pin}" HorizontalTextAlignment="Center" Keyboard="Text" x:Name="passwordEntry" Placeholder="PIN kode til event" TextColor="White" PlaceholderColor="White" IsPassword="true" />
 
             <Label HorizontalTextAlignment="Center" HorizontalOptions="Center" Text="{Binding LoginInfo}" TextColor="Red" />
-            <Button BackgroundColor="White" Text="Log ind" Command="{Binding GuestLoginCommand, Mode=TwoWay}"/>
+            <Button BackgroundColor="White" Text="Log ind" Command="{Binding GuestLoginCommand, Mode=TwoWay}"
+                    IsEnabled="{Binding EnableButton}"/>
         </StackLayout>
 
         <ScrollView Grid.Row="2" Grid.Column="0" Margin="70,0,70,70" VerticalOptions="End">

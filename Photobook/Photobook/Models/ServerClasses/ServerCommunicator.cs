@@ -37,6 +37,7 @@ namespace Photobook.Models
         private CookieContainer cookies;
         private HttpClientHandler clientHandler;
         private IServerDataHandler dataHandler;
+        private IServerErrorcodeHandler errorHandler;
         public ServerCommunicator()
         {
             cookies = new CookieContainer();
@@ -57,6 +58,16 @@ namespace Photobook.Models
             dataHandler = _dataHandler;
         }
 
+        public ServerCommunicator(IServerDataHandler _dataHandler, IServerErrorcodeHandler _errorHandler)
+        {
+            cookies = new CookieContainer();
+            clientHandler = new HttpClientHandler();
+            clientHandler.CookieContainer = cookies;
+
+            client = new HttpClient(clientHandler);
+            dataHandler = _dataHandler;
+            errorHandler = _errorHandler;
+        }
         public void AddCookies(CookieCollection _cookies)
         {
             
@@ -92,6 +103,9 @@ namespace Photobook.Models
             }
             catch (HttpRequestException e)
             {
+                if(errorHandler != null)
+                    errorHandler.Handle(response);
+
                 Debug.WriteLine($"{e.Message}, {DateTime.Now.ToString("yy;MM;dd;HH;mm;ss")}",
                     "HttpRequestException");
                 return false;
@@ -101,7 +115,7 @@ namespace Photobook.Models
                 Debug.WriteLine(e.Message, "Servercommunicator exception:");
                 return false;
             }
-
+#if DEBUG
             try
             {
                 Response = await response.Content.ReadAsStringAsync();
@@ -113,10 +127,12 @@ namespace Photobook.Models
             }
             
             Debug.WriteLine(Response + DateTime.Now.ToString("ss.fff"), "SERVER_RESPONSE:");
+#endif
 
             try
             {
-                var responseCookies = clientHandler.CookieContainer.GetCookies(new Uri(UrlFactory.Generate(dataType)));
+                Uri cookieUrl =  new Uri(UrlFactory.Generate(dataType));
+                var responseCookies = clientHandler.CookieContainer.GetCookies(cookieUrl);
 
                 dataHandler.LatestMessage = response;
                 dataHandler.LatestReceivedCookies = responseCookies;

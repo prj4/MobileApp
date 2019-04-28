@@ -21,6 +21,13 @@ namespace Photobook.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private bool enableButton = true;
+
+        public bool EnableButton
+        {
+            get { return enableButton; }
+            set { enableButton = value;NotifyPropertyChanged(); }
+        }
         public INavigation Navigation;
         private Guest _guest = new Guest();
         private string _loginInfo;
@@ -81,9 +88,10 @@ namespace Photobook.ViewModels
 
         private async void Login_Execute()
         {
-
+           EnableButton = false;
            IServerDataHandler Data = new ServerDataHandler();
-           IServerCommunicator Com = new ServerCommunicator(Data);
+           IServerErrorcodeHandler errroHandler = new GuestLoginErrorcodeHandler();
+           IServerCommunicator Com = new ServerCommunicator(Data, errroHandler);
 
            if (await Com.SendDataReturnIsValid(_guest, DataType.Guest))
            {
@@ -115,7 +123,8 @@ namespace Photobook.ViewModels
            }
            else
            {
-               LoginInfo = "Error logging on. Is the pin correct?";
+               LoginInfo = errroHandler.Message;
+               EnableButton = true;
            }
         }
 
