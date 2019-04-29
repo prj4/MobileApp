@@ -32,11 +32,6 @@
                                Source="{Binding ImageUrl}">
                         </Image>
 
-                        <!--<ffimageloading:CachedImage HeightRequest="100" Aspect="AspectFill"
-                                                    DownsampleHeight="100" DownsampleUseDipUnits="false" 
-                                                    LoadingPlaceholder="image_loading.png" ErrorPlaceholder="image_error.png"
-                                                    Source="{Binding ImageUrl}" />-->
-
                         <Label x:Name="Label" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="End"
                                BackgroundColor="White" Opacity="0.5" Text="{Binding FileName}"/>
                     </Grid>
