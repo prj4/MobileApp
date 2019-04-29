@@ -22,7 +22,10 @@ namespace Photobook.Models
                     Message = "Something went wrong. Try again later.";
                     break;
                 case (HttpStatusCode.NotFound):
-                    Message = "Name already taken or pin is wrong.";
+                    Message = "Pin is wrong.";
+                    break;
+                case (HttpStatusCode.NoContent):
+                    Message = "Name is already taken, sorry bro.";
                     break;
                 default:
                     Message = "Error logging in.";

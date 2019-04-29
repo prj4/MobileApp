@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Photobook.Models;
@@ -9,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Runtime.InteropServices.ComTypes;
 using System.Diagnostics;
 using System.Net;
+using Photobook.Models.ServerClasses;
 
 namespace Photobook.ViewModels
 {
@@ -130,19 +132,25 @@ namespace Photobook.ViewModels
 
             var cookie = await SettingsManager.GetCookies(_host.Name);
 
-
-            IServerCommunicator Com = new ServerCommunicator();
+            IServerDataHandler dataHandler = new ServerDataHandler();
+            IServerCommunicator Com = new ServerCommunicator(dataHandler);
             Com.AddCookies(cookie);
 
             if (await Com.SendDataReturnIsValid(_newEvent, DataType.NewEvent))
             {
-                Debug.WriteLine("Succes", "NEW_EVENT");
+                var response = dataHandler.LatestMessage;
+                IFromJSONParser parser = new FromJsonParser();
+
+                Dictionary<string, string>
+                    pin = await parser.DeserializedData<Dictionary<string, string>>(response);
+
+                NewEvent.Pin = pin["pin"];
                 _events.Add(NewEvent);
                 Navigation.PopModalAsync();
             }
             else
             {
-                Debug.WriteLine("Failure", "NEW_EVENT");
+                return;
             }
 
         }

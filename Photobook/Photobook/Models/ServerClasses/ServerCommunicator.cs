@@ -146,11 +146,14 @@ namespace Photobook.Models
 
         public async Task<List<string>> GetImages(Photobook.Models.Event e)
         {
+            clientHandler.CookieContainer.Add(SettingsManager.CurrentCookies);
+            clientHandler.UseCookies = true;
             var response =
                 await client.GetAsync(
-                    "https://photobookwebapi1.azurewebsites.net/api/Picture/Ids" + '/' + $"{e.Pin}");
-
+                    "https://photobookwebapi1.azurewebsites.net/api/Picture/Ids" + $"/{e.Pin}");
+            
             var rep = await response.Content.ReadAsStringAsync();
+            Debug.WriteLine(rep, "ImageResponse");
             if(String.IsNullOrEmpty(rep))
                 return new List<string>();
 

@@ -121,8 +121,8 @@ namespace Photobook.Models
             content.Add("Name", newEvent.Name);
             content.Add("Description", newEvent.Description);
             content.Add("Location", newEvent.Location);
-            content.Add("StartDate", newEvent.StartDate.ToString("yyyyMMddHHmm"));
-            content.Add("EndDate", newEvent.EndDate.ToString("yyyyMMddHHmm"));
+            content.Add("StartDate", newEvent.StartDate.ToString("yyyy-MM-ddTHH:mm:ss"));
+            content.Add("EndDate", newEvent.EndDate.ToString("yyyy-MM-ddTHH:mm:ss"));
 
             return JsonConvert.SerializeObject(content);
         }
