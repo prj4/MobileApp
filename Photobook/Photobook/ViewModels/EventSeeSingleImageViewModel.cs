@@ -1,15 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
+using System.Windows.Input;
 using Photobook.Models;
+using Prism.Commands;
 using Xamarin.Forms;
 
 namespace Photobook.ViewModels
 {
     public class EventSeeSingleImageViewModel : INotifyPropertyChanged
     {
+        private TestImage _image;
+
+        private string _pictureTaker;
+
+        private ICommand downloadSingleCommand;
+
+
+        public INavigation Navigation;
+
+        public EventSeeSingleImageViewModel(TestImage Img)
+        {
+            Image = Img;
+        }
+
+        public TestImage Image
+        {
+            get => _image;
+            set
+            {
+                _image = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public string PictureTaker
+        {
+            get => $"Taken by: {Image.FileName}";
+            set
+            {
+                _pictureTaker = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public ICommand DownloadSingleCommand =>
+            downloadSingleCommand ?? (downloadSingleCommand = new DelegateCommand(DownloadImage));
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
@@ -17,29 +53,14 @@ namespace Photobook.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        
-
-
-        public INavigation Navigation;
-        public EventSeeSingleImageViewModel(TestImage Img)
+        private void DownloadImage()
         {
-            Image = Img;
+            var cookies = SettingsManager.CurrentCookies;
+            if (cookies != null)
+            {
+                IMediaDownloader downloader = new MediaDownloader(cookies);
+                downloader.DownloadSingleImage(Image.ImageUrl);
+            }
         }
-
-        private TestImage _image;
-        public TestImage Image
-        {
-            get { return _image; }
-            set { _image = value; NotifyPropertyChanged(); }
-        }
-
-        private string _pictureTaker;
-
-        public string PictureTaker
-        {
-            get { return $"Taken by: {Image.FileName}"; }
-            set { _pictureTaker = value; NotifyPropertyChanged(); }
-        }
-
     }
 }

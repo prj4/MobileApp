@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
 using System.Threading;
 
 namespace Photobook.Models
@@ -12,7 +9,8 @@ namespace Photobook.Models
     {
         public bool SendSucceeded { get; set; }
     }
-    interface IMediaUploader
+
+    internal interface IMediaUploader
     {
         event ServerNotice NotifyDone;
         void SendMedia(string path, string eventId, DataType d);
@@ -20,32 +18,35 @@ namespace Photobook.Models
 
     public class MediaUploader : IMediaUploader
     {
-        public event ServerNotice NotifyDone;
-        private Guest currentGuest;
+        private readonly Guest currentGuest;
+
         public MediaUploader(Guest g)
         {
             currentGuest = g;
         }
+
+        public event ServerNotice NotifyDone;
+
         public void SendMedia(string path, string eventId, DataType d)
         {
-           Thread t = new Thread(() => SendThread(path, eventId, d));
-           t.Start();
+            var t = new Thread(() => SendThread(path, eventId, d));
+            t.Start();
         }
 
         private async void SendThread(string path, string eventId, DataType d)
         {
             IServerCommunicator com = new ServerCommunicator();
 
-            PhotoToServer ps = new PhotoToServer
+            var ps = new PhotoToServer
             {
                 Path = path,
                 Pin = eventId
             };
-            CookieCollection cookies = await SettingsManager.GetCookies($"{currentGuest.Username}");
+            var cookies = await SettingsManager.GetCookies($"{currentGuest.Username}");
 
             com.AddCookies(cookies);
 
-            bool success = await com.SendDataReturnIsValid(ps, DataType.Picture);
+            var success = await com.SendDataReturnIsValid(ps, DataType.Picture);
 
             NotifyDone?.Invoke(new MediaEventArgs
             {

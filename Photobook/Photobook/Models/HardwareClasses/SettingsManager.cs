@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PCLStorage;
-using Xamarin.Forms;
 
 namespace Photobook.Models
 {
@@ -15,111 +13,104 @@ namespace Photobook.Models
         private static readonly string CookieFolderName = "Cookies";
         private static readonly string SaveFolderName = "photobookSaves";
         private static readonly string UserFolderName = "Users";
-        
+        public static CookieCollection CurrentCookies { get; private set; }
 
         public static async void SaveCookie(CookieCollection c, string username)
         {
+            CurrentCookies = c;
+            var cookieFolder = await GetToCookieFolder();
+            var file = await cookieFolder.CreateFileAsync(username, CreationCollisionOption.OpenIfExists);
 
-            IFolder cookieFolder = await GetToCookieFolder();
-            IFile file = await cookieFolder.CreateFileAsync(username, CreationCollisionOption.OpenIfExists);
-            
-            
 
-            string cookies = "";
-            for (int i = 0; i < c.Count; ++i)
+            var cookies = "";
+            for (var i = 0; i < c.Count; ++i)
             {
                 cookies += $"{c[i].Name}|{c[i].Value}|{c[i].Path}|{c[i].Domain}";
                 cookies += ';';
             }
 
-            await file.WriteAllTextAsync(cookies.Remove(cookies.Length -1));
+            await file.WriteAllTextAsync(cookies.Remove(cookies.Length - 1));
         }
 
 
         private static async Task<IFolder> GetToUserFolder()
         {
-            IFolder saveFolder = FileSystem.Current.LocalStorage;
-            IFolder folder = await saveFolder.CreateFolderAsync(SaveFolderName,
+            var saveFolder = FileSystem.Current.LocalStorage;
+            var folder = await saveFolder.CreateFolderAsync(SaveFolderName,
                 CreationCollisionOption.OpenIfExists);
             return await folder.CreateFolderAsync(UserFolderName,
                 CreationCollisionOption.OpenIfExists);
         }
 
-        public static async Task<List<Guest>> GetAllActiveUsers()
+        public static async Task<List<GuestAtEvent>> GetAllActiveUsers()
         {
+            var userFolder = await GetToUserFolder();
 
-            IFolder userFolder = await GetToUserFolder();
-
-            IFile file = await userFolder.CreateFileAsync(GuestFileName,
+            var file = await userFolder.CreateFileAsync(GuestFileName,
                 CreationCollisionOption.OpenIfExists);
 
-            string guestString = await file.ReadAllTextAsync();
+            var guestString = await file.ReadAllTextAsync();
 
-            if(guestString == String.Empty)
-                return new List<Guest>();
+            if (guestString == string.Empty)
+                return new List<GuestAtEvent>();
 
             var guests = guestString.Split('|');
-            
-            var list = new List<Guest>();
+
+            var list = new List<GuestAtEvent>();
 
             foreach (var guest in guests)
             {
-                Guest tmp = JsonConvert.DeserializeObject<Guest>(guest);
-                list.Add(tmp);
+                var tmp = JsonConvert.DeserializeObject<GuestAtEvent>(guest);
+                if (EventIsActive(tmp)) list.Add(tmp);
             }
 
             return list;
         }
 
+        private static bool EventIsActive(GuestAtEvent e)
+        {
+            return !(e.EventInfo.EndDate < DateTime.Now);
+        }
+
         public static async Task<CookieCollection> GetCookies(string id)
         {
-            IFolder cookieFolder = await GetToCookieFolder();
-            IFile file = await cookieFolder.CreateFileAsync(id, CreationCollisionOption.OpenIfExists);
+            var cookieFolder = await GetToCookieFolder();
+            var file = await cookieFolder.CreateFileAsync(id, CreationCollisionOption.OpenIfExists);
 
             var cookies = await file.ReadAllTextAsync();
             var cookieStrings = cookies.Split(';');
-            List<string[]> specificCookies = new List<string[]>();
+            var specificCookies = new List<string[]>();
 
-            foreach (var cString in cookieStrings)
-            {
-                specificCookies.Add(cString.Split('|'));
-            }
+            foreach (var cString in cookieStrings) specificCookies.Add(cString.Split('|'));
 
-            CookieCollection cc = new CookieCollection();
-            foreach (var cookie in specificCookies)
-            {
-                cc.Add(new Cookie(cookie[0], cookie[1], cookie[2], cookie[3]));
-            }
+            var cc = new CookieCollection();
+            foreach (var cookie in specificCookies) cc.Add(new Cookie(cookie[0], cookie[1], cookie[2], cookie[3]));
 
+            CurrentCookies = cc;
             return cc;
         }
 
         private static async Task<IFolder> GetToCookieFolder()
         {
-            IFolder saveFolder = FileSystem.Current.LocalStorage;
-            IFolder folder = await saveFolder.CreateFolderAsync(SaveFolderName,
+            var saveFolder = FileSystem.Current.LocalStorage;
+            var folder = await saveFolder.CreateFolderAsync(SaveFolderName,
                 CreationCollisionOption.OpenIfExists);
             return await folder.CreateFolderAsync(CookieFolderName,
                 CreationCollisionOption.OpenIfExists);
         }
 
-        public static async void SaveActiveGuestList(List<Guest> current)
+        public static async void SaveActiveGuestList(List<GuestAtEvent> current)
         {
-            string guests = String.Empty;
+            var guests = string.Empty;
 
-            foreach (var guest in current)
-            {
-                guests += JsonConvert.SerializeObject(guest) + '|';
-            }
+            foreach (var guest in current) guests += JsonConvert.SerializeObject(guest) + '|';
 
-            IFolder userFolder = await GetToUserFolder();
+            var userFolder = await GetToUserFolder();
 
-            IFile guestFile = await userFolder.CreateFileAsync(GuestFileName, 
+            var guestFile = await userFolder.CreateFileAsync(GuestFileName,
                 CreationCollisionOption.OpenIfExists);
 
-            await guestFile.WriteAllTextAsync(guests);
-
+            await guestFile.WriteAllTextAsync(guests.Remove(guests.Length - 1));
         }
-        
     }
 }

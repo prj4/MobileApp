@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
+using Android.Support.V4.App;
 using Android.Support.V4.Content;
 using Plugin.Media;
 using Plugin.Permissions;
@@ -24,8 +25,13 @@ namespace Photobook.Droid
             await CrossMedia.Current.Initialize();
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             ContextCompat.CheckSelfPermission(this, Manifest.Permission.Camera);
+            if(ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) != (int)Permission.Granted)
+                ActivityCompat.RequestPermissions(this, new string[] { Manifest.Permission.ReadExternalStorage }, 0);
+            if(ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) != (int)Permission.Granted)
+                ActivityCompat.RequestPermissions(this, new string[]{Manifest.Permission.WriteExternalStorage}, 0 );
 
             Plugin.CurrentActivity.CrossCurrentActivity.Current.Init(this, new Bundle());
+            
 
             //Xamarin.FormsMaps.Init(this, savedInstanceState);
         }

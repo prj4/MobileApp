@@ -5,14 +5,76 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Photobook.Models;
 using Photobook.Models.ServerClasses;
+using Photobook.View;
 using Prism.Commands;
 using Xamarin.Forms;
-using Photobook.View;
 
 namespace Photobook.ViewModels
 {
     public class GuestLoginViewModel : INotifyPropertyChanged
     {
+        private Guest _guest = new Guest();
+
+        private ICommand _guestLoginCommand;
+        private string _loginInfo;
+        private GuestAtEvent current;
+
+        private bool enableButton = true;
+        private Event eventFromServer;
+        public INavigation Navigation;
+
+        public GuestLoginViewModel()
+        {
+            Guest = new Guest();
+            eventFromServer = new Event();
+
+            InitializeGuests();
+        }
+
+        public bool EnableButton
+        {
+            get => enableButton;
+            set
+            {
+                enableButton = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public List<GuestAtEvent> ActiveGuests { get; set; }
+
+        public GuestAtEvent Current
+        {
+            get => current;
+            set
+            {
+                current = value;
+                _guest = current.GuestInfo;
+            }
+        }
+
+        public Guest Guest
+        {
+            get => _guest;
+            set
+            {
+                _guest = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public string LoginInfo
+        {
+            get => _loginInfo;
+            set
+            {
+                _loginInfo = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public ICommand GuestLoginCommand =>
+            _guestLoginCommand ?? (_guestLoginCommand = new DelegateCommand(Login_Execute));
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -21,86 +83,56 @@ namespace Photobook.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public INavigation Navigation;
-        private Guest _guest = new Guest();
-        private string _loginInfo;
-        private Event eventFromServer;
-        private List<Guest> activeGuests;
-        public List<Guest> ActiveGuests
-        {
-            get { return activeGuests; }
-            set { activeGuests = value; }
-        }
-
-        public GuestLoginViewModel()
-        {
-            Guest = new Guest();
-            eventFromServer = new Event();
-            
-            InitializeGuests();
-        }
-
         private async void InitializeGuests()
         {
-            activeGuests = new List<Guest>();
-            activeGuests.Add(new Guest{Username = "Benny"});
-            activeGuests.Add(new Guest{Username = "Viktor"});
+            ActiveGuests = await SettingsManager.GetAllActiveUsers();
         }
 
-        public Guest Guest
+        private bool AreDetailsValid(Guest guest)
         {
-            get { return _guest; }
-            set { _guest = value; NotifyPropertyChanged(); }
-        }
-
-        public string LoginInfo
-        {
-            get { return _loginInfo; }
-            set { _loginInfo = value; NotifyPropertyChanged(); }
-        }
-
-        bool AreDetailsValid(Guest guest)
-        {
-            return (!string.IsNullOrWhiteSpace(guest.Username) && !string.IsNullOrWhiteSpace(guest.Pin));
-        }
-
-        private ICommand _guestLoginCommand;
-        public ICommand GuestLoginCommand
-        {
-            get { return _guestLoginCommand ?? (_guestLoginCommand = new DelegateCommand(Login_Execute)); }
+            return !string.IsNullOrWhiteSpace(guest.Username) && !string.IsNullOrWhiteSpace(guest.Pin);
         }
 
         private async void Login_Execute()
         {
-           IServerDataHandler Data = new ServerDataHandler();
-           IServerCommunicator Com = new ServerCommunicator(Data);
+            EnableButton = false;
+            IServerDataHandler Data = new ServerDataHandler();
+            IServerErrorcodeHandler errroHandler = new GuestLoginErrorcodeHandler();
+            IServerCommunicator Com = new ServerCommunicator(Data, errroHandler);
 
-           if (await Com.SendDataReturnIsValid(_guest, DataType.Guest))
-           {
-               var message = Data.LatestMessage;
-               IFromJSONParser parser = new FromJsonParser();
+            if (await Com.SendDataReturnIsValid(_guest, DataType.Guest))
+            {
+                var message = Data.LatestMessage;
+                IFromJSONParser parser = new FromJsonParser();
 
-               eventFromServer = await parser.DeserializedData<Event>(message);
-               
+                eventFromServer = await parser.DeserializedData<Event>(message);
 
-               SettingsManager.SaveCookie(Data.LatestReceivedCookies, _guest.Username);
 
-               var rootPage = Navigation.NavigationStack.FirstOrDefault();
-               if (rootPage != null)
-               {
-                   // Det event brugeren er tilknyttet skal her hentes ned fra serveren, og gives som input parameter
-                   // Det event brugeren er tilknyttet skal laves om til et NewEvent objekt og gives med som parameter. 
+                SettingsManager.SaveCookie(Data.LatestReceivedCookies, _guest.Username);
+                current = new GuestAtEvent
+                {
+                    EventInfo = eventFromServer,
+                    GuestInfo = _guest
+                };
+                ActiveGuests.Add(current);
+                SettingsManager.SaveActiveGuestList(ActiveGuests);
 
-                   Navigation.InsertPageBefore(new ShowEvent(eventFromServer, _guest, false),
-                       Navigation.NavigationStack.First());
-                   await Navigation.PopToRootAsync(); 
-               }
-           }
-           else
-           {
-               LoginInfo = "Error logging on. Is the pin correct?";
-           }
+                var rootPage = Navigation.NavigationStack.FirstOrDefault();
+                if (rootPage != null)
+                {
+                    // Det event brugeren er tilknyttet skal her hentes ned fra serveren, og gives som input parameter
+                    // Det event brugeren er tilknyttet skal laves om til et NewEvent objekt og gives med som parameter. 
+
+                    Navigation.InsertPageBefore(new ShowEvent(eventFromServer, _guest, false),
+                        Navigation.NavigationStack.First());
+                    Navigation.PopToRootAsync();
+                }
+            }
+            else
+            {
+                LoginInfo = errroHandler.Message;
+                EnableButton = true;
+            }
         }
-
     }
 }

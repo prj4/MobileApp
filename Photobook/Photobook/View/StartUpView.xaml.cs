@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
-using System.IO.Compression;
-using System.Net;
-using System.Net.Http;
-using Newtonsoft.Json;
+using System.IO;
 using Photobook.Models;
-using Xamarin.Essentials;
+using Photobook.Models.ServerClasses;
 using Xamarin.Forms;
-using Xamarin.Forms.PlatformConfiguration;
 
 namespace Photobook.View
 {
@@ -19,36 +13,46 @@ namespace Photobook.View
         {
             InitializeComponent();
 #if DEBUG
-            Button btn = new Button();
+            var btn = new Button();
             btn.Text = "Troels' store testknap";
             MainStack.Children.Add(btn);
             btn.Clicked += async (sender, args) =>
             {
-                ServerCommunicator com = new ServerCommunicator();
-                Event e = new Event
+                IServerDataHandler handler = new ServerDataHandler();
+                IServerCommunicator com = new ServerCommunicator(handler);
+                await com.SendDataReturnIsValid(
+                    new Guest {Pin = "1234", Username = new Random().Next(100, 500).ToString()}
+                    , DataType.Guest);
+
+                IMediaDownloader downloader = new MediaDownloader(handler.LatestReceivedCookies);
+                downloader.DownloadReady += e =>
                 {
-                    Pin = "1"
+                    if (e.StatusOk)
+                    {
+                        Debug.WriteLine(DependencyService.Get<IFileDirectoryAPI>().GetImagePath() + "/img2.PNG");
+                        File.WriteAllBytes(DependencyService.Get<IFileDirectoryAPI>().GetImagePath() + "/img2.PNG",
+                            e.FileBytes);
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Error");
+                    }
                 };
-                var rep = await com.GetImages(e);
 
-                foreach (var VARIABLE in rep)
-                {
-                    Debug.WriteLine(VARIABLE, "Image:");
-                }
 
+                downloader.DownloadSingleImage("https://photobookwebapi1.azurewebsites.net/api/Picture/1234/22");
             };
 #endif
         }
 
-        async void Handle_Clicked(object sender, System.EventArgs e)
+        private async void Handle_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new GuestLogin());
         }
 
-        async void Host_Clicked(object sender, System.EventArgs e)
+        private async void Host_Clicked(object sender, EventArgs e)
         {
             await Navigation.PushAsync(new HostView());
         }
-
     }
 }

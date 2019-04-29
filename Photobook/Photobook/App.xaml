@@ -1,46 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="Photobook.App">
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Application xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Photobook.App">
     <Application.Resources>
         <Style x:Key="plainButton" TargetType="Button">
-            <Setter Property="BackgroundColor" Value="#eee"/>
+            <Setter Property="BackgroundColor" Value="#eee" />
             <Setter Property="TextColor" Value="Black" />
-            <Setter Property="BorderRadius" Value="0"/>
+            <Setter Property="BorderRadius" Value="0" />
             <Setter Property="FontSize" Value="40" />
         </Style>
         <Style x:Key="darkerButton" TargetType="Button">
-            <Setter Property="BackgroundColor" Value="#ddd"/>
+            <Setter Property="BackgroundColor" Value="#ddd" />
             <Setter Property="TextColor" Value="Black" />
-            <Setter Property="BorderRadius" Value="0"/>
+            <Setter Property="BorderRadius" Value="0" />
             <Setter Property="FontSize" Value="40" />
         </Style>
         <Style x:Key="orangeButton" TargetType="Button">
-            <Setter Property="BackgroundColor" Value="#E8AD00"/>
+            <Setter Property="BackgroundColor" Value="#E8AD00" />
             <Setter Property="TextColor" Value="White" />
-            <Setter Property="BorderRadius" Value="0"/>
+            <Setter Property="BorderRadius" Value="0" />
             <Setter Property="FontSize" Value="40" />
         </Style>
         <Style x:Key="whitebutton" TargetType="Button">
-            <Setter Property="BackgroundColor" Value="white"/>
+            <Setter Property="BackgroundColor" Value="white" />
             <Setter Property="TextColor" Value="Blue" />
-            <Setter Property="BorderRadius" Value="0"/>
+            <Setter Property="BorderRadius" Value="0" />
             <Setter Property="FontSize" Value="40" />
         </Style>
-        <Style x:Key="h1" TargetType="Label" >
+        <Style x:Key="h1" TargetType="Label">
             <Setter Property="FontSize" Value="30" />
             <Setter Property="TextColor" Value="White" />
             <Setter Property="FontAttributes" Value="Bold" />
         </Style>
-        <Style x:Key="pTxt" TargetType="Editor" >
+        <Style x:Key="pTxt" TargetType="Editor">
             <Setter Property="FontSize" Value="16" />
             <Setter Property="TextColor" Value="White" />
         </Style>
-         <Style x:Key="itemBtn" TargetType="Button" >
+        <Style x:Key="itemBtn" TargetType="Button">
             <Setter Property="BackgroundColor" Value="#1b1b2c" />
             <Setter Property="TextColor" Value="#ff7d7d" />
             <Setter Property="Padding" Value="30" />
             <Setter Property="Margin" Value="0,0,0,10" />
         </Style>
-        <Style x:Key="h2" TargetType="Label" >
+        <Style x:Key="h2" TargetType="Label">
             <Setter Property="FontSize" Value="18" />
             <Setter Property="TextColor" Value="White" />
             <Setter Property="FontAttributes" Value="Bold" />

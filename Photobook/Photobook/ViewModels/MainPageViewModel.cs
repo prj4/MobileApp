@@ -1,30 +1,19 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Photobook.ViewModels
 {
     public class MainPageViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        private string description;
 
 
-        public MainPageViewModel()
-        {
-
-        }
+        private string title;
 
 
-
-        string title;
         public string Title
         {
-            get { return title; }
+            get => title;
             set
             {
                 title = value;
@@ -32,11 +21,9 @@ namespace Photobook.ViewModels
             }
         }
 
-
-        string description;
         public string Description
         {
-            get { return description; }
+            get => description;
             set
             {
                 description = value;
@@ -44,9 +31,11 @@ namespace Photobook.ViewModels
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
 
-
-
-
+        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

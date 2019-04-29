@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Photobook.View;
@@ -10,8 +9,18 @@ namespace Photobook.ViewModels
 {
     public class HostViewViewModel : INotifyPropertyChanged
     {
+        private ICommand _createUserCommand;
+
+
+        private ICommand _LoginCommand;
 
         public INavigation Navigation;
+
+
+        public ICommand LoginCommand => _LoginCommand ?? (_LoginCommand = new DelegateCommand(Login_Execute));
+
+        public ICommand CreateUserCommand =>
+            _createUserCommand ?? (_createUserCommand = new DelegateCommand(CreateUser_Execute));
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -21,35 +30,14 @@ namespace Photobook.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-
-        public HostViewViewModel()
-        {
-        }
-
-
-        private ICommand _LoginCommand;
-        public ICommand LoginCommand
-        {
-            get { return _LoginCommand ?? (_LoginCommand = new DelegateCommand(Login_Execute)); }
-        }
-
         private void Login_Execute()
         {
             Navigation.PushAsync(new HostLogin());
-        }
-
-        private ICommand _createUserCommand;
-        public ICommand CreateUserCommand
-        {
-            get { return _createUserCommand ?? (_createUserCommand = new DelegateCommand(CreateUser_Execute)); }
         }
 
         private void CreateUser_Execute()
         {
             Navigation.PushAsync(new NewHost(new NewHostViewModel()));
         }
-
-
-
     }
 }

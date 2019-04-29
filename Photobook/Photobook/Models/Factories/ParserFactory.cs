@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Photobook.Models
+﻿namespace Photobook.Models
 {
-    
     public class ParserFactory
     {
         public static IJSONParser Generate(DataType d)
@@ -13,7 +8,7 @@ namespace Photobook.Models
             {
                 case DataType.NewUser:
                 {
-                  return new NewHostParser();
+                    return new NewHostParser();
                 }
                 case DataType.Guest:
                 {

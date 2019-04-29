@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Photobook.ViewModels;
+﻿using Photobook.ViewModels;
 using Xamarin.Forms;
 
 namespace Photobook.View
@@ -15,6 +13,5 @@ namespace Photobook.View
 
             InitializeComponent();
         }
-
     }
 }

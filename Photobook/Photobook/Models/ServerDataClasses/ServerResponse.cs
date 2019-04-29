@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Photobook.Models.ServerDataClasses;
-using Photobook.View;
+﻿using Photobook.Models.ServerDataClasses;
 
 namespace Photobook.Models
 {

@@ -1,43 +1,34 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Photobook.Models;
-using Xamarin.Forms;
-using Prism.Commands;
 using System.Windows.Input;
-using System.Collections.ObjectModel;
-using System.Runtime.InteropServices.ComTypes;
-using System.Diagnostics;
-using System.Net;
+using Photobook.Models;
+using Photobook.Models.ServerClasses;
+using Prism.Commands;
+using Xamarin.Forms;
 
 namespace Photobook.ViewModels
 {
     public class HostAddEventViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _createEventCommand;
+        private DateTime _endDate = new DateTime();
+        private TimeSpan _endTime;
+        private readonly ObservableCollection<Event> _events;
+        private readonly Host _host;
 
-        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
-        public INavigation Navigation;
+        private bool _isErrorMessageEnabled;
 
         private Event _newEvent = new Event();
-        private Host _host;
-        private ObservableCollection<Event> _events;
+
+        private ICommand _regretCommand;
         private DateTime _startDate = new DateTime();
-        private DateTime _endDate = new DateTime();
-        private TimeSpan _startTime = new TimeSpan();
-        private TimeSpan _endTime = new TimeSpan();
+        private TimeSpan _startTime;
 
-
-        private bool _isErrorMessageEnabled = false;
-        public bool isErrorMessageEnabled
-        {
-            get { return _isErrorMessageEnabled; }
-            set { _isErrorMessageEnabled = value;  NotifyPropertyChanged(); }
-        }
+        public INavigation Navigation;
 
         public HostAddEventViewModel(Host host, ObservableCollection<Event> events)
         {
@@ -46,71 +37,93 @@ namespace Photobook.ViewModels
             isErrorMessageEnabled = false;
         }
 
+        public bool isErrorMessageEnabled
+        {
+            get => _isErrorMessageEnabled;
+            set
+            {
+                _isErrorMessageEnabled = value;
+                NotifyPropertyChanged();
+            }
+        }
+
         public TimeSpan StartTime
         {
-            get { return _startTime; }
-            set { _startTime = value; NotifyPropertyChanged(); }
+            get => _startTime;
+            set
+            {
+                _startTime = value;
+                NotifyPropertyChanged();
+            }
         }
 
         public TimeSpan EndTime
         {
-            get { return _endTime; }
-            set { _endTime = value; NotifyPropertyChanged(); }
+            get => _endTime;
+            set
+            {
+                _endTime = value;
+                NotifyPropertyChanged();
+            }
         }
 
 
-        public DateTime MinDate
-        {
-            get { return DateTime.Today.Date; }
-        }
+        public DateTime MinDate => DateTime.Today.Date;
 
         public Event NewEvent
         {
-            get { return _newEvent; }
-            set { _newEvent = value; NotifyPropertyChanged(); }
-
+            get => _newEvent;
+            set
+            {
+                _newEvent = value;
+                NotifyPropertyChanged();
+            }
         }
 
         public string Description
         {
-            get { return _newEvent.Description; }
+            get => _newEvent.Description;
             set
             {
-                _newEvent.Description = value; 
+                _newEvent.Description = value;
                 NotifyPropertyChanged();
             }
         }
 
         public DateTime StartDate
         {
-            get { return NewEvent.StartDate; }
-            set 
+            get => NewEvent.StartDate;
+            set
             {
-                NewEvent.StartDate = value; NotifyPropertyChanged();
+                NewEvent.StartDate = value;
+                NotifyPropertyChanged();
             }
         }
 
         public DateTime EndDate
         {
-            get { return NewEvent.EndDate;}
-            set 
+            get => NewEvent.EndDate;
+            set
             {
-                NewEvent.EndDate = value; NotifyPropertyChanged();
+                NewEvent.EndDate = value;
+                NotifyPropertyChanged();
             }
         }
 
+        public ICommand CreateEventCommand =>
+            _createEventCommand ?? (_createEventCommand = new DelegateCommand(CreateEvent_Execute));
 
+        public ICommand RegretCommand => _regretCommand ?? (_regretCommand = new DelegateCommand(Regret_Execute));
 
-        private ICommand _createEventCommand;
-        public ICommand CreateEventCommand
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            get { return _createEventCommand ?? (_createEventCommand = new DelegateCommand(CreateEvent_Execute)); }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private async void CreateEvent_Execute()
         {
-
-           
             // Når der trykkes "Opret event knappen"
             // Her skal data fra NewEvent.StartDate; NewEvent.EndDate; NewEvent.EventName
             // Og klassen "User" sendes til serveren, for at oprette event til den pågældende bruger, med Event info
@@ -130,34 +143,27 @@ namespace Photobook.ViewModels
 
             var cookie = await SettingsManager.GetCookies(_host.Name);
 
-
-            IServerCommunicator Com = new ServerCommunicator();
+            IServerDataHandler dataHandler = new ServerDataHandler();
+            IServerCommunicator Com = new ServerCommunicator(dataHandler);
             Com.AddCookies(cookie);
 
             if (await Com.SendDataReturnIsValid(_newEvent, DataType.NewEvent))
             {
-                Debug.WriteLine("Succes", "NEW_EVENT");
+                var response = dataHandler.LatestMessage;
+                IFromJSONParser parser = new FromJsonParser();
+
+                var
+                    pin = await parser.DeserializedData<Dictionary<string, string>>(response);
+
+                NewEvent.Pin = pin["pin"];
                 _events.Add(NewEvent);
                 Navigation.PopModalAsync();
             }
-            else
-            {
-                Debug.WriteLine("Failure", "NEW_EVENT");
-            }
-
-        }
-
-        private ICommand _regretCommand;
-        public ICommand RegretCommand
-        {
-            get { return _regretCommand ?? (_regretCommand = new DelegateCommand(Regret_Execute)); }
         }
 
         private void Regret_Execute()
         {
-
             Navigation.PopModalAsync();
         }
-
     }
 }

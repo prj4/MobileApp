@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Photobook.Models;
+﻿using Photobook.Models;
 using Photobook.ViewModels;
 using Xamarin.Forms;
 

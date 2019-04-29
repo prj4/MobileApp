@@ -1,88 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage 
+
+<ContentPage
     NavigationPage.HasNavigationBar="false"
     BackgroundColor="#333"
-    xmlns="http://xamarin.com/schemas/2014/forms" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
     x:Class="Photobook.View.StartUpView">
-    
-    
+
+
     <AbsoluteLayout>
-         <Image 
+        <Image
             Source="{local:EmbeddedImage Photobook.Images.bg.png}"
             Aspect="AspectFill"
             AbsoluteLayout.LayoutFlags="All"
-            AbsoluteLayout.LayoutBounds="0,0,1,1">
-        </Image>
-        
-        
-        
-               
+            AbsoluteLayout.LayoutBounds="0,0,1,1" />
+
+
         <Image
             Source="{local:EmbeddedImage Photobook.Images.Logo.png}"
-            AbsoluteLayout.LayoutFlags="All"
-            >
-            
+            AbsoluteLayout.LayoutFlags="All">
+
             <Image.AbsoluteLayout.LayoutBounds>
-                <OnPlatform x:TypeArguments="Rectangle" 
-                            iOS="0.5, 0.15, 0.7, 0.1" 
-                            Android="0.5, 0.06, 0.7, 0.1" 
-                            /> 
+                <OnPlatform x:TypeArguments="Rectangle"
+                            iOS="0.5, 0.15, 0.7, 0.1"
+                            Android="0.5, 0.06, 0.7, 0.1" />
             </Image.AbsoluteLayout.LayoutBounds>
         </Image>
-        
-        
-        <StackLayout x:Name="MainStack" HorizontalOptions="Center" VerticalOptions="Center" AbsoluteLayout.LayoutBounds="0.5, 0.5, 0.65, 1" AbsoluteLayout.LayoutFlags="All">
+
+
+        <StackLayout x:Name="MainStack" HorizontalOptions="Center" VerticalOptions="Center"
+                     AbsoluteLayout.LayoutBounds="0.5, 0.5, 0.65, 1" AbsoluteLayout.LayoutFlags="All">
             <Label Margin="0,0,0,10" Text="Log ind som gæst eller arrangør" TextColor="White" />
             <Button Padding="10" BackgroundColor="White" Text="Gæst" Clicked="Handle_Clicked" />
 
             <Button Text="Arrangør" BackgroundColor="Transparent" Clicked="Host_Clicked">
                 <Button.TextColor>
                     <OnPlatform x:TypeArguments="Color"
-                                Android="White" 
-                                iOS="Blue">
-                    </OnPlatform>
+                                Android="White"
+                                iOS="Blue" />
                 </Button.TextColor>
             </Button>
 
         </StackLayout>
-        
+
         <Image
             VerticalOptions="End"
             AbsoluteLayout.LayoutFlags="All"
-            AbsoluteLayout.LayoutBounds="0.5, 1, 1, 1"
- 
-            
-            >
+            AbsoluteLayout.LayoutBounds="0.5, 1, 1, 1">
             <Image.Aspect>
-                <OnPlatform x:TypeArguments="Aspect" 
+                <OnPlatform x:TypeArguments="Aspect"
                             Android="Fill"
-                            iOS="AspectFit"
-                            />
+                            iOS="AspectFit" />
             </Image.Aspect>
-            
+
             <Image.Source>
                 <OnPlatform x:TypeArguments="FileImageSource"
                             iOS="bottom_bg.png"
-                            Android="bottom_bg.png"
-                />
+                            Android="bottom_bg.png" />
             </Image.Source>
         </Image>
-        
-        
-        <Button 
+
+
+        <Button
             Text=""
             AbsoluteLayout.LayoutFlags="All"
             AbsoluteLayout.LayoutBounds="0.5, 1, 1, 0.1"
             TextColor="White"
             FontAttributes="Bold"
-            BackgroundColor="Transparent"
-            
-            
-        />
+            BackgroundColor="Transparent" />
     </AbsoluteLayout>
-    
- 
-    
+
+
 </ContentPage>
