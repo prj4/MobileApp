@@ -83,6 +83,8 @@ namespace Photobook.Models
 
             if (cookies.Count > 0)
                 clientHandler.UseCookies = true;
+            
+            
 
             HttpResponseMessage response = null;
             try
