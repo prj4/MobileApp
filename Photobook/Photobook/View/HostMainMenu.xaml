@@ -1,68 +1,70 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Photobook.View.HostMainMenu"
              xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
              BackgroundColor="#0e122a"
-             NavigationPage.HasNavigationBar="false"
-             
-             >
+             NavigationPage.HasNavigationBar="false">
     <ContentPage.Content>
-            <Grid RowSpacing="1" ColumnSpacing="1" Padding="20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                
-                <StackLayout Margin="0,0,0,10" Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-                    <Label Style="{StaticResource h1}" Text="Menu" />
-                    <Label Style="{StaticResource pTxt}" Text="{Binding Gesture}"/>
-                    <Label Style="{StaticResource pTxt}" Text="Opret et nyt event, eller se dine events" />
+        <Grid RowSpacing="1" ColumnSpacing="1" Padding="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-                </StackLayout>
-            
-                <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                    <Button Text="Opret event" Style="{StaticResource itemBtn}" Command="{Binding AddEventCommand}"/>
-                    <Label Style="{StaticResource h2}" Text="{Binding EventList, Mode=TwoWay}"/>
-                    
-                </StackLayout>
-            
-                <ScrollView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
-                    <Grid Padding="0,10,0,10">
-                    <ListView ItemsSource="{Binding Events}" x:Name="listView" BackgroundColor="#f2f2f2" HasUnevenRows="true" SelectedItem="{Binding SelectedEvent, Mode=TwoWay}" >
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <ViewCell.ContextActions>
-                                            <MenuItem Text="Slet" Command="{Binding DeleteEventCommand, Mode=TwoWay}" IsDestructive="true" />
-                                        </ViewCell.ContextActions>
-                                    
-                                        <StackLayout Orientation="Vertical" Padding="8,10,0,10" >
-                                            <Label TextColor="Black" FontAttributes="Bold" Text="{Binding Name, Mode=TwoWay}"/>
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label Text="Dato:" />
-                                                <Label Text="{Binding StartDate, Mode=TwoWay}"/>
-                                                 <Label Text="-"/>
-                                                <Label Text="{Binding EndDate, Mode=TwoWay}"/>
-                                            </StackLayout>
+            <StackLayout Margin="0,0,0,10" Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                <Label Style="{StaticResource h1}" Text="Menu" />
+                <Label Style="{StaticResource pTxt}" Text="{Binding Gesture}" />
+                <Label Style="{StaticResource pTxt}" Text="Opret et nyt event, eller se dine events" />
+
+            </StackLayout>
+
+            <StackLayout Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <Button Text="Opret event" Style="{StaticResource itemBtn}" Command="{Binding AddEventCommand}" />
+                <Label Style="{StaticResource h2}" Text="{Binding EventList, Mode=TwoWay}" />
+
+            </StackLayout>
+
+            <ScrollView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                <Grid Padding="0,10,0,10">
+                    <ListView ItemsSource="{Binding Events}" x:Name="listView" BackgroundColor="#f2f2f2"
+                              HasUnevenRows="true" SelectedItem="{Binding SelectedEvent, Mode=TwoWay}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ViewCell.ContextActions>
+                                        <MenuItem Text="Slet" Command="{Binding DeleteEventCommand, Mode=TwoWay}"
+                                                  IsDestructive="true" />
+                                    </ViewCell.ContextActions>
+
+                                    <StackLayout Orientation="Vertical" Padding="8,10,0,10">
+                                        <Label TextColor="Black" FontAttributes="Bold"
+                                               Text="{Binding Name, Mode=TwoWay}" />
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="Dato:" />
+                                            <Label Text="{Binding StartDate, Mode=TwoWay}" />
+                                            <Label Text="-" />
+                                            <Label Text="{Binding EndDate, Mode=TwoWay}" />
                                         </StackLayout>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </Grid>
-                </ScrollView>
-            
-           <Button Margin="0,10,0,0" Grid.Row="3" Grid.ColumnSpan="2" Text="Log ud" TextColor="White" BackgroundColor="#ff7d7d" Command="{Binding LogoutCommand}" />
-            
-                
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </ScrollView>
 
-            </Grid>
+            <Button Margin="0,10,0,0" Grid.Row="3" Grid.ColumnSpan="2" Text="Log ud" TextColor="White"
+                    BackgroundColor="#ff7d7d" Command="{Binding LogoutCommand}" />
+
+
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

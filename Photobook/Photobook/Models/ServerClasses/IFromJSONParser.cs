@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Xamarin.Forms;
 
 namespace Photobook.Models
 {
@@ -26,7 +23,7 @@ namespace Photobook.Models
         {
             var data = await msg.Content.ReadAsStringAsync();
 
-            T result = default(T);
+            var result = default(T);
 
             try
             {
@@ -34,7 +31,6 @@ namespace Photobook.Models
             }
             catch (Exception e)
             {
-                
                 Debug.WriteLine(e.Message, "From Json Error");
                 Environment.Exit(0);
             }
@@ -42,6 +38,4 @@ namespace Photobook.Models
             return result;
         }
     }
-
- 
 }

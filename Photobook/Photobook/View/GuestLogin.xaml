@@ -1,64 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Photobook.View.GuestLogin"
              xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
-             NavigationPage.HasNavigationBar="true"
-             >
+             NavigationPage.HasNavigationBar="true">
     <ContentPage.Content>
         <Grid RowSpacing="1" ColumnSpacing="1">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <Image 
-            Source="{local:EmbeddedImage Photobook.Images.bg.png}"
-            HorizontalOptions="FillAndExpand"
-            VerticalOptions="FillAndExpand"
-            Aspect="AspectFill"
-            Grid.Row="0"
-            Grid.Column="0"
-            Grid.RowSpan="3"
-            Grid.ColumnSpan="1"
-        >
-        </Image>
+            <Image
+                Source="{local:EmbeddedImage Photobook.Images.bg.png}"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                Aspect="AspectFill"
+                Grid.Row="0"
+                Grid.Column="0"
+                Grid.RowSpan="3"
+                Grid.ColumnSpan="1" />
 
-        <Image
-            Source="{local:EmbeddedImage Photobook.Images.Logo.png}"
-            Grid.Row="0"
-            Grid.Column="0"
-            Margin="0,20,0,0"
-        >
+            <Image
+                Source="{local:EmbeddedImage Photobook.Images.Logo.png}"
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin="0,20,0,0" />
 
-        </Image>
+            <StackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="FillAndExpand"
+                         VerticalOptions="CenterAndExpand" Margin="70,70,70,0">
+                <Label HorizontalTextAlignment="Center" HorizontalOptions="Center" Text="Log ind på begivenhed"
+                       TextColor="White" />
 
-            <StackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Margin="70,70,70,0">
-            <Label HorizontalTextAlignment="Center" HorizontalOptions="Center" Text="Log ind på begivenhed" TextColor="White" />
+                <Entry Text="{Binding Guest.Username}" HorizontalTextAlignment="Center" Keyboard="Text"
+                       x:Name="usernameEntry" Placeholder="Dit fulde navn" TextColor="White" PlaceholderColor="White" />
+                <Entry Text="{Binding Guest.Pin}" HorizontalTextAlignment="Center" Keyboard="Text"
+                       x:Name="passwordEntry" Placeholder="PIN kode til event" TextColor="White"
+                       PlaceholderColor="White" IsPassword="true" />
 
-            <Entry Text="{Binding Guest.Username}" HorizontalTextAlignment="Center" Keyboard="Text" x:Name="usernameEntry" Placeholder="Dit fulde navn" TextColor="White" PlaceholderColor="White" />
-            <Entry Text="{Binding Guest.Pin}" HorizontalTextAlignment="Center" Keyboard="Text" x:Name="passwordEntry" Placeholder="PIN kode til event" TextColor="White" PlaceholderColor="White" IsPassword="true" />
+                <Label HorizontalTextAlignment="Center" HorizontalOptions="Center" Text="{Binding LoginInfo}"
+                       TextColor="Red" />
+                <Button BackgroundColor="White" Text="Log ind" Command="{Binding GuestLoginCommand, Mode=TwoWay}"
+                        IsEnabled="{Binding EnableButton}" />
+            </StackLayout>
 
-            <Label HorizontalTextAlignment="Center" HorizontalOptions="Center" Text="{Binding LoginInfo}" TextColor="Red" />
-            <Button BackgroundColor="White" Text="Log ind" Command="{Binding GuestLoginCommand, Mode=TwoWay}"
-                    IsEnabled="{Binding EnableButton}"/>
-        </StackLayout>
-
-        <ScrollView Grid.Row="2" Grid.Column="0" Margin="70,0,70,70" VerticalOptions="End">
-            <Grid Padding="0,10,0,10">
-                <ListView ItemsSource="{Binding ActiveGuests}" BackgroundColor="#f2f2f2" 
-                          HasUnevenRows="true" 
-                          SelectedItem="{Binding Current, Mode=TwoWay}"
-                          SelectionMode="Single">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <TextCell Text="{Binding Presentation}" />
-                            <!--<ViewCell>
+            <ScrollView Grid.Row="2" Grid.Column="0" Margin="70,0,70,70" VerticalOptions="End">
+                <Grid Padding="0,10,0,10">
+                    <ListView ItemsSource="{Binding ActiveGuests}" BackgroundColor="#f2f2f2"
+                              HasUnevenRows="true"
+                              SelectedItem="{Binding Current, Mode=TwoWay}"
+                              SelectionMode="Single">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextCell Text="{Binding Presentation}" />
+                                <!--<ViewCell>
                                     <StackLayout Orientation="Vertical" Padding="8,10,0,10" >
                                     <Label TextColor="Black" FontAttributes="Bold" Text="{Binding Presentation, 
                                         Mode=OneWay}"/>
@@ -67,14 +68,13 @@
                                     </StackLayout>
                                 </StackLayout>
                             </ViewCell>-->
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Grid>
-        </ScrollView>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </ScrollView>
         </Grid>
 
-         
 
     </ContentPage.Content>
 </ContentPage>

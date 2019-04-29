@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Photobook.Models
+﻿namespace Photobook.Models
 {
     public class PhotoToServer
     {

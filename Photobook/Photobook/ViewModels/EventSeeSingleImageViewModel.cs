@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows.Input;
 using Photobook.Models;
 using Prism.Commands;
@@ -12,41 +9,48 @@ namespace Photobook.ViewModels
 {
     public class EventSeeSingleImageViewModel : INotifyPropertyChanged
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        private TestImage _image;
 
-        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        private string _pictureTaker;
 
-        
+        private ICommand downloadSingleCommand;
 
 
         public INavigation Navigation;
+
         public EventSeeSingleImageViewModel(TestImage Img)
         {
             Image = Img;
         }
 
-        private TestImage _image;
         public TestImage Image
         {
-            get { return _image; }
-            set { _image = value; NotifyPropertyChanged(); }
+            get => _image;
+            set
+            {
+                _image = value;
+                NotifyPropertyChanged();
+            }
         }
-
-        private string _pictureTaker;
 
         public string PictureTaker
         {
-            get { return $"Taken by: {Image.FileName}"; }
-            set { _pictureTaker = value; NotifyPropertyChanged(); }
+            get => $"Taken by: {Image.FileName}";
+            set
+            {
+                _pictureTaker = value;
+                NotifyPropertyChanged();
+            }
         }
 
-        private ICommand downloadSingleCommand;
-        public ICommand DownloadSingleCommand
+        public ICommand DownloadSingleCommand =>
+            downloadSingleCommand ?? (downloadSingleCommand = new DelegateCommand(DownloadImage));
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            get { return downloadSingleCommand ?? (downloadSingleCommand = new DelegateCommand(DownloadImage)); }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void DownloadImage()

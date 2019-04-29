@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -19,25 +18,25 @@ namespace Photobook.Models
         NewEvent,
         Host,
         Picture,
-        Video,
-    };
-    
+        Video
+    }
+
     public interface IServerCommunicator
     {
         Task<bool> SendDataReturnIsValid(object o, DataType d);
         void AddCookies(CookieCollection _cookies);
-
     }
 
     public class ServerCommunicator : IServerCommunicator
     {
+        private readonly HttpClient client;
+        private readonly HttpClientHandler clientHandler;
+        private readonly CookieContainer cookies;
+        private readonly IServerDataHandler dataHandler;
+        private readonly IServerErrorcodeHandler errorHandler;
 
         private string Response;
-        private HttpClient client;
-        private CookieContainer cookies;
-        private HttpClientHandler clientHandler;
-        private IServerDataHandler dataHandler;
-        private IServerErrorcodeHandler errorHandler;
+
         public ServerCommunicator()
         {
             cookies = new CookieContainer();
@@ -68,18 +67,18 @@ namespace Photobook.Models
             dataHandler = _dataHandler;
             errorHandler = _errorHandler;
         }
+
         public void AddCookies(CookieCollection _cookies)
         {
-            
             cookies.Add(_cookies);
         }
 
         public async Task<bool> SendDataReturnIsValid(object dataToSend, DataType dataType)
         {
-            IJSONParser parser = ParserFactory.Generate(dataType);
+            var parser = ParserFactory.Generate(dataType);
             var data = parser.ParsedData(dataToSend);
 
-            if(!(dataType == DataType.Picture || dataType == DataType.Video))
+            if (!(dataType == DataType.Picture || dataType == DataType.Video))
                 Debug.WriteLine(data + DateTime.Now.ToString("ss.fff"), "JSON_DATA:");
 
             if (cookies.Count > 0)
@@ -124,13 +123,13 @@ namespace Photobook.Models
                 Debug.WriteLine(e);
                 return false;
             }
-            
+
             Debug.WriteLine(Response + DateTime.Now.ToString("ss.fff"), "SERVER_RESPONSE:");
 #endif
 
             try
             {
-                Uri cookieUrl =  new Uri(UrlFactory.Generate(dataType));
+                var cookieUrl = new Uri(UrlFactory.Generate(dataType));
                 var responseCookies = clientHandler.CookieContainer.GetCookies(cookieUrl);
 
                 dataHandler.LatestMessage = response;
@@ -144,26 +143,24 @@ namespace Photobook.Models
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<List<string>> GetImages(Photobook.Models.Event e)
+        public async Task<List<string>> GetImages(Event e)
         {
             clientHandler.CookieContainer.Add(SettingsManager.CurrentCookies);
             clientHandler.UseCookies = true;
             var response =
                 await client.GetAsync(
                     "https://photobookwebapi1.azurewebsites.net/api/Picture/Ids" + $"/{e.Pin}");
-            
+
             var rep = await response.Content.ReadAsStringAsync();
             Debug.WriteLine(rep, "ImageResponse");
-            if(String.IsNullOrEmpty(rep))
+            if (string.IsNullOrEmpty(rep))
                 return new List<string>();
 
             Debug.WriteLine(rep, "Images");
-            RootObject result =
+            var result =
                 JsonConvert.DeserializeObject<RootObject>(rep);
 
             return result.PictureList;
         }
-
-      
     }
 }

@@ -1,34 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Text;
-using System.Transactions;
-using Prism.Commands;
-using Prism.Common;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Photobook.Models;
-using System.Runtime.CompilerServices;
-using Photobook.View;
-using Xamarin.Forms;
-using System.Linq;
 using Photobook.Models.ServerClasses;
+using Photobook.View;
+using Prism.Commands;
+using Xamarin.Forms;
 
 namespace Photobook.ViewModels
 {
     public class NewHostViewModel : INotifyPropertyChanged
     {
+        private ICommand _newUserCommand;
+
+
+        private string _passwordValidation;
+
+        private string _SuccesTxt = "";
+        private readonly IServerCommunicator Com;
+
+        private readonly IServerDataHandler dataHandler;
+
+
+        private Host host;
+        private bool loggedIn;
         public INavigation Navigation;
-
-        private IServerDataHandler dataHandler;
-        private IServerCommunicator Com;
-        private bool loggedIn = false;
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         public NewHostViewModel()
         {
@@ -37,47 +35,52 @@ namespace Photobook.ViewModels
             Com = new ServerCommunicator(dataHandler);
             SuccesTxt = "";
         }
-        
-
-        private Host host;
 
         public Host Host
         {
-            get { return host; }
-            set { host = value; NotifyPropertyChanged(); ((Command)NewUserCommand).ChangeCanExecute(); }
-        }
-
-
-        private string _passwordValidation;
-        public string PasswordValidation
-        {
-            get { return _passwordValidation; }
-            set 
-            {   
-                _passwordValidation = value;
+            get => host;
+            set
+            {
+                host = value;
                 NotifyPropertyChanged();
-               
+                ((Command) NewUserCommand).ChangeCanExecute();
             }
         }
 
-        private string _SuccesTxt = "";
-        public string SuccesTxt
+        public string PasswordValidation
         {
-            get { return _SuccesTxt; }
-            set { _SuccesTxt = value; NotifyPropertyChanged(); }
+            get => _passwordValidation;
+            set
+            {
+                _passwordValidation = value;
+                NotifyPropertyChanged();
+            }
         }
 
-      
-        ICommand _newUserCommand;
-        public ICommand NewUserCommand
+        public string SuccesTxt
         {
-            get { return _newUserCommand ?? (_newUserCommand = new DelegateCommand(AddNewUser_Execute)); }
+            get => _SuccesTxt;
+            set
+            {
+                _SuccesTxt = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public ICommand NewUserCommand =>
+            _newUserCommand ?? (_newUserCommand = new DelegateCommand(AddNewUser_Execute));
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private async void AddNewUser_Execute()
         {
             loggedIn = false;
-            if(loggedIn)
+            if (loggedIn)
             {
                 await Navigation.PushAsync(new HostMainMenu(Host));
             }
@@ -99,7 +102,7 @@ namespace Photobook.ViewModels
                     if (await Com.SendDataReturnIsValid(Host, DataType.NewUser))
                     {
                         SettingsManager.SaveCookie(dataHandler.LatestReceivedCookies, host.Name);
-                        
+
                         var rootPage = Navigation.NavigationStack.FirstOrDefault();
                         if (rootPage != null)
                         {
@@ -115,14 +118,12 @@ namespace Photobook.ViewModels
                     {
                         SuccesTxt = "Fejl ved login";
                     }
-                    
                 }
                 else
                 {
                     SuccesTxt = "Check om at det er at dine passwords stemmer overens";
                 }
 
-                
 
                 // Vi skla her tjekke, at hvis det er rigtigt, sendes der en anmodning til server
                 // Om at oprette en ny bruger
@@ -133,11 +134,7 @@ namespace Photobook.ViewModels
 
 
                 // Giv den nye user som input parameter og vis info.
-
-                
             }
-            
         }
-
     }
 }

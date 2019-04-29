@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Photobook.View.HostView"
              NavigationPage.HasNavigationBar="true"
-             xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
-             >
+             xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook">
     <ContentPage.Content>
         <Grid RowSpacing="1" ColumnSpacing="1">
             <Grid.RowDefinitions>
@@ -15,8 +15,8 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
-            <Image 
+
+            <Image
                 Source="{local:EmbeddedImage Photobook.Images.bg.png}"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="FillAndExpand"
@@ -24,30 +24,27 @@
                 Grid.Row="0"
                 Grid.Column="0"
                 Grid.RowSpan="3"
-                Grid.ColumnSpan="1"
-                >
-            </Image>
-            
-            
-            
-             <Image
+                Grid.ColumnSpan="1" />
+
+
+            <Image
                 Source="{local:EmbeddedImage Photobook.Images.Logo.png}"
                 AbsoluteLayout.LayoutFlags="All"
                 Grid.Row="0"
                 Grid.Column="0"
-                Margin="0,20,0,0"
-                >
-         
-            </Image>
-            
-               
-            <StackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand" Margin="70">
-                <Label Margin="0,0,0,10" HorizontalOptions="CenterAndExpand" Text="Har du allerede en bruger?" TextColor="White" />
-                <Button Padding="10" Margin="0,0,0,10" BackgroundColor="White" Text="Log ind" Command="{Binding LoginCommand}"/>
+                Margin="0,20,0,0" />
+
+
+            <StackLayout Grid.Row="1" Grid.Column="0" HorizontalOptions="FillAndExpand"
+                         VerticalOptions="CenterAndExpand" Margin="70">
+                <Label Margin="0,0,0,10" HorizontalOptions="CenterAndExpand" Text="Har du allerede en bruger?"
+                       TextColor="White" />
+                <Button Padding="10" Margin="0,0,0,10" BackgroundColor="White" Text="Log ind"
+                        Command="{Binding LoginCommand}" />
                 <Button Padding="10" BackgroundColor="White" Text="Opret bruger" Command="{Binding CreateUserCommand}" />
 
             </StackLayout>
-        
+
         </Grid>
     </ContentPage.Content>
 </ContentPage>

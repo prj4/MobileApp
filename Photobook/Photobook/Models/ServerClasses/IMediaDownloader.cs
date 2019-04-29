@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Photobook.Models
@@ -11,10 +10,11 @@ namespace Photobook.Models
 
     public class ImageDownloadEventArgs : EventArgs
     {
-        public byte[] FileBytes { get; set; } = null;
-        public bool StatusOk { get; set; } = false;
+        public byte[] FileBytes { get; set; }
+        public bool StatusOk { get; set; }
     }
-    interface IMediaDownloader
+
+    internal interface IMediaDownloader
     {
         void DownloadSingleImage(string url);
         void DownloadAllImages(List<string> urls);
@@ -23,22 +23,23 @@ namespace Photobook.Models
 
     public class MediaDownloader : IMediaDownloader
     {
-        private CookieCollection cookies;
+        private readonly CookieCollection cookies;
+
         public MediaDownloader(CookieCollection _cookies)
         {
             cookies = _cookies;
         }
+
         public void DownloadSingleImage(string url)
         {
             Parallel.Invoke(() => DownloadImage(url));
-            
         }
 
         public event ImageDownload DownloadReady;
 
         public void DownloadAllImages(List<string> urls)
         {
-            Parallel.ForEach(urls, (url) => { DownloadImage(url); });
+            Parallel.ForEach(urls, url => { DownloadImage(url); });
         }
 
         private async void DownloadImage(string url)
@@ -46,7 +47,7 @@ namespace Photobook.Models
             HttpClient _httpClient;
             if (cookies != null)
             {
-                HttpClientHandler clientHandler = new HttpClientHandler();
+                var clientHandler = new HttpClientHandler();
                 clientHandler.CookieContainer = new CookieContainer();
                 clientHandler.CookieContainer.Add(cookies);
                 _httpClient = new HttpClient(clientHandler);
@@ -55,9 +56,9 @@ namespace Photobook.Models
             {
                 return;
             }
-            
-            ImageDownloadEventArgs image = new ImageDownloadEventArgs();
-            
+
+            var image = new ImageDownloadEventArgs();
+
 
             try
             {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Photobook.View;
+﻿using System.Collections.Generic;
 
 namespace Photobook.Models
 {
@@ -10,6 +7,7 @@ namespace Photobook.Models
         public string UserName { get; set; }
         public string Password { get; set; }
     }
+
     public class ServerHostResponse
     {
         public string name { get; set; }
@@ -17,4 +15,3 @@ namespace Photobook.Models
         public List<Event> events { get; set; }
     }
 }
-

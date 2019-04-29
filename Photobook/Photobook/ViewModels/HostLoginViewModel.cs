@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -13,6 +12,9 @@ namespace Photobook.ViewModels
 {
     public class HostLoginViewModel : INotifyPropertyChanged
     {
+        public INavigation Navigation;
+
+
         public Host Host { get; set; } = new Host();
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -21,22 +23,12 @@ namespace Photobook.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public INavigation Navigation;
-
-
-        public HostLoginViewModel()
-        {
-        }
-
 
         #region Commands
 
-
         private ICommand _LoginCommand;
-        public ICommand LoginCommand
-        {
-            get { return _LoginCommand ?? (_LoginCommand = new DelegateCommand(Login_Execute)); }
-        }
+
+        public ICommand LoginCommand => _LoginCommand ?? (_LoginCommand = new DelegateCommand(Login_Execute));
 
         private async void Login_Execute()
         {
@@ -49,7 +41,6 @@ namespace Photobook.ViewModels
 
             if (await Com.SendDataReturnIsValid(Host, DataType.Host))
             {
-
                 IFromJSONParser Parser = new FromJsonParser();
 
                 var ServerHost = await Parser.DeserializedData<Host>(handler.LatestMessage);
@@ -62,15 +53,8 @@ namespace Photobook.ViewModels
                     await Navigation.PopToRootAsync();
                 }
             }
-
-            
-
         }
 
         #endregion
-
-   
-
-
     }
 }

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Photobook.Helpers;
@@ -12,28 +11,71 @@ namespace Photobook.ViewModels
 {
     public class UpdateItemsGroupedPageViewmodel : INotifyPropertyChanged
     {
+        private static int insertId;
+
+
+        private object _lastTappedUser;
+
+
+        private ObservableCollection<Grouping<string, Guest>> _users;
+
+        public UpdateItemsGroupedPageViewmodel()
+        {
+            ReloadData();
+
+            ItemTappedCommand = new Command(param =>
+            {
+                var user = LastTappedUser as Guest;
+                if (user != null)
+                    Debug.WriteLine("Tapped {0}", user.Username);
+            });
+
+            AddCommand = new Command(param =>
+            {
+                insertId++;
+                Users[0].Insert(10, new Guest {Username = string.Format("New {0}", insertId)});
+            });
+        }
+
+        public ObservableCollection<Grouping<string, Guest>> Users
+        {
+            get => _users;
+            set
+            {
+                _users = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
+        //    var sorted = exampleData
+        //        .OrderBy(item => item.Username)
+        //        .ThenBy(item => item.Username.Length)
+        //        .GroupBy(item => item.Username)
+        //        .Select(itemGroup => new Grouping<string, Host>(itemGroup.Key, itemGroup));
+
+        //    Users = new ObservableCollection<Grouping<string, User>>(sorted);
+        //}
+
+
+        public ICommand ItemTappedCommand { get; set; }
+        public ICommand AddCommand { get; set; }
+
+        public object LastTappedUser
+        {
+            get => _lastTappedUser;
+            set
+            {
+                _lastTappedUser = value;
+                NotifyPropertyChanged();
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-
-
-        static int insertId = 0;
-
-
-        private ObservableCollection<Grouping<string, Guest>> _users;
-        public ObservableCollection<Grouping<string, Guest>> Users
-        {
-            get { return _users; }
-            set 
-            {
-                _users = value;
-                NotifyPropertyChanged();
-            }
         }
 
         public void ReloadData()
@@ -51,63 +93,5 @@ namespace Photobook.ViewModels
             }
             */
         }
-
-
-        //    var sorted = exampleData
-        //        .OrderBy(item => item.Username)
-        //        .ThenBy(item => item.Username.Length)
-        //        .GroupBy(item => item.Username)
-        //        .Select(itemGroup => new Grouping<string, Host>(itemGroup.Key, itemGroup));
-
-        //    Users = new ObservableCollection<Grouping<string, User>>(sorted);
-        //}
-
-
-        public ICommand ItemTappedCommand { get; set; }
-        public ICommand AddCommand { get; set; }
-
-        public UpdateItemsGroupedPageViewmodel()
-        {
-            ReloadData();
-
-            ItemTappedCommand = new Command((param) =>
-            {
-
-                var user = LastTappedUser as Guest;
-                if (user != null)
-                    System.Diagnostics.Debug.WriteLine("Tapped {0}", user.Username);
-
-            });
-
-            AddCommand = new Command((param) =>
-            {
-                insertId++;
-                Users[0].Insert(10, new Guest() { Username = string.Format("New {0}", insertId) });
-            });
-
-        }
-
-
-
-
-
-
-        private object _lastTappedUser;
-
-        public object LastTappedUser
-        {
-            get { return _lastTappedUser; }
-            set
-            {
-                _lastTappedUser = value;
-                NotifyPropertyChanged();
-            }
-        }
-
-
-
-
-
-
     }
 }

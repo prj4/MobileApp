@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Photobook.View.HostAddEvent"
-             BackgroundColor="#0e122a"
-             
-             >
+             BackgroundColor="#0e122a">
     <ContentPage.Content>
         <Grid RowSpacing="1" ColumnSpacing="1" Padding="20">
             <Grid.RowDefinitions>
@@ -15,59 +14,63 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            
+
             <StackLayout Margin="0,0,0,10" Orientation="Vertical" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
                 <Label Style="{StaticResource h1}" Text="Opret event" />
-                <Label Style="{StaticResource pTxt}" Text="For at dine gæster kan logge ind på det oprettede event, skal de bruge den 4 cifrede PIN-kode" />
-                <Label TextColor="red" Text="Du har indtastst mere end 50 ord i beskrivelsen!" IsVisible="{Binding isErrorMessageEnabled, Mode=TwoWay}"/>
+                <Label Style="{StaticResource pTxt}"
+                       Text="For at dine gæster kan logge ind på det oprettede event, skal de bruge den 4 cifrede PIN-kode" />
+                <Label TextColor="red" Text="Du har indtastst mere end 50 ord i beskrivelsen!"
+                       IsVisible="{Binding isErrorMessageEnabled, Mode=TwoWay}" />
             </StackLayout>
-    
+
             <ScrollView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-                <Grid Padding="0,0,0,10"> 
+                <Grid Padding="0,0,0,10">
                     <StackLayout>
-                        <Label Text="Event navn"  TextColor="White"/>
-                        <Entry HorizontalTextAlignment="Start" Keyboard="Text" Text="{Binding NewEvent.Name}" x:Name="HostUsername" Placeholder="Barnedåb, fest..." TextColor="White" PlaceholderColor="White" />
-                        
-                        <Label Text="Lokation"  TextColor="White"/>
-                        <Entry HorizontalTextAlignment="Start" Keyboard="Text" Text="{Binding NewEvent.Location}" Placeholder="Skanderborgvej 92, 2 st, 8000 Aarhus" TextColor="White" PlaceholderColor="White" />
-                        
-                        <Label Text="Beskrivelse"  TextColor="White"/>
-                        <Editor Text="{Binding Description}" Placeholder="Max. 50 ord" TextColor="White" PlaceholderColor="White" />
-                        
-                        <Label Text="Start dato"  TextColor="White"/>
-                        <DatePicker 
+                        <Label Text="Event navn" TextColor="White" />
+                        <Entry HorizontalTextAlignment="Start" Keyboard="Text" Text="{Binding NewEvent.Name}"
+                               x:Name="HostUsername" Placeholder="Barnedåb, fest..." TextColor="White"
+                               PlaceholderColor="White" />
+
+                        <Label Text="Lokation" TextColor="White" />
+                        <Entry HorizontalTextAlignment="Start" Keyboard="Text" Text="{Binding NewEvent.Location}"
+                               Placeholder="Skanderborgvej 92, 2 st, 8000 Aarhus" TextColor="White"
+                               PlaceholderColor="White" />
+
+                        <Label Text="Beskrivelse" TextColor="White" />
+                        <Editor Text="{Binding Description}" Placeholder="Max. 50 ord" TextColor="White"
+                                PlaceholderColor="White" />
+
+                        <Label Text="Start dato" TextColor="White" />
+                        <DatePicker
                             MinimumDate="{Binding MinDate, Mode=TwoWay}"
                             Date="{Binding StartDate}"
-                            TextColor="White"
-                        />
-                        
-                        <Label Text="Start tidspunkt"  TextColor="White"/>
-                        <TimePicker 
+                            TextColor="White" />
+
+                        <Label Text="Start tidspunkt" TextColor="White" />
+                        <TimePicker
                             Time="{Binding StartTime}"
                             Format="T"
-                            TextColor="White"
-                        />
-                        
-                        
+                            TextColor="White" />
+
+
                         <Label Text="Slut dato" TextColor="White" />
-                        <DatePicker 
+                        <DatePicker
                             MinimumDate="{Binding MinDate, Mode=TwoWay}"
                             Date="{Binding EndDate}"
-                            TextColor="White"
-                        />
-                        
-                         <Label Text="Slut tidspunkt"  TextColor="White"/>
-                        <TimePicker 
+                            TextColor="White" />
+
+                        <Label Text="Slut tidspunkt" TextColor="White" />
+                        <TimePicker
                             Time="{Binding EndTime}"
                             Format="T"
-                            TextColor="White"
-                        />
-                        
-                        
-                        <Button Text="Opret event" BackgroundColor="#f2f2f2" Command="{Binding CreateEventCommand}"/>
-                        <Button Text="Fortryd" TextColor="White" BackgroundColor="#ff7d7d" Command="{Binding RegretCommand}"/>
-                        
-                        
+                            TextColor="White" />
+
+
+                        <Button Text="Opret event" BackgroundColor="#f2f2f2" Command="{Binding CreateEventCommand}" />
+                        <Button Text="Fortryd" TextColor="White" BackgroundColor="#ff7d7d"
+                                Command="{Binding RegretCommand}" />
+
+
                     </StackLayout>
                 </Grid>
             </ScrollView>

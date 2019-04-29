@@ -1,5 +1,4 @@
-﻿
-namespace Photobook.Models
+﻿namespace Photobook.Models
 {
     public class ServerUser
     {

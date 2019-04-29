@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Photobook.Models;
-using Xamarin.Essentials;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace Photobook.View
 {
@@ -12,7 +7,6 @@ namespace Photobook.View
         public MainPage()
         {
             InitializeComponent();
-
         }
     }
 }

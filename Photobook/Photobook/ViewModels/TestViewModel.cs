@@ -5,34 +5,69 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows.Input;
-using PCLStorage;
 using Photobook.Models;
 using Photobook.View;
 using Prism.Commands;
-using Prism.Navigation.Xaml;
 using Xamarin.Forms;
 
 namespace Photobook.ViewModels
 {
     public class TestViewModel : INotifyPropertyChanged
     {
+        private ICommand _downloadAllCommand;
+        private readonly Event _event;
+
+
+        private ObservableCollection<TestImage> _items;
+
+
+        private ICommand _itemTappedCommand;
+
+
+        private object _lastTappedItem;
+        private IMediaDownloader Downloader;
+        public INavigation Navigation;
+
+        private readonly List<string> UrlList = new List<string>();
+
+        public TestViewModel(Event loadEvent)
+        {
+            _event = loadEvent;
+            ReloadData();
+        }
+
+        public ObservableCollection<TestImage> Items
+        {
+            get => _items;
+            set
+            {
+                _items = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public object LastTappedItem
+        {
+            get => _lastTappedItem;
+            set
+            {
+                _lastTappedItem = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public ICommand ItemTappedCommand =>
+            _itemTappedCommand ?? (_itemTappedCommand = new DelegateCommand(itemTapped_Execute));
+
+        public ICommand DownloadAllCommand =>
+            _downloadAllCommand ?? (_downloadAllCommand = new DelegateCommand(DownloadAll_Execute));
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private List<string> UrlList = new List<string>();
-        private IMediaDownloader Downloader;
-        public INavigation Navigation;
-        private Event _event;
-        public TestViewModel(Event loadEvent)
-        {
-            _event = loadEvent;
-            ReloadData();
         }
 
         private void Downloader_DownloadReady(ImageDownloadEventArgs e)
@@ -46,20 +81,18 @@ namespace Photobook.ViewModels
                 File.WriteAllBytes(fullPath, e.FileBytes);
             }
         }
-        
+
         public async void ReloadData()
         {
             var list = new ObservableCollection<TestImage>();
             var com = new ServerCommunicator();
-            
-            var urlList  = await com.GetImages(_event);
-            
+
+            var urlList = await com.GetImages(_event);
 
 
             foreach (var id in urlList)
             {
-
-                var item = new TestImage()
+                var item = new TestImage
                 {
                     ImageUrl = "https://photobookwebapi1.azurewebsites.net/api/Picture/" + $"{_event.Pin}/{id}",
                     FileName = string.Format($"Id: {id}")
@@ -82,7 +115,6 @@ namespace Photobook.ViewModels
             // Eventuel "FileName" bør være navnet på brugeren der har taget billedet
 
             // Alt det her under er bare dummy data
-
 
 
             //string[] images = {
@@ -109,46 +141,14 @@ namespace Photobook.ViewModels
             Items = list;
         }
 
-
-        private ObservableCollection<TestImage> _items;
-        public ObservableCollection<TestImage> Items
-        {
-            get { return _items; }
-            set { _items = value; NotifyPropertyChanged(); }
-        }
-
-
-        private object _lastTappedItem;
-        public object LastTappedItem
-        {
-            get { return _lastTappedItem; }
-            set { _lastTappedItem = value; NotifyPropertyChanged(); }
-        }
-
-
-
-        private ICommand _itemTappedCommand;
-        public ICommand ItemTappedCommand
-        {
-            get { return _itemTappedCommand ?? (_itemTappedCommand = new DelegateCommand(itemTapped_Execute)); }
-        }
-
         private void itemTapped_Execute()
         {
             var item = LastTappedItem as TestImage;
             if (item != null)
             {
-                System.Diagnostics.Debug.WriteLine($"Tapped {item.ImageUrl}");
-                    Navigation.PushAsync(new EventSeeSingleImage(item));
+                Debug.WriteLine($"Tapped {item.ImageUrl}");
+                Navigation.PushAsync(new EventSeeSingleImage(item));
             }
-
-        }
-
-
-        private ICommand _downloadAllCommand;
-        public ICommand DownloadAllCommand
-        {
-            get { return _downloadAllCommand ?? (_downloadAllCommand = new DelegateCommand(DownloadAll_Execute)); }
         }
 
         private async void DownloadAll_Execute()
@@ -157,9 +157,8 @@ namespace Photobook.ViewModels
             Downloader = new MediaDownloader(cookies);
             Downloader.DownloadReady += Downloader_DownloadReady;
 
-            if(UrlList != null && UrlList.Count > 0)
+            if (UrlList != null && UrlList.Count > 0)
                 Downloader.DownloadAllImages(UrlList);
         }
-
     }
 }

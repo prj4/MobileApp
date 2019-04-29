@@ -13,6 +13,5 @@ namespace Photobook.Models.ServerClasses
     {
         public CookieCollection LatestReceivedCookies { get; set; }
         public HttpResponseMessage LatestMessage { get; set; }
-        
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using DLToolkit.Forms.Controls;
+﻿using DLToolkit.Forms.Controls;
 using Photobook.Models;
 using Photobook.View;
 using Xamarin.Forms;
@@ -15,9 +14,9 @@ namespace Photobook
         {
             InitializeComponent();
             FlowListView.Init();
-            Xamarin.Forms.DependencyService.Register<ICameraAPI>();
+            DependencyService.Register<ICameraAPI>();
         }
-        
+
 
         protected override void OnStart()
         {
@@ -27,7 +26,6 @@ namespace Photobook
 
         protected override void OnSleep()
         {
-           
         }
 
         protected override void OnResume()

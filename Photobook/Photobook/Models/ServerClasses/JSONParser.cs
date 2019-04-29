@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net.Http;
-using System.Text;
 using Newtonsoft.Json;
-using Xamarin.Forms;
 
 namespace Photobook.Models
 {
@@ -21,7 +18,7 @@ namespace Photobook.Models
             Host tmpHost;
             try
             {
-                tmpHost = (Host)u;
+                tmpHost = (Host) u;
             }
             catch (Exception e)
             {
@@ -35,7 +32,6 @@ namespace Photobook.Models
             content.Add("Email", tmpHost.Email);
 
             return JsonConvert.SerializeObject(content);
-            
         }
     }
 
@@ -43,7 +39,7 @@ namespace Photobook.Models
     {
         public string ParsedData(object f)
         {
-            PhotoToServer ps = (PhotoToServer) f;
+            var ps = (PhotoToServer) f;
 
             var bytes = File.ReadAllBytes(ps.Path);
             var asString = Convert.ToBase64String(bytes);
@@ -60,15 +56,14 @@ namespace Photobook.Models
     {
         public string ParsedData(object u)
         {
-            Host tmpHost = new Host();
+            var tmpHost = new Host();
             try
             {
-                tmpHost = (Host)u;
+                tmpHost = (Host) u;
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-
             }
 
             var content = new Dictionary<string, string>();
@@ -99,7 +94,6 @@ namespace Photobook.Models
             content.Add("Pin", tmpUser.Pin);
 
             return JsonConvert.SerializeObject(content);
-
         }
     }
 
@@ -107,7 +101,7 @@ namespace Photobook.Models
     {
         public string ParsedData(object ne)
         {
-            Event newEvent = new Event();
+            var newEvent = new Event();
             try
             {
                 newEvent = (Event) ne;

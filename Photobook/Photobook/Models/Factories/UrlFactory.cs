@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
-
-namespace Photobook.Models
+﻿namespace Photobook.Models
 {
     public class UrlFactory
     {
+        private static readonly string NewHostServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/Host";
+        private static readonly string NewEventUrl = "https://photobookwebapi1.azurewebsites.net/api/Event";
+        private static readonly string GuestServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/Guest";
+        private static readonly string HostLoginUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/Login";
+        private static readonly string PictureUrl = "https://photobookwebapi1.azurewebsites.net/api/Picture";
 
-        private static string NewHostServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/Host";
-        private static string NewEventUrl = "https://photobookwebapi1.azurewebsites.net/api/Event";
-        private static string GuestServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/Guest";
-        private static string HostLoginUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/Login";
-        private static string PictureUrl = "https://photobookwebapi1.azurewebsites.net/api/Picture";
         public static string Generate(DataType d)
         {
             switch (d)

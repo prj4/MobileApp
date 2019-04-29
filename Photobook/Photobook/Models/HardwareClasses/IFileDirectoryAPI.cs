@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Photobook.Models
+﻿namespace Photobook.Models
 {
-   public interface IFileDirectoryAPI
-   {
-       string GetImagePath();
-   }
+    public interface IFileDirectoryAPI
+    {
+        string GetImagePath();
+    }
 }

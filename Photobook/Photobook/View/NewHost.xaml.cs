@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Photobook.Models;
-using Photobook.ViewModels;
+﻿using Photobook.ViewModels;
 using Xamarin.Forms;
 
 namespace Photobook.View
@@ -13,7 +10,6 @@ namespace Photobook.View
             vm.Navigation = Navigation;
             BindingContext = vm;
             InitializeComponent();
-
         }
     }
 }
