@@ -10,7 +10,7 @@ namespace Photobook.View
     {
         public ShowEvent(Event newEvent, bool ShowTopBar)
         {
-            var vm = new EventViewModel(newEvent, ShowTopBar);
+            var vm = new ShowEventViewModel(newEvent, ShowTopBar);
             vm.Navigation = Navigation;
             BindingContext = vm;
 
@@ -19,7 +19,7 @@ namespace Photobook.View
 
         public ShowEvent(Event newEvent, Guest currentGuest, bool ShowTopBar)
         {
-            var vm = new EventViewModel(newEvent, currentGuest, ShowTopBar);
+            var vm = new ShowEventViewModel(newEvent, currentGuest, ShowTopBar);
             vm.Navigation = Navigation;
             BindingContext = vm;
 

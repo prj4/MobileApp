@@ -21,7 +21,6 @@ namespace Photobook
 
         protected override void OnStart()
         {
-            //MainPage = new NavigationPage(new StartUpView());
             MainPage = new NavigationPage(new StartUpView());
         }
 

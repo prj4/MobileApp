@@ -93,7 +93,7 @@ namespace Photobook.ViewModels
 
                    Navigation.InsertPageBefore(new ShowEvent(eventFromServer, _guest, false),
                        Navigation.NavigationStack.First());
-                   Navigation.PopToRootAsync();
+                   await Navigation.PopToRootAsync(); 
                }
            }
            else

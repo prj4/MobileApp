@@ -14,7 +14,7 @@ using Event = Photobook.Models.Event;
 
 namespace Photobook.ViewModels
 {
-    public class EventViewModel : INotifyPropertyChanged
+    public class ShowEventViewModel : INotifyPropertyChanged
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -31,7 +31,7 @@ namespace Photobook.ViewModels
         private IMediaUploader MedUploader;
         private Guest _guest;
 
-        public EventViewModel(Event newEvent, bool ShowNavBar)
+        public ShowEventViewModel(Event newEvent, bool ShowNavBar)
         {
             _event = newEvent;
             ShowTopBar = ShowNavBar;
@@ -44,7 +44,7 @@ namespace Photobook.ViewModels
                 ShowLogoutBtn = true;
         }
 
-        public EventViewModel(Event newEvent, Guest currentGuest, bool ShowNavBar)
+        public ShowEventViewModel(Event newEvent, Guest currentGuest, bool ShowNavBar)
         {
             _event = newEvent;
             _guest = currentGuest;
@@ -144,9 +144,9 @@ namespace Photobook.ViewModels
             get { return _seeImagesCommand ?? (_seeImagesCommand = new DelegateCommand(SeeImages_Execute)); }
         }
 
-        private async void SeeImages_Execute()
+        private void SeeImages_Execute()
         {
-            await Navigation.PushAsync(new Test(_event));
+            Navigation.PushAsync(new EventSeeImages(_event), true);
         }
 
         private ICommand _uploadPictureCommand;
