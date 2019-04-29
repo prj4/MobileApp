@@ -52,17 +52,19 @@ namespace Photobook.ViewModels
             var list = new ObservableCollection<TestImage>();
             var com = new ServerCommunicator();
             
-            UrlList  = await com.GetImages(_event);
+            var urlList  = await com.GetImages(_event);
             
 
 
-            foreach (var id in UrlList)
+            foreach (var id in urlList)
             {
+
                 var item = new TestImage()
                 {
                     ImageUrl = "https://photobookwebapi1.azurewebsites.net/api/Picture/" + $"{_event.Pin}/{id}",
                     FileName = string.Format($"Id: {id}")
                 };
+                UrlList.Add(item.ImageUrl);
                 list.Add(item);
                 //completeUrl.Add("https://photobookwebapi1.azurewebsites.net/api/Picture/" + $"{e.Pin}/{id}");
             }
@@ -151,7 +153,8 @@ namespace Photobook.ViewModels
 
         private async void DownloadAll_Execute()
         {
-            Downloader = new MediaDownloader(await SettingsManager.GetCookies(_event.Pin));
+            var cookies = SettingsManager.CurrentCookies;
+            Downloader = new MediaDownloader(cookies);
             Downloader.DownloadReady += Downloader_DownloadReady;
 
             if(UrlList != null && UrlList.Count > 0)

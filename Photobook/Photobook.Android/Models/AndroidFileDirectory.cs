@@ -1,4 +1,6 @@
-﻿using Android.OS;
+﻿using System.IO;
+using Android.OS;
+using Android.Provider;
 using Photobook.Droid.Models;
 using Photobook.Models;
 using Xamarin.Forms;
@@ -10,8 +12,11 @@ namespace Photobook.Droid.Models
     {
         public string GetImagePath()
         {
-            
-            return Environment.GetExternalStoragePublicDirectory(Environment.DirectoryPictures).AbsolutePath;
+            string DownloadDir = Environment.GetExternalStoragePublicDirectory(Environment.DirectoryDownloads)
+                .AbsolutePath;
+            string FullPath = DownloadDir + "/PhotobookPictures";
+            Directory.CreateDirectory(FullPath);
+            return FullPath;
         }
     }
 }

@@ -8,10 +8,11 @@
              BackgroundColor="#0e122a">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Download all" Command="{Binding DownloadAllCommand}" />
+        <ToolbarItem Text="Download all" Command="{Binding DownloadAllCommand}"/>
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>
+
         <flv:FlowListView SeparatorVisibility="None" HasUnevenRows="true"
                           FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
                           FlowColumnMinWidth="110" FlowItemsSource="{Binding Items}">
@@ -28,7 +29,8 @@
                         </Grid.ColumnDefinitions>
 
                         <Image HeightRequest="100" Aspect="AspectFill" 
-                               Source="{Binding ImageUrl}">
+                               Source="{Binding ImageUrl}"
+                               >
                         </Image>
 
                         <!--<ffimageloading:CachedImage HeightRequest="100" Aspect="AspectFill"
