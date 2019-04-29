@@ -9,7 +9,7 @@ using Xamarin.Forms;
 
 namespace Photobook.ViewModels
 {
-    public class EventViewModel : INotifyPropertyChanged
+    public class ShowEventViewModel : INotifyPropertyChanged
     {
         private readonly Event _event;
         private readonly Guest _guest;
@@ -19,7 +19,7 @@ namespace Photobook.ViewModels
 
         public INavigation Navigation;
 
-        public EventViewModel(Event newEvent, bool ShowNavBar)
+        public ShowEventViewModel(Event newEvent, bool ShowNavBar)
         {
             _event = newEvent;
             ShowTopBar = ShowNavBar;
@@ -32,7 +32,7 @@ namespace Photobook.ViewModels
                 ShowLogoutBtn = true;
         }
 
-        public EventViewModel(Event newEvent, Guest currentGuest, bool ShowNavBar)
+        public ShowEventViewModel(Event newEvent, Guest currentGuest, bool ShowNavBar)
         {
             _event = newEvent;
             _guest = currentGuest;
@@ -134,9 +134,9 @@ namespace Photobook.ViewModels
         public ICommand SeeImagesCommand =>
             _seeImagesCommand ?? (_seeImagesCommand = new DelegateCommand(SeeImages_Execute));
 
-        private async void SeeImages_Execute()
+        private void SeeImages_Execute()
         {
-            await Navigation.PushAsync(new Test(_event));
+            Navigation.PushAsync(new EventSeeImages(_event), true);
         }
 
         private ICommand _uploadPictureCommand;
