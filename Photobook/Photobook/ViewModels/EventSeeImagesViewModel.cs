@@ -31,11 +31,13 @@ namespace Photobook.ViewModels
             ReloadData();
         }
 
-        public string url;
+        private ObservableCollection<TestImage> list;
+        private ServerCommunicator com;
+
         public async void ReloadData()
         {
-            var list = new ObservableCollection<TestImage>();
-            var com = new ServerCommunicator();
+            list = new ObservableCollection<TestImage>();
+            com = new ServerCommunicator();
 
             var ids = await com.GetImages(_event);
             var completeUrl = new List<string>();

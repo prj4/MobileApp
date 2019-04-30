@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -49,9 +50,6 @@ namespace Photobook.ViewModels
 
         public string Gesture => $"Hej {Host.Name}!";
 
-        public ICommand DeleteEventCommand =>
-            _deleteEventCommand ?? (_deleteEventCommand = new DelegateCommand(DeleteEvent_Execute));
-
         public ICommand AddEventCommand =>
             _addEventCommand ?? (_addEventCommand = new DelegateCommand(AddEvent_Execute));
 
@@ -65,11 +63,23 @@ namespace Photobook.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void DeleteEvent_Execute()
-        {
-            Events.Remove(SelectedEvent);
-            TestText = _selectedEvent.Name;
 
+
+
+        public ICommand DeleteEventCommand
+        {
+            get
+            {
+                return _deleteEventCommand ?? (_deleteEventCommand = new DelegateCommand<Event>(DeleteEvent_Execute));
+            }
+        }
+      
+
+
+        private void DeleteEvent_Execute(Event _event)
+        {
+            Events.Remove(_event);
+            
             NotifyPropertyChanged("Events");
         }
 

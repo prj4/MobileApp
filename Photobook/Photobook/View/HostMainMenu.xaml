@@ -5,7 +5,9 @@
              x:Class="Photobook.View.HostMainMenu"
              xmlns:local="clr-namespace:Photobook.MarkupExtensions; assembly=Photobook"
              BackgroundColor="#0e122a"
-             NavigationPage.HasNavigationBar="false">
+             NavigationPage.HasNavigationBar="false"
+             x:Name="HostMenu"
+             >
     <ContentPage.Content>
         <Grid RowSpacing="1" ColumnSpacing="1" Padding="20">
             <Grid.RowDefinitions>
@@ -34,14 +36,15 @@
 
             <ScrollView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                 <Grid Padding="0,10,0,10">
-                    <ListView ItemsSource="{Binding Events}" x:Name="listView" BackgroundColor="#f2f2f2"
+                    <ListView ItemsSource="{Binding Events, Mode=TwoWay}" x:Name="listView" BackgroundColor="#f2f2f2"
                               HasUnevenRows="true" SelectedItem="{Binding SelectedEvent, Mode=TwoWay}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
                                     <ViewCell.ContextActions>
-                                        <MenuItem Text="Slet" Command="{Binding DeleteEventCommand, Mode=TwoWay}"
-                                                  IsDestructive="true" />
+                                        <MenuItem Text="Slet" Command="{Binding Source={x:Reference HostMenu}, Path=BindingContext.DeleteEventCommand}"
+                                                  IsDestructive="true" 
+                                                  CommandParameter="{Binding .}"/>
                                     </ViewCell.ContextActions>
 
                                     <StackLayout Orientation="Vertical" Padding="8,10,0,10">
