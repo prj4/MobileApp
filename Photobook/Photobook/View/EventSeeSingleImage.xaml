@@ -6,6 +6,7 @@
              BackgroundColor="#0e122a">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Download" Command="{Binding DownloadSingleCommand}" />
+        <ToolbarItem Text="Delete" Command="{Binding DeleteImageCommand}" />
     </ContentPage.ToolbarItems>
 
     <ContentPage.Content>

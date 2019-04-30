@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Photobook.Models;
@@ -41,6 +42,15 @@ namespace Photobook.ViewModels
                 _pictureTaker = value;
                 NotifyPropertyChanged();
             }
+        }
+        
+
+        private ICommand _deleteImageCommand;
+        public ICommand DeleteImageCommand => _deleteImageCommand ?? (_deleteImageCommand = new DelegateCommand(DeleteImage_Execute));
+
+        private void DeleteImage_Execute()
+        {
+            Debug.WriteLine("Delete image");
         }
 
         public ICommand DownloadSingleCommand =>
