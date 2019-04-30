@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
@@ -31,16 +33,36 @@ namespace Photobook.ViewModels
             ReloadData();
         }
 
-        private ObservableCollection<TestImage> list;
-        private ServerCommunicator com;
+        //private bool showProgress = false;
 
+        //public bool ShowProgress
+        //{
+        //    get { return showProgress; }
+        //    set { showProgress = value; }
+        //}
+
+        private string downloadProgress = "";
+
+        public string DownloadProgress
+        {
+            get { return downloadProgress; }
+            set
+            {
+                downloadProgress = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private List<string> UrlList;
+
+        public string url;
         public async void ReloadData()
         {
             list = new ObservableCollection<TestImage>();
             com = new ServerCommunicator();
 
             var ids = await com.GetImages(_event);
-            var completeUrl = new List<string>();
+            UrlList = new List<string>();
 
             foreach (var id in ids)
             {
@@ -49,46 +71,11 @@ namespace Photobook.ViewModels
                     ImageUrl = "https://photobookwebapi1.azurewebsites.net/api/Picture/" + $"{_event.Pin}/{id}",
                     FileName = string.Format($"Id: {id}")
                 };
+                UrlList.Add(item.ImageUrl);
                 list.Add(item);
             }
 
-            // serverCommunicator.GetImages(_event);
-            // Her skal alle Id'er hentes
-            // Så tænker jeg, at for alle ID'er der er, så skal de bare hentes således:
-            // photobookwebapi1.azurewebsites.net{eventpin]/id
-            // Så et for loop, der henter alle, indsætter ID'et i URL'en
-            // Og indsætter det rigtige ID til sidst
-            // Dvs. at for at vise billedet skal jeg bare have et link som dette: 
-            // https://photobookwebapi1.azurewebsites.net/api/Picture/rine2164bk/4
-
-            // Hvert link indsættes "Items"
-            // Eventuel "FileName" bør være navnet på brugeren der har taget billedet
-
-            // Alt det her under er bare dummy data
-
-
-
-            //string[] images = {
-            //    "https://farm2.staticflickr.com/1227/1116750115_b66dc3830e.jpg",
-            //    "https://farm8.staticflickr.com/7351/16355627795_204bf423e9.jpg",
-            //    "https://farm1.staticflickr.com/44/117598011_250aa8ffb1.jpg",
-            //    "https://farm8.staticflickr.com/7524/15620725287_3357e9db03.jpg",
-            //    "https://farm9.staticflickr.com/8351/8299022203_de0cb894b0.jpg",
-            //    "https://images.unsplash.com/photo-1555863040-89ea8aa29a36?ixlib=rb-1.2.1&auto=format&fit=crop&w=1191&q=80",
-            //    "https://photobookwebapi1.azurewebsites.net/api/Picture/rine2164bk/4"
-            //};
-
-            //for (int n = 0; n < images.Length; n++)
-            //{
-            //    var item = new TestImage()
-            //    {
-            //        ImageUrl = images[n],
-            //        FileName = string.Format("Oskar, gudesønnen")
-            //    };
-
-            //    list.Add(item);
-            //}
-
+           
             Items = list;
         }
 
@@ -121,7 +108,7 @@ namespace Photobook.ViewModels
             var item = LastTappedItem as TestImage;
             if (item != null)
             {
-                System.Diagnostics.Debug.WriteLine($"Tapped {item.ImageUrl}");
+                Debug.WriteLine($"Tapped {item.ImageUrl}");
                     Navigation.PushAsync(new EventSeeSingleImage(item));
             }
 
@@ -136,9 +123,33 @@ namespace Photobook.ViewModels
 
         private void DownloadAll_Execute()
         {
-
-            // Download all images.
+            var cookies = SettingsManager.CurrentCookies;
+            IMediaDownloader downloader = new MediaDownloader(cookies);
+            downloader.Downloading += Downloader_DownloadReady;
+            downloader.DownloadStarted += delegate(int count) { DownloadProgress = $"Downloading {0}/{count}";
+                Count = count;
+            };
+            downloader.DownloadAllImages(UrlList);
         }
 
+        private int Progress = 0;
+        private int Count = 0;
+        private void Downloader_DownloadReady(ImageDownloadEventArgs e)
+        {
+            if (e.StatusOk)
+            {
+                var directoryPath = DependencyService.Get<IFileDirectoryAPI>().GetImagePath();
+                var fileName = $"/photobook{DateTime.Now.ToString("yyMMddHHmmss")}.PNG";
+                var fullPath = directoryPath + fileName;
+                File.WriteAllBytes(fullPath, e.FileBytes);
+                DownloadProgress = $"Downloading {Progress++}/{Count}";
+                if (Progress == Count)
+                {
+                    Progress = 0;
+                    DownloadProgress = "Done!";
+                }
+                
+            }
+        }
     }
 }
