@@ -25,7 +25,7 @@ namespace Photobook.View
                     , DataType.Guest);
 
                 IMediaDownloader downloader = new MediaDownloader(handler.LatestReceivedCookies);
-                downloader.DownloadReady += e =>
+                downloader.Downloading += e =>
                 {
                     if (e.StatusOk)
                     {

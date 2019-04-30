@@ -8,6 +8,10 @@ namespace Photobook.Models
 {
     public delegate void ImageDownload(ImageDownloadEventArgs e);
 
+    public delegate void ImageCount(int count);
+
+    public delegate void Done();
+
     public class ImageDownloadEventArgs : EventArgs
     {
         public byte[] FileBytes { get; set; }
@@ -18,13 +22,15 @@ namespace Photobook.Models
     {
         void DownloadSingleImage(string url);
         void DownloadAllImages(List<string> urls);
-        event ImageDownload DownloadReady;
+        event ImageCount DownloadStarted;
+        event ImageDownload Downloading;
     }
 
     public class MediaDownloader : IMediaDownloader
     {
         private readonly CookieCollection cookies;
-
+        public event ImageCount DownloadStarted;
+        public event ImageDownload Downloading;
         public MediaDownloader(CookieCollection _cookies)
         {
             cookies = _cookies;
@@ -35,10 +41,11 @@ namespace Photobook.Models
             Parallel.Invoke(() => DownloadImage(url));
         }
 
-        public event ImageDownload DownloadReady;
+        
 
         public void DownloadAllImages(List<string> urls)
         {
+            DownloadStarted?.Invoke(urls.Count);
             Parallel.ForEach(urls, url => { DownloadImage(url); });
         }
 
@@ -69,18 +76,18 @@ namespace Photobook.Models
                         image.FileBytes = await httpResponse.Content.ReadAsByteArrayAsync();
                         image.StatusOk = true;
 
-                        DownloadReady?.Invoke(image);
+                        Downloading?.Invoke(image);
                     }
                     else
                     {
-                        DownloadReady.Invoke(image);
+                        Downloading?.Invoke(image);
                     }
                 }
             }
             catch (Exception e)
             {
                 //Handle Exception
-                DownloadReady?.Invoke(image);
+                Downloading?.Invoke(image);
             }
         }
     }
