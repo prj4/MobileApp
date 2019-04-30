@@ -27,6 +27,9 @@ namespace Photobook.ViewModels
 
         public INavigation Navigation;
         private Event _event;
+        private ObservableCollection<TestImage> list;
+        private ServerCommunicator com;
+
         public EventSeeImagesViewModel(Event loadEvent)
         {
             _event = loadEvent;
