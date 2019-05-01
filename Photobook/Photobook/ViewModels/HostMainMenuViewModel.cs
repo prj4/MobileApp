@@ -1,9 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using PB.Dto;
 using Photobook.Models;
 using Photobook.View;
 using Prism.Commands;
@@ -36,6 +38,23 @@ namespace Photobook.ViewModels
                 _host = new Host();
                 _host.Name = "Troels Bleicken";
             }
+            _events = new ObservableCollection<EventModel>();
+        }
+
+        public HostMainMenuViewModel(Host host, List<EventModel> events)
+        {
+            _selectedEvent = null;
+
+            if (host != null)
+            {
+                _host = host;
+            }
+            else
+            {
+                _host = new Host();
+                _host.Name = "Troels Bleicken";
+            }
+            _events = new ObservableCollection<EventModel>(events);
         }
 
         public Host Host
@@ -70,13 +89,13 @@ namespace Photobook.ViewModels
         {
             get
             {
-                return _deleteEventCommand ?? (_deleteEventCommand = new DelegateCommand<Event>(DeleteEvent_Execute));
+                return _deleteEventCommand ?? (_deleteEventCommand = new DelegateCommand<EventModel>(DeleteEvent_Execute));
             }
         }
       
 
 
-        private void DeleteEvent_Execute(Event _event)
+        private void DeleteEvent_Execute(EventModel _event)
         {
             Events.Remove(_event);
             
@@ -101,11 +120,11 @@ namespace Photobook.ViewModels
         }
 
 
-        #region Event liste
+        #region EventModel liste
 
-        private ObservableCollection<Event> _events = new ObservableCollection<Event>();
+        private ObservableCollection<EventModel> _events;
 
-        public ObservableCollection<Event> Events
+        public ObservableCollection<EventModel> Events
         {
             get => _events;
             set
@@ -130,9 +149,9 @@ namespace Photobook.ViewModels
             }
         }
 
-        private Event _selectedEvent;
+        private EventModel _selectedEvent;
 
-        public Event SelectedEvent
+        public EventModel SelectedEvent
         {
             get => _selectedEvent;
             set

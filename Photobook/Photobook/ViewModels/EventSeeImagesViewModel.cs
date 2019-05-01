@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Input;
+using PB.Dto;
 using Photobook.Models;
 using Photobook.View;
 using Prism.Commands;
@@ -26,11 +27,11 @@ namespace Photobook.ViewModels
         }
 
         public INavigation Navigation;
-        private Event _event;
+        private EventModel _event;
         private ObservableCollection<TestImage> list;
         private ServerCommunicator com;
 
-        public EventSeeImagesViewModel(Event loadEvent)
+        public EventSeeImagesViewModel(EventModel loadEvent)
         {
             _event = loadEvent;
             ReloadData();

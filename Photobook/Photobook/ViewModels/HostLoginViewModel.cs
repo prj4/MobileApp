@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using PB.Dto;
 using Photobook.Models;
 using Photobook.Models.ServerClasses;
 using Photobook.View;
@@ -52,6 +53,7 @@ namespace Photobook.ViewModels
                     Navigation.InsertPageBefore(new HostMainMenu(ServerHost), Navigation.NavigationStack.First());
                     await Navigation.PopToRootAsync();
                 }
+                
             }
         }
 

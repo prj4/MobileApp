@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using PB.Dto;
 using Photobook.Models.ServerClasses;
 using Photobook.Models.ServerDataClasses;
 
@@ -145,7 +146,7 @@ namespace Photobook.Models
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<List<string>> GetImages(Event e)
+        public async Task<List<string>> GetImages(EventModel e)
         {
             clientHandler.CookieContainer.Add(SettingsManager.CurrentCookies);
             clientHandler.UseCookies = true;

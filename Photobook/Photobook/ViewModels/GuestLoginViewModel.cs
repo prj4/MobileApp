@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using PB.Dto;
 using Photobook.Models;
 using Photobook.Models.ServerClasses;
 using Photobook.View;
@@ -20,13 +21,13 @@ namespace Photobook.ViewModels
         private GuestAtEvent current;
 
         private bool enableButton = true;
-        private Event eventFromServer;
+        private EventModel eventFromServer;
         public INavigation Navigation;
 
         public GuestLoginViewModel()
         {
             Guest = new Guest();
-            eventFromServer = new Event();
+            eventFromServer = new EventModel();
 
             InitializeGuests();
         }
@@ -105,7 +106,7 @@ namespace Photobook.ViewModels
                 var message = Data.LatestMessage;
                 IFromJSONParser parser = new FromJsonParser();
 
-                eventFromServer = await parser.DeserializedData<Event>(message);
+                eventFromServer = await parser.DeserializedData<EventModel>(message);
 
 
                 SettingsManager.SaveCookie(Data.LatestReceivedCookies, _guest.Username);

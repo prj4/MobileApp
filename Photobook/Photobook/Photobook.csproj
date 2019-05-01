@@ -45,6 +45,9 @@
     <Reference Include="Mono.Android">
       <HintPath>..\..\..\..\..\..\..\..\Library\Frameworks\Xamarin.Android.framework\Versions\9.1.8-0\lib\xamarin.android\xbuild-frameworks\MonoAndroid\v8.1\Mono.Android.dll</HintPath>
     </Reference>
+    <Reference Include="PB.Dto">
+      <HintPath>..\PB.Dto.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="View\NewHost.xaml.cs">

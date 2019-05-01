@@ -1,4 +1,6 @@
-﻿using Photobook.Models;
+﻿using System.Collections.Generic;
+using PB.Dto;
+using Photobook.Models;
 using Photobook.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -15,6 +17,11 @@ namespace Photobook.View
             BindingContext = vm;
 
             InitializeComponent();
+        }
+
+        public HostMainMenu(Host host, List<EventModel> sHost)
+        {
+            var vm = new HostMainMenuViewModel(host, sHost);
         }
     }
 }
