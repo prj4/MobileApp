@@ -52,11 +52,12 @@ namespace Photobook.Models
         private async void DownloadImage(string url)
         {
             HttpClient _httpClient;
+            var clientHandler = new HttpClientHandler();
             if (cookies != null)
             {
-                var clientHandler = new HttpClientHandler();
                 clientHandler.CookieContainer = new CookieContainer();
                 clientHandler.CookieContainer.Add(cookies);
+                clientHandler.UseCookies = true;
                 _httpClient = new HttpClient(clientHandler);
             }
             else
