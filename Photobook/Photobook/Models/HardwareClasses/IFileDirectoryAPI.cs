@@ -3,5 +3,6 @@
     public interface IFileDirectoryAPI
     {
         string GetImagePath();
+        string GetTempPath();
     }
 }

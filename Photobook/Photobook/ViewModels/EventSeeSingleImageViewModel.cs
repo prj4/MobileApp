@@ -69,7 +69,7 @@ namespace Photobook.ViewModels
             if (cookies != null)
             {
                 IMediaDownloader downloader = new MediaDownloader(cookies);
-                downloader.DownloadSingleImage(Image.ImageUrl);
+                //downloader.DownloadSingleImage(Image.ImagePath);
             }
         }
     }

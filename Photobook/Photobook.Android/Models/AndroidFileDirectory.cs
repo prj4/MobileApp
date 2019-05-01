@@ -18,5 +18,13 @@ namespace Photobook.Droid.Models
             Directory.CreateDirectory(FullPath);
             return FullPath;
         }
+
+        public string GetTempPath()
+        {
+            string temp = Environment.GetExternalStoragePublicDirectory(Environment.DirectoryDocuments).AbsolutePath;
+            string FullPath = temp + "/_tempFiles";
+            Directory.CreateDirectory(FullPath);
+            return FullPath;
+        }
     }
 }

@@ -62,27 +62,45 @@ namespace Photobook.ViewModels
         public string url;
         public async void ReloadData()
         {
-            list = new ObservableCollection<TestImage>();
             com = new ServerCommunicator();
+            list = new ObservableCollection<TestImage>();
 
             var ids = await com.GetImages(_event);
             UrlList = new List<string>();
 
+            var images = new List<string>();
             foreach (var id in ids)
             {
-                var item = new TestImage()
-                {
-                    ImageUrl = "https://photobookwebapi1.azurewebsites.net/api/Picture/" + $"{_event.Pin}/{id}",
-                    FileName = string.Format($"Id: {id}")
-                };
-                UrlList.Add(item.ImageUrl);
-                list.Add(item);
+                images.Add("https://photobookwebapi1.azurewebsites.net/api/Picture/Preview/" + $"{_event.Pin}/{id}");
+
+                UrlList.Add("https://photobookwebapi1.azurewebsites.net/api/Picture/" + $"{_event.Pin}/{id}");
             }
 
-           
-            Items = list;
+            IMediaDownloader downloader = new MediaDownloader(SettingsManager.CurrentCookies);
+            downloader.Downloading += Downloader_DownloadPreview;
+            downloader.DownloadAllImages(images);
+            
+            
         }
 
+        private void Downloader_DownloadPreview(ImageDownloadEventArgs e)
+        {
+            if (e.StatusOk)
+            {
+                var path = DependencyService.Get<IFileDirectoryAPI>().GetTempPath() + '/';
+                var fileName = $"_temp{DateTime.Now.ToString("yyMMddHHmmss")}.PNG";
+                var fullPath = path + fileName;
+
+                File.WriteAllBytes(fullPath, e.FileBytes);
+
+                list.Add(new TestImage
+                {
+                    FileName = fileName.Substring(5, 12),
+                    ImagePath = fullPath,
+                    ImageUriPath = new Uri(fullPath)
+                });
+            }
+        }
 
         private ObservableCollection<TestImage> _items;
         public ObservableCollection<TestImage> Items
@@ -112,7 +130,7 @@ namespace Photobook.ViewModels
             var item = LastTappedItem as TestImage;
             if (item != null)
             {
-                Debug.WriteLine($"Tapped {item.ImageUrl}");
+                Debug.WriteLine($"Tapped {item.ImagePath}");
                     Navigation.PushAsync(new EventSeeSingleImage(item));
             }
 
@@ -129,7 +147,7 @@ namespace Photobook.ViewModels
         {
             var cookies = SettingsManager.CurrentCookies;
             IMediaDownloader downloader = new MediaDownloader(cookies);
-            downloader.Downloading += Downloader_DownloadReady;
+            downloader.Downloading += Downloader_DownloadFull;
             downloader.DownloadStarted += delegate(int count) { DownloadProgress = $"Downloading {0}/{count}";
                 Count = count;
             };
@@ -138,7 +156,7 @@ namespace Photobook.ViewModels
 
         private int Progress = 0;
         private int Count = 0;
-        private void Downloader_DownloadReady(ImageDownloadEventArgs e)
+        private void Downloader_DownloadFull(ImageDownloadEventArgs e)
         {
             if (e.StatusOk)
             {

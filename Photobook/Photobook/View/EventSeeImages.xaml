@@ -32,7 +32,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Image HeightRequest="100" Aspect="AspectFill" 
-                               Source="{Binding ImageUrl}">
+                               Source="{Binding ImageUriPath}">
                         </Image>
 
                         <Label x:Name="Label" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="End"
