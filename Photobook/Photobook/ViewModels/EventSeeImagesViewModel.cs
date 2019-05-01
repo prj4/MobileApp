@@ -27,6 +27,9 @@ namespace Photobook.ViewModels
 
         public INavigation Navigation;
         private Event _event;
+        private ObservableCollection<TestImage> list;
+        private ServerCommunicator com;
+
         public EventSeeImagesViewModel(Event loadEvent)
         {
             _event = loadEvent;
@@ -58,8 +61,8 @@ namespace Photobook.ViewModels
         public string url;
         public async void ReloadData()
         {
-            var list = new ObservableCollection<TestImage>();
-            var com = new ServerCommunicator();
+            list = new ObservableCollection<TestImage>();
+            com = new ServerCommunicator();
 
             var ids = await com.GetImages(_event);
             UrlList = new List<string>();
