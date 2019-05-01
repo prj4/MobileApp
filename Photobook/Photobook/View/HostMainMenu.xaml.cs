@@ -10,7 +10,7 @@ namespace Photobook.View
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HostMainMenu : ContentPage
     {
-        public HostMainMenu(Host host)
+        public HostMainMenu(ReturnHostModel host)
         {
             var vm = new HostMainMenuViewModel(host);
             vm.Navigation = Navigation;
@@ -19,9 +19,22 @@ namespace Photobook.View
             InitializeComponent();
         }
 
-        public HostMainMenu(Host host, List<EventModel> sHost)
+        public HostMainMenu(ReturnHostModel host, List<EventModel> sHost)
         {
             var vm = new HostMainMenuViewModel(host, sHost);
+            vm.Navigation = Navigation;
+            BindingContext = vm;
+
+            InitializeComponent();
+        }
+
+        public HostMainMenu(Host _host)
+        {
+            var vm = new HostMainMenuViewModel(_host);
+            vm.Navigation = Navigation;
+            BindingContext = vm;
+
+            InitializeComponent();
         }
     }
 }

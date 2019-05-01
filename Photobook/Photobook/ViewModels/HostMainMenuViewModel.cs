@@ -41,13 +41,31 @@ namespace Photobook.ViewModels
             _events = new ObservableCollection<EventModel>();
         }
 
-        public HostMainMenuViewModel(Host host, List<EventModel> events)
+        public HostMainMenuViewModel(ReturnHostModel hostModel)
+        {
+            
+            
+            _selectedEvent = null;
+
+            if (hostModel != null)
+            {
+                _host = new Host(hostModel);
+            }
+            else
+            {
+                _host = new Host();
+                _host.Name = "Troels Bleicken";
+            }
+            _events = new ObservableCollection<EventModel>();
+        }
+
+        public HostMainMenuViewModel(ReturnHostModel hostModel, List<EventModel> events)
         {
             _selectedEvent = null;
 
-            if (host != null)
+            if (hostModel != null)
             {
-                _host = host;
+                _host = new Host(hostModel);
             }
             else
             {
