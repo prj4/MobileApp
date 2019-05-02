@@ -17,10 +17,6 @@ namespace Photobook.View
             BindingContext = vm;
             InitializeComponent();
         }
-
-        private void EventSeeImages_OnDisappearing(object sender, EventArgs e)
-        {
-            vm.OnLeave(sender, e);
-        }
+        
     }
 }

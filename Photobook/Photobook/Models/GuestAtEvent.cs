@@ -12,7 +12,6 @@ namespace Photobook.Models
         public string Presentation
         {
             get => $"{EventInfo.Name} - {GuestInfo.Username}, ends {EventInfo.EndDate}";
-            private set { }
         }
     }
 }

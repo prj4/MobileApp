@@ -25,30 +25,34 @@ namespace Photobook.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #region Attributes
+
         public INavigation Navigation;
-        private EventModel _event;
+        private readonly EventModel _event;
         private List<string> Images;
         private ServerCommunicator com;
+        private string downloadProgress = "";
+        private int Progress = 0;
+        private int Count = 0;
 
-        public EventSeeImagesViewModel(EventModel loadEvent)
+        #endregion
+
+        #region DataBindings
+        
+        private static ObservableCollection<TestImage> _items;
+        public ObservableCollection<TestImage> Items
         {
-            Items = new ObservableCollection<TestImage>();
-            Images = new List<string>();
-            UrlList = new List<string>();
-
-            _event = loadEvent;
-            ReloadData();
+            get { return _items; }
+            set { _items = value; NotifyPropertyChanged(); }
         }
 
-        //private bool showProgress = false;
 
-        //public bool ShowProgress
-        //{
-        //    get { return showProgress; }
-        //    set { showProgress = value; }
-        //}
-
-        private string downloadProgress = "";
+        private object _lastTappedItem;
+        public object LastTappedItem
+        {
+            get { return _lastTappedItem; }
+            set { _lastTappedItem = value; NotifyPropertyChanged(); }
+        }
 
         public string DownloadProgress
         {
@@ -59,37 +63,44 @@ namespace Photobook.ViewModels
                 NotifyPropertyChanged();
             }
         }
+        #endregion
 
-        private List<string> UrlList = new List<string>();
+        #region Constructors
 
-        public string url;
+        public EventSeeImagesViewModel(EventModel loadEvent)
+        {
+            Items = new ObservableCollection<TestImage>();
+            Images = new List<string>();
+
+            _event = loadEvent;
+            
+            ReloadData();
+        }
+
+        #endregion
+
+        #region Methods
+
+
         public async void ReloadData()
         {
+            DeleteTempDirectory();
             com = new ServerCommunicator();
 
             var ids = await com.GetImages(_event);
 
-            if (ids.Count != Images.Count)
+            foreach (var id in ids)
             {
-                foreach (var id in ids)
-                {
-                    var preview = UrlFactory.Generate(DataType.GetPreview) + $"/{_event.Pin}/{id}";
-                    var full = UrlFactory.Generate(DataType.GetPicture) + $"/{_event.Pin}/{id}";
-
-                    if (!Images.Contains(preview))
-                        Images.Add(preview);
-                    if (UrlList.Contains(full))
-                        UrlList.Add(full);
-                }
+                Images.Add(UrlFactory.Generate(DataType.GetPreview) + $"/{_event.Pin}/{id}");
             }
-            
-            
+
+
             IMediaDownloader downloader = new MediaDownloader(SettingsManager.CurrentCookies);
             downloader.Downloading += Downloader_DownloadPreview;
             downloader.DownloadAllImages(Images);
-            
+
         }
-        
+
 
         private void Downloader_DownloadPreview(ImageDownloadEventArgs e)
         {
@@ -117,22 +128,35 @@ namespace Photobook.ViewModels
             }
         }
 
-        private ObservableCollection<TestImage> _items;
-        public ObservableCollection<TestImage> Items
+        private void DeleteTempDirectory()
         {
-            get { return _items; }
-            set { _items = value; NotifyPropertyChanged(); }
+            Array.ForEach(
+                Directory.GetFiles(DependencyService.Get<IFileDirectoryAPI>().GetTempPath()),
+                delegate (string path)
+                {
+                    File.Delete(path);
+                });
         }
-
-
-        private object _lastTappedItem;
-        public object LastTappedItem
+        private void Downloader_DownloadFull(ImageDownloadEventArgs e)
         {
-            get { return _lastTappedItem; }
-            set { _lastTappedItem = value; NotifyPropertyChanged(); }
+            if (e.StatusOk)
+            {
+                var directoryPath = DependencyService.Get<IFileDirectoryAPI>().GetImagePath();
+                var fileName = $"/photobook{Directory.GetFiles(directoryPath).Length + 1}.PNG";
+                var fullPath = directoryPath + fileName;
+                File.WriteAllBytes(fullPath, e.FileBytes);
+                DownloadProgress = $"Downloading {Progress++}/{Count}";
+                if (Progress == Count)
+                {
+                    Progress = 0;
+                    DownloadProgress = "Done!";
+                }
+
+            }
         }
+        #endregion
 
-
+        #region Commands
 
         private ICommand _itemTappedCommand;
         public ICommand ItemTappedCommand
@@ -145,8 +169,8 @@ namespace Photobook.ViewModels
             if (LastTappedItem is TestImage item)
             {
                 Debug.WriteLine($"Tapped {item.ImagePath}");
-                
-                    Navigation.PushAsync(new EventSeeSingleImage(item));
+
+                Navigation.PushAsync(new EventSeeSingleImage(item));
             }
 
         }
@@ -160,50 +184,25 @@ namespace Photobook.ViewModels
 
         private void DownloadAll_Execute()
         {
+            var UrlList = new List<string>();
+
+            foreach (var item in Items)
+            {
+                UrlList.Add(item.FullPictureUrl);
+            }
+
             var cookies = SettingsManager.CurrentCookies;
             IMediaDownloader downloader = new MediaDownloader(cookies);
             downloader.Downloading += Downloader_DownloadFull;
-            downloader.DownloadStarted += delegate(int count) { DownloadProgress = $"Downloading {0}/{count}";
+            downloader.DownloadStarted += delegate (int count) {
+                DownloadProgress = $"Downloading {0}/{count}";
                 Count = count;
             };
             downloader.DownloadAllImages(UrlList);
         }
 
-        private int Progress = 0;
-        private int Count = 0;
-        private void Downloader_DownloadFull(ImageDownloadEventArgs e)
-        {
-            if (e.StatusOk)
-            {
-                var directoryPath = DependencyService.Get<IFileDirectoryAPI>().GetImagePath();
-                var fileName = $"/photobook{Directory.GetFiles(directoryPath).Length+ 1}.PNG";
-                var fullPath = directoryPath + fileName;
-                File.WriteAllBytes(fullPath, e.FileBytes);
-                DownloadProgress = $"Downloading {Progress++}/{Count}";
-                if (Progress == Count)
-                {
-                    Progress = 0;
-                    DownloadProgress = "Done!";
-                }
-                
-            }
-        }
-
-        private void DeleteTempDirectory()
-        {
-            Array.ForEach(
-                Directory.GetFiles(DependencyService.Get<IFileDirectoryAPI>().GetTempPath()),
-                    delegate(string path)
-                    {
-                        File.Delete(path);
-                    });
-        }
-        public void OnLeave(object sender, EventArgs e)
-        {
-            if(sender != this)
-                new Thread(DeleteTempDirectory).Start();
-
-            Debug.WriteLine("Farvel");
-        }
+        #endregion
+        
+       
     }
 }
