@@ -73,9 +73,9 @@ namespace Photobook.ViewModels
                 for(int i = (UrlList.Count == 0) ? 0 : UrlList.Count - 1; i < ids.Count; i++)
                 {
 
-                    images.Add("https://photobookwebapi1.azurewebsites.net/api/Picture/Preview/" + $"{_event.Pin}/{ids[i]}");
+                    images.Add(UrlFactory.Generate(DataType.GetPreview) + $"{_event.Pin}/{ids[i]}");
 
-                    UrlList.Add("https://photobookwebapi1.azurewebsites.net/api/Picture/" + $"{_event.Pin}/{ids[i]}");
+                    UrlList.Add(UrlFactory.Generate(DataType.GetPicture) + $"{_event.Pin}/{ids[i]}");
                 }
 
                 IMediaDownloader downloader = new MediaDownloader(SettingsManager.CurrentCookies);
@@ -102,6 +102,11 @@ namespace Photobook.ViewModels
                     ImagePath = fullPath,
                     ImageUriPath = new Uri(fullPath)
                 });
+                Debug.WriteLine("ImageStatus okay", "ImageStatus");
+            }
+            else
+            {
+                Debug.WriteLine("ImageStatus not okay", "ImageStatus");
             }
         }
 

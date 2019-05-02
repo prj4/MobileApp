@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Photobook.Models
@@ -9,8 +11,7 @@ namespace Photobook.Models
     public delegate void ImageDownload(ImageDownloadEventArgs e);
 
     public delegate void ImageCount(int count);
-
-    public delegate void Done();
+    
 
     public class ImageDownloadEventArgs : EventArgs
     {
@@ -28,9 +29,10 @@ namespace Photobook.Models
 
     public class MediaDownloader : IMediaDownloader
     {
-        private readonly CookieCollection cookies;
         public event ImageCount DownloadStarted;
         public event ImageDownload Downloading;
+        private readonly CookieCollection cookies;
+        private readonly object _lock = new object();
         public MediaDownloader(CookieCollection _cookies)
         {
             cookies = _cookies;
@@ -46,49 +48,47 @@ namespace Photobook.Models
         public void DownloadAllImages(List<string> urls)
         {
             DownloadStarted?.Invoke(urls.Count);
-            Parallel.ForEach(urls, url => { DownloadImage(url); });
+            foreach (var url in urls)
+            {
+                DownloadImage(url);
+            }
         }
 
         private async void DownloadImage(string url)
         {
-            HttpClient _httpClient;
-            var clientHandler = new HttpClientHandler();
-            if (cookies != null)
-            {
-                clientHandler.CookieContainer = new CookieContainer();
-                clientHandler.CookieContainer.Add(cookies);
-                clientHandler.UseCookies = true;
-                _httpClient = new HttpClient(clientHandler);
-            }
-            else
-            {
-                return;
-            }
+            var handler = new HttpClientHandler();
+            handler.CookieContainer = new CookieContainer();
+            handler.CookieContainer.Add(cookies);
+            handler.UseCookies = true;
+
+            var client = new HttpClient(handler);
 
             var image = new ImageDownloadEventArgs();
 
-
             try
             {
-                using (var httpResponse = await _httpClient.GetAsync(url))
-                {
-                    if (httpResponse.StatusCode == HttpStatusCode.OK)
-                    {
-                        image.FileBytes = await httpResponse.Content.ReadAsByteArrayAsync();
-                        image.StatusOk = true;
+                
+                var httpResponse = await client.GetAsync(url);
 
-                        Downloading?.Invoke(image);
-                    }
-                    else
-                    {
-                        Downloading?.Invoke(image);
-                    }
+                if (httpResponse.StatusCode == HttpStatusCode.OK)
+                {
+                    image.FileBytes = await httpResponse.Content.ReadAsByteArrayAsync();
+                    image.StatusOk = true;
+
+                    Downloading?.Invoke(image);
                 }
+                else
+                {
+                    Downloading?.Invoke(image);
+                    Debug.WriteLine(await httpResponse.Content.ReadAsStringAsync(), "HttpContent");
+                }
+                
             }
             catch (Exception e)
             {
                 //Handle Exception
                 Downloading?.Invoke(image);
+                Debug.WriteLine(e.Message, "Exception in download");
             }
         }
     }
