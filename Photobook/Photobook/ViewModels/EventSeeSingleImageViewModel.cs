@@ -48,9 +48,18 @@ namespace Photobook.ViewModels
         private ICommand _deleteImageCommand;
         public ICommand DeleteImageCommand => _deleteImageCommand ?? (_deleteImageCommand = new DelegateCommand(DeleteImage_Execute));
 
-        private void DeleteImage_Execute()
+        private async void DeleteImage_Execute()
         {
-            Debug.WriteLine("Delete image");
+            IServerCommunicator com = new ServerCommunicator();
+
+            if(await com.DeleteFromServer(_image, DataType.Picture))
+            {
+                Debug.WriteLine("Deleted");
+            }
+            else
+            {
+                Debug.WriteLine("Not deleted");
+            }
         }
 
         public ICommand DownloadSingleCommand =>

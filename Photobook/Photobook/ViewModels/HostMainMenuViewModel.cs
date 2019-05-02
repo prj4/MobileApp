@@ -118,21 +118,14 @@ namespace Photobook.ViewModels
 
         private async void DeleteEvent_Execute(EventModel _event)
         {
-            HttpClientHandler handler = new HttpClientHandler();
-            handler.CookieContainer = new CookieContainer();
-            handler.CookieContainer.Add(SettingsManager.CurrentCookies);
-            handler.UseCookies = true;
+            IServerCommunicator com = new ServerCommunicator();
 
-            HttpClient client = new HttpClient(handler);
-            var rep = await client.DeleteAsync($"{UrlFactory.Generate(DataType.DeleteEvent)}/{_event.Pin}");
-
-            if (rep.IsSuccessStatusCode)
+            if(await com.DeleteFromServer(_event, DataType.DeleteEvent))
             {
                 Events.Remove(_event);
 
                 NotifyPropertyChanged("Events");
             }
-                
         }
 
 

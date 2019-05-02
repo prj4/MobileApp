@@ -1,10 +1,12 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Windows.Input;
 using PB.Dto;
 using Photobook.Models;
@@ -25,12 +27,14 @@ namespace Photobook.ViewModels
 
         public INavigation Navigation;
         private EventModel _event;
+        private List<string> Images;
         private ServerCommunicator com;
 
         public EventSeeImagesViewModel(EventModel loadEvent)
         {
-            if(Items == null)
-                Items = new ObservableCollection<TestImage>();
+            Items = new ObservableCollection<TestImage>();
+            Images = new List<string>();
+            UrlList = new List<string>();
 
             _event = loadEvent;
             ReloadData();
@@ -56,7 +60,7 @@ namespace Photobook.ViewModels
             }
         }
 
-        private static List<string> UrlList = new List<string>();
+        private List<string> UrlList = new List<string>();
 
         public string url;
         public async void ReloadData()
@@ -65,32 +69,35 @@ namespace Photobook.ViewModels
 
             var ids = await com.GetImages(_event);
 
-            if (ids.Count > UrlList.Count)
+            if (ids.Count != Images.Count)
             {
-                var images = new List<string>();
-                for(int i = (UrlList.Count == 0) ? 0 : UrlList.Count - 1; i < ids.Count; i++)
+                foreach (var id in ids)
                 {
+                    var preview = UrlFactory.Generate(DataType.GetPreview) + $"/{_event.Pin}/{id}";
+                    var full = UrlFactory.Generate(DataType.GetPicture) + $"/{_event.Pin}/{id}";
 
-                    images.Add(UrlFactory.Generate(DataType.GetPreview) + $"{_event.Pin}/{ids[i]}");
-
-                    UrlList.Add(UrlFactory.Generate(DataType.GetPicture) + $"{_event.Pin}/{ids[i]}");
+                    if (!Images.Contains(preview))
+                        Images.Add(preview);
+                    if (UrlList.Contains(full))
+                        UrlList.Add(full);
                 }
-
-                IMediaDownloader downloader = new MediaDownloader(SettingsManager.CurrentCookies);
-                downloader.Downloading += Downloader_DownloadPreview;
-                downloader.DownloadAllImages(images);
             }
             
             
+            IMediaDownloader downloader = new MediaDownloader(SettingsManager.CurrentCookies);
+            downloader.Downloading += Downloader_DownloadPreview;
+            downloader.DownloadAllImages(Images);
+            
         }
+        
 
         private void Downloader_DownloadPreview(ImageDownloadEventArgs e)
         {
             if (e.StatusOk)
             {
-                var path = DependencyService.Get<IFileDirectoryAPI>().GetTempPath() + '/';
-                var fileName = $"_temp_{e?.PictureId}{Directory.GetFiles(path).Length +1}.PNG";
-                var fullPath = path + fileName;
+                var path = DependencyService.Get<IFileDirectoryAPI>().GetTempPath();
+                var fileName = $"_temp_{e.PictureId}{Directory.GetFiles(path).Length}.PNG";
+                var fullPath = $"{path}/{fileName}";
 
                 File.WriteAllBytes(fullPath, e.FileBytes);
 
@@ -98,7 +105,8 @@ namespace Photobook.ViewModels
                 {
                     FileName = e?.PictureId,
                     ImagePath = fullPath,
-                    Source = ImageSource.FromFile(fullPath)
+                    Source = ImageSource.FromFile(fullPath),
+                    PinId = e.PinId
                 });
                 NotifyPropertyChanged();
                 Debug.WriteLine("ImageStatus okay", "ImageStatus");
@@ -109,7 +117,7 @@ namespace Photobook.ViewModels
             }
         }
 
-        private static ObservableCollection<TestImage> _items;
+        private ObservableCollection<TestImage> _items;
         public ObservableCollection<TestImage> Items
         {
             get { return _items; }
@@ -134,10 +142,10 @@ namespace Photobook.ViewModels
 
         private void itemTapped_Execute()
         {
-            var item = LastTappedItem as TestImage;
-            if (item != null)
+            if (LastTappedItem is TestImage item)
             {
                 Debug.WriteLine($"Tapped {item.ImagePath}");
+                
                     Navigation.PushAsync(new EventSeeSingleImage(item));
             }
 
@@ -179,6 +187,23 @@ namespace Photobook.ViewModels
                 }
                 
             }
+        }
+
+        private void DeleteTempDirectory()
+        {
+            Array.ForEach(
+                Directory.GetFiles(DependencyService.Get<IFileDirectoryAPI>().GetTempPath()),
+                    delegate(string path)
+                    {
+                        File.Delete(path);
+                    });
+        }
+        public void OnLeave(object sender, EventArgs e)
+        {
+            if(sender != this)
+                new Thread(DeleteTempDirectory).Start();
+
+            Debug.WriteLine("Farvel");
         }
     }
 }

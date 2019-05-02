@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PB.Dto;
+using Photobook.Models.Factories;
 using Photobook.Models.ServerClasses;
 using Photobook.Models.ServerDataClasses;
 
@@ -29,6 +30,7 @@ namespace Photobook.Models
     {
         Task<bool> SendDataReturnIsValid(object o, DataType d);
         void AddCookies(CookieCollection _cookies);
+        Task<bool> DeleteFromServer(object o, DataType d);
     }
 
     public class ServerCommunicator : IServerCommunicator
@@ -48,7 +50,6 @@ namespace Photobook.Models
             clientHandler.CookieContainer = cookies;
 
             client = new HttpClient(clientHandler);
-            dataHandler = new ServerDataHandler();
         }
 
         public ServerCommunicator(IServerDataHandler _dataHandler)
@@ -138,8 +139,12 @@ namespace Photobook.Models
                 var cookieUrl = new Uri(UrlFactory.Generate(dataType));
                 var responseCookies = clientHandler.CookieContainer.GetCookies(cookieUrl);
 
-                dataHandler.LatestMessage = response;
-                dataHandler.LatestReceivedCookies = responseCookies;
+                if (dataHandler != null)
+                {
+                    dataHandler.LatestMessage = response;
+                    dataHandler.LatestReceivedCookies = responseCookies;
+                }
+                
             }
             catch (NullReferenceException e)
             {
@@ -167,6 +172,17 @@ namespace Photobook.Models
                 JsonConvert.DeserializeObject<RootObject>(rep);
 
             return result.PictureList;
+        }
+
+        public async Task<bool> DeleteFromServer(object o, DataType d)
+        {
+            clientHandler.UseCookies = true;
+            var postfixCreator = PostfixFactory.Generate(d);
+            var postfix = postfixCreator.Generate(o);
+
+            var rep = await client.DeleteAsync($"{UrlFactory.Generate(d)}/{postfix}");
+
+            return rep.IsSuccessStatusCode;
         }
     }
 }

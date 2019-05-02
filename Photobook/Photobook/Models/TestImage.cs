@@ -9,5 +9,6 @@ namespace Photobook.Models
 
         public string FileName { get; set; }
         public ImageSource Source { get; set; }
+        public string PinId { get; set; }
     }
 }

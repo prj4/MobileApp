@@ -19,6 +19,7 @@ namespace Photobook.Models
         public byte[] FileBytes { get; set; }
         public bool StatusOk { get; set; }
         public string PictureId { get; set; }
+        public string PinId { get; set; }
     }
 
     internal interface IMediaDownloader
@@ -69,6 +70,7 @@ namespace Photobook.Models
 
             try
             {
+                var content = url.Split('/');
                 
                 var httpResponse = await client.GetAsync(url);
 
@@ -79,6 +81,8 @@ namespace Photobook.Models
                     image.StatusOk = true;
 
                     image.PictureId = httpResponse.Content.Headers.ContentDisposition?.FileName;
+
+                    image.PinId = $"{content[content.Length - 2]}/{content[content.Length - 1]}";
 
                     Downloading?.Invoke(image);
                 }
