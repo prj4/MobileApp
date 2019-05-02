@@ -29,8 +29,10 @@ namespace Photobook.ViewModels
 
         public EventSeeImagesViewModel(EventModel loadEvent)
         {
+            if(Items == null)
+                Items = new ObservableCollection<TestImage>();
+
             _event = loadEvent;
-            Items = new ObservableCollection<TestImage>();
             ReloadData();
         }
 
@@ -87,14 +89,14 @@ namespace Photobook.ViewModels
             if (e.StatusOk)
             {
                 var path = DependencyService.Get<IFileDirectoryAPI>().GetTempPath() + '/';
-                var fileName = $"_temp{DateTime.Now.ToString("yyMMddHHmmss")}.PNG";
+                var fileName = $"_temp_{e?.PictureId}{Directory.GetFiles(path).Length +1}.PNG";
                 var fullPath = path + fileName;
 
                 File.WriteAllBytes(fullPath, e.FileBytes);
 
                 Items.Add(new TestImage
                 {
-                    FileName = fileName.Substring(5, 12),
+                    FileName = e?.PictureId,
                     ImagePath = fullPath,
                     Source = ImageSource.FromFile(fullPath)
                 });
@@ -107,7 +109,7 @@ namespace Photobook.ViewModels
             }
         }
 
-        private ObservableCollection<TestImage> _items;
+        private static ObservableCollection<TestImage> _items;
         public ObservableCollection<TestImage> Items
         {
             get { return _items; }
@@ -166,7 +168,7 @@ namespace Photobook.ViewModels
             if (e.StatusOk)
             {
                 var directoryPath = DependencyService.Get<IFileDirectoryAPI>().GetImagePath();
-                var fileName = $"/photobook{DateTime.Now.ToString("yyMMddHHmmss")}.PNG";
+                var fileName = $"/photobook{Directory.GetFiles(directoryPath).Length+ 1}.PNG";
                 var fullPath = directoryPath + fileName;
                 File.WriteAllBytes(fullPath, e.FileBytes);
                 DownloadProgress = $"Downloading {Progress++}/{Count}";

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
@@ -17,6 +18,7 @@ namespace Photobook.Models
     {
         public byte[] FileBytes { get; set; }
         public bool StatusOk { get; set; }
+        public string PictureId { get; set; }
     }
 
     internal interface IMediaDownloader
@@ -73,14 +75,17 @@ namespace Photobook.Models
                 if (httpResponse.StatusCode == HttpStatusCode.OK)
                 {
                     image.FileBytes = await httpResponse.Content.ReadAsByteArrayAsync();
+                    
                     image.StatusOk = true;
+
+                    image.PictureId = httpResponse.Content.Headers.ContentDisposition?.FileName;
 
                     Downloading?.Invoke(image);
                 }
                 else
                 {
                     Downloading?.Invoke(image);
-                    Debug.WriteLine(await httpResponse.Content.ReadAsStringAsync(), "HttpContent");
+
                 }
                 
             }
