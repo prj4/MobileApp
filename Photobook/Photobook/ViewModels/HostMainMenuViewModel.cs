@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using PB.Dto;
@@ -113,11 +116,23 @@ namespace Photobook.ViewModels
       
 
 
-        private void DeleteEvent_Execute(EventModel _event)
+        private async void DeleteEvent_Execute(EventModel _event)
         {
-            Events.Remove(_event);
-            
-            NotifyPropertyChanged("Events");
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.CookieContainer = new CookieContainer();
+            handler.CookieContainer.Add(SettingsManager.CurrentCookies);
+            handler.UseCookies = true;
+
+            HttpClient client = new HttpClient(handler);
+            var rep = await client.DeleteAsync($"{UrlFactory.Generate(DataType.DeleteEvent)}/{_event.Pin}");
+
+            if (rep.IsSuccessStatusCode)
+            {
+                Events.Remove(_event);
+
+                NotifyPropertyChanged("Events");
+            }
+                
         }
 
 

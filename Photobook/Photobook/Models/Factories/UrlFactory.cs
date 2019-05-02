@@ -7,6 +7,7 @@
         private static readonly string GuestServerUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/Guest";
         private static readonly string HostLoginUrl = "https://photobookwebapi1.azurewebsites.net/api/Account/Login";
         private static readonly string PictureUrl = "https://photobookwebapi1.azurewebsites.net/api/Picture";
+        private static readonly string DeleteUrl = "https://photobookwebapi1.azurewebsites.net/api/Event";
 
         public static string Generate(DataType d)
         {
@@ -31,6 +32,10 @@
                 case DataType.Picture:
                 {
                     return PictureUrl;
+                }
+                case DataType.DeleteEvent:
+                {
+                    return DeleteUrl;
                 }
                 default:
                 {

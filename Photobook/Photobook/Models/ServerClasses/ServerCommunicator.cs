@@ -19,7 +19,8 @@ namespace Photobook.Models
         NewEvent,
         Host,
         Picture,
-        Video
+        Video,
+        DeleteEvent
     }
 
     public interface IServerCommunicator
