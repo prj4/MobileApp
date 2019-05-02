@@ -14,5 +14,10 @@ namespace iOS.Models
         {
             return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
         }
+
+        public string GetTempPath()
+        {
+            return Environment.GetFolderPath(Environment.SpecialFolder.AdminTools);
+        }
     }
 }

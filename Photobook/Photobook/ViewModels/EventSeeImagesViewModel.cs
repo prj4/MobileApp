@@ -28,7 +28,7 @@ namespace Photobook.ViewModels
 
         public INavigation Navigation;
         private EventModel _event;
-        private ObservableCollection<TestImage> list;
+        private static ObservableCollection<TestImage> list;
         private ServerCommunicator com;
 
         public EventSeeImagesViewModel(EventModel loadEvent)
@@ -57,7 +57,7 @@ namespace Photobook.ViewModels
             }
         }
 
-        private List<string> UrlList;
+        private static List<string> UrlList = new List<string>();
 
         public string url;
         public async void ReloadData()
@@ -66,19 +66,22 @@ namespace Photobook.ViewModels
             list = new ObservableCollection<TestImage>();
 
             var ids = await com.GetImages(_event);
-            UrlList = new List<string>();
 
-            var images = new List<string>();
-            foreach (var id in ids)
+            if (ids.Count > UrlList.Count)
             {
-                images.Add("https://photobookwebapi1.azurewebsites.net/api/Picture/Preview/" + $"{_event.Pin}/{id}");
+                var images = new List<string>();
+                for(int i = (UrlList.Count == 0) ? 0 : UrlList.Count - 1; i < ids.Count; i++)
+                {
 
-                UrlList.Add("https://photobookwebapi1.azurewebsites.net/api/Picture/" + $"{_event.Pin}/{id}");
+                    images.Add("https://photobookwebapi1.azurewebsites.net/api/Picture/Preview/" + $"{_event.Pin}/{ids[i]}");
+
+                    UrlList.Add("https://photobookwebapi1.azurewebsites.net/api/Picture/" + $"{_event.Pin}/{ids[i]}");
+                }
+
+                IMediaDownloader downloader = new MediaDownloader(SettingsManager.CurrentCookies);
+                downloader.Downloading += Downloader_DownloadPreview;
+                downloader.DownloadAllImages(images);
             }
-
-            IMediaDownloader downloader = new MediaDownloader(SettingsManager.CurrentCookies);
-            downloader.Downloading += Downloader_DownloadPreview;
-            downloader.DownloadAllImages(images);
             
             
         }

@@ -142,7 +142,7 @@ namespace Photobook.ViewModels
                 isErrorMessageEnabled = false;
             }
 
-            var cookie = await SettingsManager.GetCookies(_host.Name);
+            var cookie = SettingsManager.CurrentCookies;
 
             IServerDataHandler dataHandler = new ServerDataHandler();
             IServerCommunicator Com = new ServerCommunicator(dataHandler);
@@ -153,8 +153,7 @@ namespace Photobook.ViewModels
                 var response = dataHandler.LatestMessage;
                 IFromJSONParser parser = new FromJsonParser();
 
-                var
-                    pin = await parser.DeserializedData<Dictionary<string, string>>(response);
+                var pin = await parser.DeserializedData<Dictionary<string, string>>(response);
 
                 NewEvent.Pin = pin["pin"];
                 _events.Add(NewEvent);
