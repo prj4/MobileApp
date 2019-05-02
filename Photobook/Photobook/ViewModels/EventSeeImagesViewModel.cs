@@ -4,15 +4,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows.Input;
 using PB.Dto;
 using Photobook.Models;
 using Photobook.View;
 using Prism.Commands;
-using Prism.Navigation.Xaml;
 using Xamarin.Forms;
 
 namespace Photobook.ViewModels
@@ -28,12 +25,12 @@ namespace Photobook.ViewModels
 
         public INavigation Navigation;
         private EventModel _event;
-        private static ObservableCollection<TestImage> list;
         private ServerCommunicator com;
 
         public EventSeeImagesViewModel(EventModel loadEvent)
         {
             _event = loadEvent;
+            Items = new ObservableCollection<TestImage>();
             ReloadData();
         }
 
@@ -63,7 +60,6 @@ namespace Photobook.ViewModels
         public async void ReloadData()
         {
             com = new ServerCommunicator();
-            list = new ObservableCollection<TestImage>();
 
             var ids = await com.GetImages(_event);
 
@@ -96,12 +92,13 @@ namespace Photobook.ViewModels
 
                 File.WriteAllBytes(fullPath, e.FileBytes);
 
-                list.Add(new TestImage
+                Items.Add(new TestImage
                 {
                     FileName = fileName.Substring(5, 12),
                     ImagePath = fullPath,
-                    ImageUriPath = new Uri(fullPath)
+                    Source = ImageSource.FromFile(fullPath)
                 });
+                NotifyPropertyChanged();
                 Debug.WriteLine("ImageStatus okay", "ImageStatus");
             }
             else

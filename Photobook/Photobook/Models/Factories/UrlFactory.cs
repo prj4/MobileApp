@@ -9,7 +9,7 @@
         private static readonly string PictureUrl = "https://photobookwebapi1.azurewebsites.net/api/Picture";
         private static readonly string DeleteUrl = "https://photobookwebapi1.azurewebsites.net/api/Event";
         private static readonly string GetPictureUrl = "https://photobookwebapi1.azurewebsites.net/api/Picture/";
-        private static readonly string GetPreviewUrl = "https://photobookwebapi1.azurewebsites.net/api/Picture/Preview";
+        private static readonly string GetPreviewUrl = "https://photobookwebapi1.azurewebsites.net/api/Picture/Preview/";
 
         public static string Generate(DataType d)
         {

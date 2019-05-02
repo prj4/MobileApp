@@ -1,4 +1,5 @@
 ﻿using System;
+using Xamarin.Forms;
 
 namespace Photobook.Models
 {
@@ -7,6 +8,6 @@ namespace Photobook.Models
         public string ImagePath { get; set; }
 
         public string FileName { get; set; }
-        public Uri ImageUriPath { get; set; }
+        public ImageSource Source { get; set; }
     }
 }
