@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -18,7 +19,7 @@ namespace Photobook.ViewModels
 
         private ICommand _guestLoginCommand;
         private string _loginInfo;
-        private GuestAtEvent current;
+ 
 
         private bool enableButton = true;
         private EventModel eventFromServer;
@@ -42,8 +43,10 @@ namespace Photobook.ViewModels
             }
         }
 
-        public List<GuestAtEvent> ActiveGuests { get; set; }
+        public ObservableCollection<GuestAtEvent> ActiveGuests { get; set; }
 
+
+        private GuestAtEvent current;
         public GuestAtEvent Current
         {
             get => current;
@@ -86,7 +89,9 @@ namespace Photobook.ViewModels
 
         private async void InitializeGuests()
         {
-            ActiveGuests = await SettingsManager.GetAllActiveUsers();
+            var list = await SettingsManager.GetAllActiveUsers();
+            ActiveGuests = new ObservableCollection<GuestAtEvent>(list);
+            NotifyPropertyChanged();
         }
 
         private bool AreDetailsValid(Guest guest)
@@ -116,7 +121,7 @@ namespace Photobook.ViewModels
                     GuestInfo = _guest
                 };
                 ActiveGuests.Add(current);
-                SettingsManager.SaveActiveGuestList(ActiveGuests);
+                SettingsManager.SaveActiveGuestList(ActiveGuests.ToList());
 
                 var rootPage = Navigation.NavigationStack.FirstOrDefault();
                 if (rootPage != null)

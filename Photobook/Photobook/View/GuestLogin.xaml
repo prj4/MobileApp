@@ -55,19 +55,11 @@
                     <ListView ItemsSource="{Binding ActiveGuests}" BackgroundColor="#f2f2f2"
                               HasUnevenRows="true"
                               SelectedItem="{Binding Current, Mode=TwoWay}"
-                              SelectionMode="Single">
+                              SelectionMode="Single"
+                              >
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <TextCell Text="{Binding Presentation}" />
-                                <!--<ViewCell>
-                                    <StackLayout Orientation="Vertical" Padding="8,10,0,10" >
-                                    <Label TextColor="Black" FontAttributes="Bold" Text="{Binding Presentation, 
-                                        Mode=OneWay}"/>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding Presentation, Mode=TwoWay}"/>
-                                    </StackLayout>
-                                </StackLayout>
-                            </ViewCell>-->
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

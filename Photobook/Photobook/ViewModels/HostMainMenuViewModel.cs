@@ -188,7 +188,12 @@ namespace Photobook.ViewModels
 
                 // Skriv til server om at få info om dette event
                 TestText = _selectedEvent.Name;
-                Navigation.PushAsync(new ShowEvent(_selectedEvent, true));
+                Guest hostToGuest = new Guest
+                {
+                    Pin = _selectedEvent.Pin,
+                    Username = _host.Name
+                };
+                Navigation.PushAsync(new ShowEvent(_selectedEvent, hostToGuest, true));
             }
         }
 

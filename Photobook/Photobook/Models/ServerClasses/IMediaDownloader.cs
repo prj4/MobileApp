@@ -51,10 +51,7 @@ namespace Photobook.Models
         public void DownloadAllImages(List<string> urls)
         {
             DownloadStarted?.Invoke(urls.Count);
-            foreach (var url in urls)
-            {
-                DownloadImage(url);
-            }
+            Parallel.ForEach(urls, DownloadImage);
         }
 
         private async void DownloadImage(string url)
