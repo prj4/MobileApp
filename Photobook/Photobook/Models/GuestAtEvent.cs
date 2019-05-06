@@ -11,7 +11,10 @@ namespace Photobook.Models
         //public CookieCollection CookieInfo { get; set; }
         public string Presentation
         {
-            get => $"{EventInfo.Name} - {GuestInfo.Username}, ends {EventInfo.EndDate.ToString("f")}";
+            get
+            {
+                return $"{EventInfo.Name} - {GuestInfo.Username}, ends {EventInfo.EndDate.ToString("f")}";
+            }
         }
     }
 }

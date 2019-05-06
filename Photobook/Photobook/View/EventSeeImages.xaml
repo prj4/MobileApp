@@ -17,7 +17,7 @@
         
         <flv:FlowListView SeparatorVisibility="None" HasUnevenRows="true"
                           FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
-                          FlowColumnMinWidth="110" FlowItemsSource="{Binding Items}">
+                          FlowColumnMinWidth="110" FlowItemsSource="{Binding Items, Mode=TwoWay}">
 
             <flv:FlowListView.FlowColumnTemplate>
                 <DataTemplate>
@@ -32,7 +32,7 @@
 
                         <Image HeightRequest="100" Aspect="AspectFill">
                             <Image.Source>
-                                <FileImageSource File ="{Binding Source}"/>
+                                <FileImageSource File ="{Binding Source, Mode=TwoWay}"/>
                             </Image.Source>
                         </Image>
 

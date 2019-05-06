@@ -29,7 +29,6 @@ namespace Photobook.ViewModels
         {
             Guest = new Guest();
             eventFromServer = new EventModel();
-
             InitializeGuests();
         }
 
@@ -43,17 +42,34 @@ namespace Photobook.ViewModels
             }
         }
 
-        public ObservableCollection<GuestAtEvent> ActiveGuests { get; set; }
-
-
-        private GuestAtEvent current;
-        public GuestAtEvent Current
+        private ObservableCollection<GuestAtEvent> _guestAtEvents;
+        public ObservableCollection<GuestAtEvent> ActiveGuests
         {
-            get => current;
+            get { return _guestAtEvents; }
+            set { _guestAtEvents = value; NotifyPropertyChanged(); }
+
+        }
+
+
+        private GuestAtEvent selected;
+        public GuestAtEvent Selected
+        {
+            get => selected;
             set
             {
-                current = value;
-                _guest = current.GuestInfo;
+                selected = value;
+                SettingsManager.GetCookies(selected.GuestInfo.Username);
+                _guest = selected.GuestInfo;
+                
+
+                var rootPage = Navigation.NavigationStack.FirstOrDefault();
+                if (rootPage != null)
+                {
+                    
+                    Navigation.InsertPageBefore(new ShowEvent(selected.EventInfo, _guest, false),
+                        Navigation.NavigationStack.First());
+                    Navigation.PopToRootAsync();
+                }
             }
         }
 
@@ -115,12 +131,12 @@ namespace Photobook.ViewModels
 
 
                 SettingsManager.SaveCookie(Data.LatestReceivedCookies, _guest.Username);
-                current = new GuestAtEvent
+                Selected = new GuestAtEvent
                 {
                     EventInfo = eventFromServer,
                     GuestInfo = _guest
                 };
-                ActiveGuests.Add(current);
+                ActiveGuests.Add(Selected);
                 SettingsManager.SaveActiveGuestList(ActiveGuests.ToList());
 
                 var rootPage = Navigation.NavigationStack.FirstOrDefault();

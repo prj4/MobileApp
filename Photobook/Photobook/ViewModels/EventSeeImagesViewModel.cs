@@ -34,6 +34,8 @@ namespace Photobook.ViewModels
         private string downloadProgress = "";
         private int Progress = 0;
         private int Count = 0;
+        private object _lock = new object();
+        private Stopwatch sw = new Stopwatch();
 
         #endregion
 
@@ -97,6 +99,7 @@ namespace Photobook.ViewModels
 
             IMediaDownloader downloader = new MediaDownloader(SettingsManager.CurrentCookies);
             downloader.Downloading += Downloader_DownloadPreview;
+            sw.Start();
             downloader.DownloadAllImages(Images);
 
         }
@@ -107,11 +110,16 @@ namespace Photobook.ViewModels
             if (e.StatusOk)
             {
                 var path = DependencyService.Get<IFileDirectoryAPI>().GetTempPath();
-                var fileName = $"_temp_{e.PictureId}{Directory.GetFiles(path).Length}.PNG";
+                var fileName = $"_temp_{e.PictureId}{Directory.GetFiles(path).Length}.png";
                 var fullPath = $"{path}/{fileName}";
 
-                File.WriteAllBytes(fullPath, e.FileBytes);
-
+                lock (_lock)
+                {
+                    File.WriteAllBytes(fullPath, e.FileBytes);
+                }
+                sw.Stop();
+                Debug.WriteLine($"{sw.ElapsedMilliseconds}ms", "Time downloading");
+                sw.Start();
                 Items.Add(new TestImage
                 {
                     FileName = e?.PictureId,
@@ -119,12 +127,10 @@ namespace Photobook.ViewModels
                     Source = ImageSource.FromFile(fullPath),
                     PinId = e.PinId
                 });
-                NotifyPropertyChanged();
-                Debug.WriteLine("ImageStatus okay", "ImageStatus");
+                NotifyPropertyChanged("Items");
             }
             else
             {
-                Debug.WriteLine("ImageStatus not okay", "ImageStatus");
             }
         }
 
