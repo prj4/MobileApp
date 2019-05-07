@@ -36,7 +36,7 @@ namespace Photobook.ViewModels
         private async void DeleteImage_Execute()
         {
             IServerCommunicator com = new ServerCommunicator();
-            com.AddCookies(SettingsManager.CurrentCookies);
+            com.AddCookies(MemoryManager.CurrentCookies);
 
             if(await com.DeleteFromServer(_image, DataType.Picture))
             {
@@ -60,7 +60,7 @@ namespace Photobook.ViewModels
 
         private void DownloadImage()
         {
-            var cookies = SettingsManager.CurrentCookies;
+            var cookies = MemoryManager.CurrentCookies;
             if (cookies != null)
             {
                 IMediaDownloader downloader = new MediaDownloader(cookies);

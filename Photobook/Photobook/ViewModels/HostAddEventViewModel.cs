@@ -142,7 +142,7 @@ namespace Photobook.ViewModels
                 isErrorMessageEnabled = false;
             }
 
-            var cookie = SettingsManager.CurrentCookies;
+            var cookie = MemoryManager.CurrentCookies;
 
             IServerDataHandler dataHandler = new ServerDataHandler();
             IServerCommunicator Com = new ServerCommunicator(dataHandler);

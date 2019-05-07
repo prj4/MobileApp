@@ -17,7 +17,7 @@
         
         <flv:FlowListView SeparatorVisibility="None" HasUnevenRows="true"
                           FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
-                          FlowColumnMinWidth="110" FlowItemsSource="{Binding Items, Mode=TwoWay}">
+                          FlowColumnMinWidth="110" FlowItemsSource="{Binding Items, Mode=OneWay}">
 
             <flv:FlowListView.FlowColumnTemplate>
                 <DataTemplate>

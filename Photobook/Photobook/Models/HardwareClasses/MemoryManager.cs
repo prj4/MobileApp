@@ -7,7 +7,7 @@ using PCLStorage;
 
 namespace Photobook.Models
 {
-    public class SettingsManager
+    public class MemoryManager
     {
         private static readonly string GuestFileName = "savedGuests";
         private static readonly string CookieFolderName = "Cookies";
@@ -71,6 +71,7 @@ namespace Photobook.Models
             {
                 var tmp = JsonConvert.DeserializeObject<GuestAtEvent>(guest);
                 //if (EventIsActive(tmp)) list.Add(tmp);
+                list.Add(tmp);
             }
 
             return list;

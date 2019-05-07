@@ -54,7 +54,7 @@ namespace Photobook.ViewModels
                         : new HostMainMenu(ServerHost);
 
 
-                    SettingsManager.SaveCookie(handler.LatestReceivedCookies, ServerHost.Name);
+                    MemoryManager.SaveCookie(handler.LatestReceivedCookies, ServerHost.Name);
                     Navigation.InsertPageBefore(page, Navigation.NavigationStack.First());
                     await Navigation.PopToRootAsync();
                 }

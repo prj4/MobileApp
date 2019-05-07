@@ -156,7 +156,7 @@ namespace Photobook.Models
 
         public async Task<List<string>> GetImages(EventModel e)
         {
-            clientHandler.CookieContainer.Add(SettingsManager.CurrentCookies);
+            clientHandler.CookieContainer.Add(MemoryManager.CurrentCookies);
             clientHandler.UseCookies = true;
             var response =
                 await client.GetAsync(

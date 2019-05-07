@@ -42,7 +42,7 @@ namespace Photobook.Models
                 Path = path,
                 Pin = eventId
             };
-            var cookies = await SettingsManager.GetCookies($"{currentGuest.Username}");
+            var cookies = await MemoryManager.GetCookies($"{currentGuest.Username}");
 
             com.AddCookies(cookies);
 

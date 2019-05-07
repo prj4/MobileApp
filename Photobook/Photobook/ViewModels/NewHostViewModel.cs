@@ -101,7 +101,7 @@ namespace Photobook.ViewModels
 
                     if (await Com.SendDataReturnIsValid(Host, DataType.NewUser))
                     {
-                        SettingsManager.SaveCookie(dataHandler.LatestReceivedCookies, host.Name);
+                        MemoryManager.SaveCookie(dataHandler.LatestReceivedCookies, host.Name);
 
                         var rootPage = Navigation.NavigationStack.FirstOrDefault();
                         if (rootPage != null)

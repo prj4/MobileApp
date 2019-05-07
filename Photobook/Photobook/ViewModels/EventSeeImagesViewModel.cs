@@ -97,7 +97,7 @@ namespace Photobook.ViewModels
             }
 
 
-            IMediaDownloader downloader = new MediaDownloader(SettingsManager.CurrentCookies);
+            IMediaDownloader downloader = new MediaDownloader(MemoryManager.CurrentCookies);
             downloader.Downloading += Downloader_DownloadPreview;
             sw.Start();
             downloader.DownloadAllImages(Images);
@@ -205,7 +205,7 @@ namespace Photobook.ViewModels
                 UrlList.Add(item.FullPictureUrl);
             }
 
-            var cookies = SettingsManager.CurrentCookies;
+            var cookies = MemoryManager.CurrentCookies;
             IMediaDownloader downloader = new MediaDownloader(cookies);
             downloader.Downloading += Downloader_DownloadFull;
             downloader.DownloadStarted += delegate (int count) {

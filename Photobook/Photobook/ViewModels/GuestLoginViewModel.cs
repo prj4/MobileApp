@@ -58,7 +58,7 @@ namespace Photobook.ViewModels
             set
             {
                 selected = value;
-                SettingsManager.GetCookies(selected.GuestInfo.Username);
+                MemoryManager.GetCookies(selected.GuestInfo.Username);
                 _guest = selected.GuestInfo;
                 
 
@@ -105,7 +105,7 @@ namespace Photobook.ViewModels
 
         private async void InitializeGuests()
         {
-            var list = await SettingsManager.GetAllActiveUsers();
+            var list = await MemoryManager.GetAllActiveUsers();
             ActiveGuests = new ObservableCollection<GuestAtEvent>(list);
             NotifyPropertyChanged();
         }
@@ -130,14 +130,14 @@ namespace Photobook.ViewModels
                 eventFromServer = await parser.DeserializedData<EventModel>(message);
 
 
-                SettingsManager.SaveCookie(Data.LatestReceivedCookies, _guest.Username);
-                Selected = new GuestAtEvent
+                MemoryManager.SaveCookie(Data.LatestReceivedCookies, _guest.Username);
+                selected = new GuestAtEvent
                 {
                     EventInfo = eventFromServer,
                     GuestInfo = _guest
                 };
-                ActiveGuests.Add(Selected);
-                SettingsManager.SaveActiveGuestList(ActiveGuests.ToList());
+                ActiveGuests.Add(selected);
+                MemoryManager.SaveActiveGuestList(_guestAtEvents.ToList());
 
                 var rootPage = Navigation.NavigationStack.FirstOrDefault();
                 if (rootPage != null)
