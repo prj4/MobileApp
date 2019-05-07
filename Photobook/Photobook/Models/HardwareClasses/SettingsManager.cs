@@ -70,7 +70,7 @@ namespace Photobook.Models
             foreach (var guest in guests)
             {
                 var tmp = JsonConvert.DeserializeObject<GuestAtEvent>(guest);
-                if (EventIsActive(tmp)) list.Add(tmp);
+                //if (EventIsActive(tmp)) list.Add(tmp);
             }
 
             return list;

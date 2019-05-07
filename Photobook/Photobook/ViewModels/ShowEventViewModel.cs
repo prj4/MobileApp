@@ -83,12 +83,7 @@ namespace Photobook.ViewModels
             private set { }
         }
 
-
-        public string PIN => $"PIN: {_event.Pin}";
-
-        public string Description => _event.Description;
-
-        public string Location => _event.Location;
+        
 
         public event PropertyChangedEventHandler PropertyChanged;
 
