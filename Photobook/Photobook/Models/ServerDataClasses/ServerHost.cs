@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using PB.Dto;
 
 namespace Photobook.Models
 {
@@ -13,6 +12,6 @@ namespace Photobook.Models
     {
         public string name { get; set; }
         public string email { get; set; }
-        public List<EventModel> events { get; set; }
+        public List<Event> events { get; set; }
     }
 }

@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using PB.Dto;
 using Photobook.Models;
 using Photobook.Models.ServerClasses;
 using Prism.Commands;
@@ -17,13 +16,13 @@ namespace Photobook.ViewModels
         private ICommand _createEventCommand;
         private DateTime _endDate = new DateTime();
         private TimeSpan _endTime;
-        private readonly ObservableCollection<EventModel> _events;
+        private readonly ObservableCollection<Event> _events;
         private readonly Host _host;
 
 
         private bool _isErrorMessageEnabled;
 
-        private EventModel _newEvent = new EventModel();
+        private Event _newEvent = new Event();
 
         private ICommand _regretCommand;
         private DateTime _startDate = new DateTime();
@@ -31,7 +30,7 @@ namespace Photobook.ViewModels
 
         public INavigation Navigation;
 
-        public HostAddEventViewModel(Host host, ObservableCollection<EventModel> events)
+        public HostAddEventViewModel(Host host, ObservableCollection<Event> events)
         {
             _host = host;
             _events = events;
@@ -71,7 +70,7 @@ namespace Photobook.ViewModels
 
         public DateTime MinDate => DateTime.Today.Date;
 
-        public EventModel NewEvent
+        public Event NewEvent
         {
             get => _newEvent;
             set
@@ -127,7 +126,7 @@ namespace Photobook.ViewModels
         {
             // Når der trykkes "Opret event knappen"
             // Her skal data fra NewEvent.StartDate; NewEvent.EndDate; NewEvent.EventName
-            // Og klassen "User" sendes til serveren, for at oprette event til den pågældende bruger, med EventModel info
+            // Og klassen "User" sendes til serveren, for at oprette event til den pågældende bruger, med Event info
             // Her kunne vi evt. bruge "SMS" eller "EMAIL" funktionen Poul snakkede om i essentials
             // Så når der trykkes på knappen, laves der en PIN kode og sendes også en sms til brugere med denne PIN
 

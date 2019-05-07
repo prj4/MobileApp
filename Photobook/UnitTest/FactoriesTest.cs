@@ -28,7 +28,7 @@ namespace UnitTest
         [TestCase(DataType.NewUser, "Account/Host")]
         [TestCase(DataType.Picture, "Picture")]
         [TestCase(DataType.Host, "Account/Login")]
-        [TestCase(DataType.NewEvent, "EventModel")]
+        [TestCase(DataType.NewEvent, "Event")]
         public void TestGenerateUrlFactory(DataType d, string urlSuffix)
         {
             string defaultPath = "https://photobookwebapi1.azurewebsites.net/api/";

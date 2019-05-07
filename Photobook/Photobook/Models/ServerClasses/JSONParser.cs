@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using Newtonsoft.Json;
-using PB.Dto;
 
 namespace Photobook.Models
 {
@@ -102,10 +101,10 @@ namespace Photobook.Models
     {
         public string ParsedData(object ne)
         {
-            var newEvent = new EventModel();
+            var newEvent = new Event();
             try
             {
-                newEvent = (EventModel) ne;
+                newEvent = (Event) ne;
             }
             catch (Exception e)
             {

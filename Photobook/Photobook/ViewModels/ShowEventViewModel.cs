@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using PB.Dto;
 using Photobook.Models;
 using Photobook.View;
 using Prism.Commands;
@@ -12,7 +11,7 @@ namespace Photobook.ViewModels
 {
     public class ShowEventViewModel : INotifyPropertyChanged
     {
-        private readonly EventModel _event;
+        private readonly Event _event;
         private readonly Guest _guest;
         private bool _showLogoutBtn;
         private bool _showTopBar;
@@ -20,7 +19,7 @@ namespace Photobook.ViewModels
 
         public INavigation Navigation;
 
-        public ShowEventViewModel(EventModel newEvent, bool ShowNavBar)
+        public ShowEventViewModel(Event newEvent, bool ShowNavBar)
         {
             _event = newEvent;
             ShowTopBar = ShowNavBar;
@@ -33,7 +32,7 @@ namespace Photobook.ViewModels
                 ShowLogoutBtn = true;
         }
 
-        public ShowEventViewModel(EventModel newEvent, Guest currentGuest, bool ShowNavBar)
+        public ShowEventViewModel(Event newEvent, Guest currentGuest, bool ShowNavBar)
         {
             _event = newEvent;
             _guest = currentGuest;

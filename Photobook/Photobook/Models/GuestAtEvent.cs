@@ -1,12 +1,10 @@
-﻿using PB.Dto;
-
-namespace Photobook.Models
+﻿namespace Photobook.Models
 {
     public class GuestAtEvent
     {
         public Guest GuestInfo { get; set; }
 
-        public EventModel EventInfo { get; set; }
+        public Event EventInfo { get; set; }
 
         //public CookieCollection CookieInfo { get; set; }
         public string Presentation
