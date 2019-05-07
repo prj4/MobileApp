@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using Photobook.Models;
 using Photobook.Models.ServerClasses;
+using Photobook.ViewModels;
 using Xamarin.Forms;
 
 namespace Photobook.View
@@ -11,18 +12,10 @@ namespace Photobook.View
     {
         public StartUpView()
         {
+            var vm = new StartUpViewViewModel();
+            vm.Navigation = Navigation;
+            BindingContext = vm;
             InitializeComponent();
-
-        }
-
-        private async void Handle_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new GuestLogin());
-        }
-
-        private async void Host_Clicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new HostView());
         }
     }
 }
