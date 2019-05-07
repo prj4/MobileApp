@@ -32,9 +32,9 @@
         <StackLayout x:Name="MainStack" HorizontalOptions="Center" VerticalOptions="Center"
                      AbsoluteLayout.LayoutBounds="0.5, 0.5, 0.65, 1" AbsoluteLayout.LayoutFlags="All">
             <Label Margin="0,0,0,10" Text="Log ind som gæst eller arrangør" TextColor="White" />
-            <Button Padding="10" BackgroundColor="White" Text="Gæst" Clicked="Handle_Clicked" />
+            <Button Padding="10" BackgroundColor="White" Text="Gæst" Command="{Binding GuestLoginCommand}" />
 
-            <Button Text="Arrangør" BackgroundColor="Transparent" Clicked="Host_Clicked">
+            <Button Text="Arrangør" BackgroundColor="Transparent" Command="{Binding HostViewCommand}">
                 <Button.TextColor>
                     <OnPlatform x:TypeArguments="Color"
                                 Android="White"
