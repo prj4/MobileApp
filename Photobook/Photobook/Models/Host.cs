@@ -1,4 +1,5 @@
 ﻿using System;
+using PB.Dto;
 
 namespace Photobook.Models
 {
@@ -18,6 +19,16 @@ namespace Photobook.Models
         public string Email { get; set; }
         public string Name { get; set; }
 
+        public Host()
+        {
+            
+        }
+
+        public Host(ReturnHostModel rm)
+        {
+            Email = rm.Email;
+            Name = rm.Name;
+        }
         public void Validate()
         {
             if (!Email.Contains("@")) throw new IncorrectEmailException("Incorrect email entered");

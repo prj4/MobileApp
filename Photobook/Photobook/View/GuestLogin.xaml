@@ -52,22 +52,14 @@
 
             <ScrollView Grid.Row="2" Grid.Column="0" Margin="70,0,70,70" VerticalOptions="End">
                 <Grid Padding="0,10,0,10">
-                    <ListView ItemsSource="{Binding ActiveGuests}" BackgroundColor="#f2f2f2"
+                    <ListView ItemsSource="{Binding ActiveGuests, Mode=TwoWay}" BackgroundColor="#f2f2f2"
                               HasUnevenRows="true"
-                              SelectedItem="{Binding Current, Mode=TwoWay}"
-                              SelectionMode="Single">
+                              SelectedItem="{Binding Selected, Mode=TwoWay}"
+                              SelectionMode="Single"
+                              >
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <TextCell Text="{Binding Presentation}" />
-                                <!--<ViewCell>
-                                    <StackLayout Orientation="Vertical" Padding="8,10,0,10" >
-                                    <Label TextColor="Black" FontAttributes="Bold" Text="{Binding Presentation, 
-                                        Mode=OneWay}"/>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding Presentation, Mode=TwoWay}"/>
-                                    </StackLayout>
-                                </StackLayout>
-                            </ViewCell>-->
+                                <TextCell Text="{Binding Presentation}" TextColor="Black"/>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

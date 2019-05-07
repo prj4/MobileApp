@@ -12,11 +12,7 @@ namespace Photobook.ViewModels
     {
         private TestImage _image;
 
-        private string _pictureTaker;
-
         private ICommand downloadSingleCommand;
-
-
         public INavigation Navigation;
 
         public EventSeeSingleImageViewModel(TestImage Img)
@@ -34,23 +30,22 @@ namespace Photobook.ViewModels
             }
         }
 
-        public string PictureTaker
-        {
-            get => $"Taken by: {Image.FileName}";
-            set
-            {
-                _pictureTaker = value;
-                NotifyPropertyChanged();
-            }
-        }
-        
-
         private ICommand _deleteImageCommand;
         public ICommand DeleteImageCommand => _deleteImageCommand ?? (_deleteImageCommand = new DelegateCommand(DeleteImage_Execute));
 
-        private void DeleteImage_Execute()
+        private async void DeleteImage_Execute()
         {
-            Debug.WriteLine("Delete image");
+            IServerCommunicator com = new ServerCommunicator();
+            com.AddCookies(SettingsManager.CurrentCookies);
+
+            if(await com.DeleteFromServer(_image, DataType.Picture))
+            {
+                Debug.WriteLine("Deleted");
+            }
+            else
+            {
+                Debug.WriteLine("Not deleted");
+            }
         }
 
         public ICommand DownloadSingleCommand =>
@@ -69,7 +64,7 @@ namespace Photobook.ViewModels
             if (cookies != null)
             {
                 IMediaDownloader downloader = new MediaDownloader(cookies);
-                downloader.DownloadSingleImage(Image.ImageUrl);
+                downloader.DownloadSingleImage(Image.FullPictureUrl);
             }
         }
     }

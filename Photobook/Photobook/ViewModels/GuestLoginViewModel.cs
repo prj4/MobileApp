@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using PB.Dto;
 using Photobook.Models;
 using Photobook.Models.ServerClasses;
 using Photobook.View;
@@ -17,17 +19,16 @@ namespace Photobook.ViewModels
 
         private ICommand _guestLoginCommand;
         private string _loginInfo;
-        private GuestAtEvent current;
+ 
 
         private bool enableButton = true;
-        private Event eventFromServer;
+        private EventModel eventFromServer;
         public INavigation Navigation;
 
         public GuestLoginViewModel()
         {
             Guest = new Guest();
-            eventFromServer = new Event();
-
+            eventFromServer = new EventModel();
             InitializeGuests();
         }
 
@@ -41,15 +42,34 @@ namespace Photobook.ViewModels
             }
         }
 
-        public List<GuestAtEvent> ActiveGuests { get; set; }
-
-        public GuestAtEvent Current
+        private ObservableCollection<GuestAtEvent> _guestAtEvents;
+        public ObservableCollection<GuestAtEvent> ActiveGuests
         {
-            get => current;
+            get { return _guestAtEvents; }
+            set { _guestAtEvents = value; NotifyPropertyChanged(); }
+
+        }
+
+
+        private GuestAtEvent selected;
+        public GuestAtEvent Selected
+        {
+            get => selected;
             set
             {
-                current = value;
-                _guest = current.GuestInfo;
+                selected = value;
+                SettingsManager.GetCookies(selected.GuestInfo.Username);
+                _guest = selected.GuestInfo;
+                
+
+                var rootPage = Navigation.NavigationStack.FirstOrDefault();
+                if (rootPage != null)
+                {
+                    
+                    Navigation.InsertPageBefore(new ShowEvent(selected.EventInfo, _guest, false),
+                        Navigation.NavigationStack.First());
+                    Navigation.PopToRootAsync();
+                }
             }
         }
 
@@ -85,7 +105,9 @@ namespace Photobook.ViewModels
 
         private async void InitializeGuests()
         {
-            ActiveGuests = await SettingsManager.GetAllActiveUsers();
+            var list = await SettingsManager.GetAllActiveUsers();
+            ActiveGuests = new ObservableCollection<GuestAtEvent>(list);
+            NotifyPropertyChanged();
         }
 
         private bool AreDetailsValid(Guest guest)
@@ -105,17 +127,17 @@ namespace Photobook.ViewModels
                 var message = Data.LatestMessage;
                 IFromJSONParser parser = new FromJsonParser();
 
-                eventFromServer = await parser.DeserializedData<Event>(message);
+                eventFromServer = await parser.DeserializedData<EventModel>(message);
 
 
                 SettingsManager.SaveCookie(Data.LatestReceivedCookies, _guest.Username);
-                current = new GuestAtEvent
+                Selected = new GuestAtEvent
                 {
                     EventInfo = eventFromServer,
                     GuestInfo = _guest
                 };
-                ActiveGuests.Add(current);
-                SettingsManager.SaveActiveGuestList(ActiveGuests);
+                ActiveGuests.Add(Selected);
+                SettingsManager.SaveActiveGuestList(ActiveGuests.ToList());
 
                 var rootPage = Navigation.NavigationStack.FirstOrDefault();
                 if (rootPage != null)

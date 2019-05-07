@@ -42,6 +42,15 @@ namespace Photobook.Models
                 CreationCollisionOption.OpenIfExists);
         }
 
+        public static async void Purge()
+        {
+
+            var userFolder = await GetToUserFolder();
+            await userFolder.DeleteAsync();
+            var cookieFolder = await GetToCookieFolder();
+            await cookieFolder.DeleteAsync();
+        }
+
         public static async Task<List<GuestAtEvent>> GetAllActiveUsers()
         {
             var userFolder = await GetToUserFolder();

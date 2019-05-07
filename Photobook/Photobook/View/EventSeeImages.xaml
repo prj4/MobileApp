@@ -6,8 +6,7 @@
 
              xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             BackgroundColor="#0e122a"
-             >
+             BackgroundColor="#0e122a">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{Binding DownloadProgress}"/>
@@ -18,7 +17,7 @@
         
         <flv:FlowListView SeparatorVisibility="None" HasUnevenRows="true"
                           FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
-                          FlowColumnMinWidth="110" FlowItemsSource="{Binding Items}">
+                          FlowColumnMinWidth="110" FlowItemsSource="{Binding Items, Mode=TwoWay}">
 
             <flv:FlowListView.FlowColumnTemplate>
                 <DataTemplate>
@@ -31,8 +30,10 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <Image HeightRequest="100" Aspect="AspectFill" 
-                               Source="{Binding ImageUrl}">
+                        <Image HeightRequest="100" Aspect="AspectFill">
+                            <Image.Source>
+                                <FileImageSource File ="{Binding Source, Mode=TwoWay}"/>
+                            </Image.Source>
                         </Image>
 
                         <Label x:Name="Label" HorizontalOptions="Fill" HorizontalTextAlignment="Center" VerticalOptions="End"

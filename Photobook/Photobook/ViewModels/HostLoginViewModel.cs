@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using PB.Dto;
 using Photobook.Models;
 using Photobook.Models.ServerClasses;
 using Photobook.View;
@@ -43,15 +44,21 @@ namespace Photobook.ViewModels
             {
                 IFromJSONParser Parser = new FromJsonParser();
 
-                var ServerHost = await Parser.DeserializedData<Host>(handler.LatestMessage);
+                var ServerHost = await Parser.DeserializedData<ReturnHostModel>(handler.LatestMessage);
 
                 var rootPage = Navigation.NavigationStack.FirstOrDefault();
                 if (rootPage != null)
                 {
+                    var page = (ServerHost.Events != null)
+                        ? new HostMainMenu(ServerHost, ServerHost.Events.ToList())
+                        : new HostMainMenu(ServerHost);
+
+
                     SettingsManager.SaveCookie(handler.LatestReceivedCookies, ServerHost.Name);
-                    Navigation.InsertPageBefore(new HostMainMenu(ServerHost), Navigation.NavigationStack.First());
+                    Navigation.InsertPageBefore(page, Navigation.NavigationStack.First());
                     await Navigation.PopToRootAsync();
                 }
+                
             }
         }
 

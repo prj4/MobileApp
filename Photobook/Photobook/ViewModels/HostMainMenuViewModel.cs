@@ -1,9 +1,14 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using PB.Dto;
 using Photobook.Models;
 using Photobook.View;
 using Prism.Commands;
@@ -36,6 +41,41 @@ namespace Photobook.ViewModels
                 _host = new Host();
                 _host.Name = "Troels Bleicken";
             }
+            _events = new ObservableCollection<EventModel>();
+        }
+
+        public HostMainMenuViewModel(ReturnHostModel hostModel)
+        {
+            
+            
+            _selectedEvent = null;
+
+            if (hostModel != null)
+            {
+                _host = new Host(hostModel);
+            }
+            else
+            {
+                _host = new Host();
+                _host.Name = "Troels Bleicken";
+            }
+            _events = new ObservableCollection<EventModel>();
+        }
+
+        public HostMainMenuViewModel(ReturnHostModel hostModel, List<EventModel> events)
+        {
+            _selectedEvent = null;
+
+            if (hostModel != null)
+            {
+                _host = new Host(hostModel);
+            }
+            else
+            {
+                _host = new Host();
+                _host.Name = "Troels Bleicken";
+            }
+            _events = new ObservableCollection<EventModel>(events);
         }
 
         public Host Host
@@ -70,17 +110,22 @@ namespace Photobook.ViewModels
         {
             get
             {
-                return _deleteEventCommand ?? (_deleteEventCommand = new DelegateCommand<Event>(DeleteEvent_Execute));
+                return _deleteEventCommand ?? (_deleteEventCommand = new DelegateCommand<EventModel>(DeleteEvent_Execute));
             }
         }
       
 
 
-        private void DeleteEvent_Execute(Event _event)
+        private async void DeleteEvent_Execute(EventModel _event)
         {
-            Events.Remove(_event);
-            
-            NotifyPropertyChanged("Events");
+            IServerCommunicator com = new ServerCommunicator();
+
+            if(await com.DeleteFromServer(_event, DataType.DeleteEvent))
+            {
+                Events.Remove(_event);
+
+                NotifyPropertyChanged("Events");
+            }
         }
 
 
@@ -101,11 +146,11 @@ namespace Photobook.ViewModels
         }
 
 
-        #region Event liste
+        #region EventModel liste
 
-        private ObservableCollection<Event> _events = new ObservableCollection<Event>();
+        private ObservableCollection<EventModel> _events;
 
-        public ObservableCollection<Event> Events
+        public ObservableCollection<EventModel> Events
         {
             get => _events;
             set
@@ -130,9 +175,9 @@ namespace Photobook.ViewModels
             }
         }
 
-        private Event _selectedEvent;
+        private EventModel _selectedEvent;
 
-        public Event SelectedEvent
+        public EventModel SelectedEvent
         {
             get => _selectedEvent;
             set
@@ -143,7 +188,12 @@ namespace Photobook.ViewModels
 
                 // Skriv til server om at få info om dette event
                 TestText = _selectedEvent.Name;
-                Navigation.PushAsync(new ShowEvent(_selectedEvent, true));
+                Guest hostToGuest = new Guest
+                {
+                    Pin = _selectedEvent.Pin,
+                    Username = _host.Name
+                };
+                Navigation.PushAsync(new ShowEvent(_selectedEvent, hostToGuest, true));
             }
         }
 
