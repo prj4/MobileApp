@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Photobook.Models;
@@ -65,6 +66,13 @@ namespace Photobook.ViewModels
             {
                 IMediaDownloader downloader = new MediaDownloader(cookies);
                 downloader.DownloadSingleImage(Image.FullPictureUrl);
+                downloader.Downloading += args =>
+                {
+                    var path = DependencyService.Get<IFileDirectoryAPI>().GetImagePath();
+                    var fileName = $"{args.PictureId}{Directory.GetFiles(path).Length}.png";
+                    var fullPath = $"{path}/{fileName}";
+                    File.WriteAllBytes(fullPath, args.FileBytes);
+                };
             }
         }
     }

@@ -87,6 +87,7 @@ namespace Photobook.ViewModels
         public async void ReloadData()
         {
             DeleteTempDirectory();
+            Refresh = true;
             com = new ServerCommunicator();
 
             var ids = await com.GetImages(_event);
@@ -104,11 +105,13 @@ namespace Photobook.ViewModels
 
         }
 
+        public bool Refresh = false;
 
         private void Downloader_DownloadPreview(ImageDownloadEventArgs e)
         {
             if (e.StatusOk)
             {
+                Refresh = false;
                 string fullPath;
                 lock (_lock)
                 {
@@ -124,13 +127,17 @@ namespace Photobook.ViewModels
                 Debug.WriteLine($"{sw.ElapsedMilliseconds} ms", "Downloaded image");
                 sw.Reset();
                 sw.Start();
-                Items.Add(new TestImage
+                var list = Items;
+
+                list.Add(new TestImage
                 {
                     FileName = e?.PictureId,
                     ImagePath = fullPath,
                     Source = ImageSource.FromFile(fullPath),
                     PinId = e.PinId
                 });
+
+                Items = list;
                 NotifyPropertyChanged("Items");
             }
             else
