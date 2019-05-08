@@ -10,9 +10,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Photobook", "Photobook\Phot
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{20880F58-0A57-4E93-A37D-93202022CC90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{14C26B1D-35D9-4892-B974-D7993C271562}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTest.csproj", "{14C26B1D-35D9-4892-B974-D7993C271562}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationsTest", "IntegrationsTest\IntegrationsTest.csproj", "{0EFDC7B5-C04E-44A2-82E4-22BBCF8E70D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationsTest", "IntegrationsTest\IntegrationsTest.csproj", "{0EFDC7B5-C04E-44A2-82E4-22BBCF8E70D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +55,7 @@ Global
 		{8A9970BE-D3E6-4F36-B1FA-368BE44E5B92}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
 		{8A9970BE-D3E6-4F36-B1FA-368BE44E5B92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A9970BE-D3E6-4F36-B1FA-368BE44E5B92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A9970BE-D3E6-4F36-B1FA-368BE44E5B92}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{8A9970BE-D3E6-4F36-B1FA-368BE44E5B92}.Release|iPhone.ActiveCfg = Release|Any CPU
 		{8A9970BE-D3E6-4F36-B1FA-368BE44E5B92}.Release|iPhone.Build.0 = Release|Any CPU
 		{8A9970BE-D3E6-4F36-B1FA-368BE44E5B92}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
