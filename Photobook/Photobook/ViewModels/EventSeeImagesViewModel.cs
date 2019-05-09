@@ -90,7 +90,7 @@ namespace Photobook.ViewModels
             Refresh = true;
             com = new ServerCommunicator();
 
-            var ids = await com.GetImages(_event);
+            var ids = await com.GetImages(_event, MemoryManager.CurrentCookies);
 
             foreach (var id in ids)
             {

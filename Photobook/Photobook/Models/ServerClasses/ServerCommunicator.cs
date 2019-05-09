@@ -31,6 +31,7 @@ namespace Photobook.Models
         Task<bool> SendDataReturnIsValid(object o, DataType d);
         void AddCookies(CookieCollection _cookies);
         Task<bool> DeleteFromServer(object o, DataType d);
+        Task<List<string>> GetImages(EventModel e, CookieCollection c);
     }
 
     public class ServerCommunicator : IServerCommunicator
@@ -43,6 +44,15 @@ namespace Photobook.Models
 
         private string Response;
 
+        public ServerCommunicator(HttpClient _client, HttpClientHandler _clientHandler,
+            CookieContainer _cookies, IServerDataHandler _dataHandler, IServerErrorcodeHandler _errorHandler)
+        {
+            client = _client;
+            clientHandler = _clientHandler;
+            cookies = _cookies;
+            dataHandler = _dataHandler;
+            errorHandler = _errorHandler;
+        }
         public ServerCommunicator()
         {
             cookies = new CookieContainer();
@@ -111,7 +121,7 @@ namespace Photobook.Models
             {
                 errorHandler?.Handle(response);
 
-                Debug.WriteLine($"{e.Message}, {DateTime.Now.ToString("yy;MM;dd;HH;mm;ss")}",
+                Debug.WriteLine($"{e.Message}",
                     "HttpRequestException");
                 return false;
             }
@@ -131,7 +141,7 @@ namespace Photobook.Models
                 return false;
             }
 
-            Debug.WriteLine(Response + DateTime.Now.ToString("ss.fff"), "SERVER_RESPONSE:");
+            Debug.WriteLine(Response, "SERVER_RESPONSE:");
 #endif
 
             try
@@ -154,9 +164,9 @@ namespace Photobook.Models
             return response.IsSuccessStatusCode;
         }
 
-        public async Task<List<string>> GetImages(EventModel e)
+        public async Task<List<string>> GetImages(EventModel e, CookieCollection cookie)
         {
-            clientHandler.CookieContainer.Add(MemoryManager.CurrentCookies);
+            clientHandler.CookieContainer.Add(cookie);
             clientHandler.UseCookies = true;
             var response =
                 await client.GetAsync(

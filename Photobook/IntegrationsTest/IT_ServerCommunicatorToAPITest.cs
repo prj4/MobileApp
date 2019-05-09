@@ -6,7 +6,7 @@ using Photobook.Models;
 namespace UnitTest
 {
     [TestFixture]
-    class ServerCommunicatorTest
+    class IT_ServerCommunicatorToAPITest
     {
         private ServerCommunicator uut;
 
