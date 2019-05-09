@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
@@ -39,6 +38,7 @@ namespace Photobook.Models
         public MediaDownloader(CookieCollection _cookies)
         {
             cookies = _cookies;
+            
         }
 
         public void DownloadSingleImage(string url)

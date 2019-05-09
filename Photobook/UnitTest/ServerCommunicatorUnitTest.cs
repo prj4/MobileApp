@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NSubstitute;
@@ -11,6 +12,7 @@ using NUnit.Framework;
 using PB.Dto;
 using Photobook.Models;
 using Photobook.Models.ServerClasses;
+using Photobook.Models.ServerDataClasses;
 
 namespace UnitTest
 {
@@ -55,16 +57,17 @@ namespace UnitTest
             imgs.Add("1");
             imgs.Add("2");
 
-
+            RootObject content = new RootObject {PictureList = imgs};
             HttpResponseMessage rep = new HttpResponseMessage
             {
-                Content = new StringContent(JsonConvert.SerializeObject(imgs)),
+                Content = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json"),
                 StatusCode = code
             };
 
             Task<HttpResponseMessage> msg = Task.FromResult(rep);
 
             mockClient.ReturnsForAll(msg);
+            
 
             Assert.That(await uut.GetImages(new EventModel(), new CookieCollection()), Is.EqualTo(nums.ToList()));
 
