@@ -49,29 +49,7 @@ namespace UnitTest
             Assert.That(await uut.SendDataReturnIsValid(h, DataType.Host), Is.False);
         }
 
-        [TestCase(new []{"1", "2"}, HttpStatusCode.OK)]
-        [TestCase(new string[]{}, HttpStatusCode.NotFound)]
-        public async Task TestGetImagesReturnsList(string[] nums, HttpStatusCode code)
-        {
-            List<string> imgs = new List<string>();
-            imgs.Add("1");
-            imgs.Add("2");
-
-            RootObject content = new RootObject {PictureList = imgs};
-            HttpResponseMessage rep = new HttpResponseMessage
-            {
-                Content = new StringContent(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json"),
-                StatusCode = code
-            };
-
-            Task<HttpResponseMessage> msg = Task.FromResult(rep);
-
-            mockClient.ReturnsForAll(msg);
-            
-
-            Assert.That(await uut.GetImages(new EventModel(), new CookieCollection()), Is.EqualTo(nums.ToList()));
-
-        }
+        
 
         [TestCase(HttpStatusCode.OK, true)]
         [TestCase(HttpStatusCode.NotFound, false)]
