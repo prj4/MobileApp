@@ -19,17 +19,17 @@ namespace UnitTest
 
             Host testHost = new Host
             {
-                Email = "testMail",
-                Name = "testName",
-                Password = "testPassword"
+                Email = "testmail",
+                Name = "testname",
+                Password = "testpassword"
             };
 
             var output = uut.ParsedData(testHost);
             var c = new TestContains(output.Contains);
 
-            Assert.That(c("Email") && c("testMail") &&
-                        c("Name") && c("testName") &&
-                        c("Password") && c("testPassword"));
+            Assert.That(c("Email") && c("testmail") &&
+                        c("Name") && c("testname") &&
+                        c("Password") && c("testpassword"));
         }
         [Test]
         public void TestNewEventParser()
@@ -38,10 +38,10 @@ namespace UnitTest
 
             var testEvent = new EventModel
             {
-                Description = "testDescription",
+                Description = "testdescription",
                 EndDate = DateTime.MinValue,
-                Location = "testLocation",
-                Name = "testName",
+                Location = "testlocation",
+                Name = "testname",
                 StartDate = DateTime.MinValue
             };
 
@@ -49,11 +49,11 @@ namespace UnitTest
             var parsed = uut.ParsedData(testEvent);
             var c = new TestContains(parsed.Contains);
 
-            Assert.That(c("Description") && c("testDescription") &&
+            Assert.That(c("Description") && c("testdescription") &&
                         c("EndDate") && c(DateTime.MinValue.ToString("yyyy-MM-ddTHH:mm:ss")) &&
                         c("StartDate") && c(DateTime.MinValue.ToString("yyyy-MM-ddTHH:mm:ss")) &&
-                        c("Location") && c("testLocation") &&
-                        c("Name") && c("testName"));
+                        c("Location") && c("testlocation") &&
+                        c("Name") && c("testname"));
         }
         [Test]
         public void TestGuestParser()
@@ -62,15 +62,15 @@ namespace UnitTest
 
             var testGuest = new Guest
             {
-                Pin = "testPin",
-                Username = "testUsername"
+                Pin = "testpin",
+                Username = "testusername"
             };
 
             var parsed = uut.ParsedData(testGuest);
             var c = new TestContains(parsed.Contains);
 
-            Assert.That(c("Pin") && c("testPin") &&
-                        c("Username") && c("testUsername"));
+            Assert.That(c("Pin") && c("testpin") &&
+                        c("Name") && c("testusername"));
 
         }
 
@@ -82,14 +82,14 @@ namespace UnitTest
             var testPhoto = new PhotoToServer
             {
                 Bytes = new byte[1234],
-                Pin = "testPin"
+                Pin = "testpin"
             };
 
             var parsed = uut.ParsedData(testPhoto);
             var c = new TestContains(parsed.Contains);
 
             Assert.That(c("pictureString") && c(Convert.ToBase64String(new byte[1234])) && 
-                        c("eventPin") && c("testPin"));
+                        c("eventPin") && c("testpin"));
         }
 
         [Test]
@@ -99,16 +99,16 @@ namespace UnitTest
 
             var testHost = new Host
             {
-                Password = "testPassword",
-                Email = "testEmail",
-                Name = "testName"
+                Password = "testpassword",
+                Email = "testemail",
+                Name = "testname"
             };
 
             var parsed = uut.ParsedData(testHost);
             var c = new TestContains(parsed.Contains);
 
-            Assert.That(c("Password") && c("testPassword") && 
-                        c("UserName") && c("testEmail"));
+            Assert.That(c("Password") && c("testpassword") && 
+                        c("UserName") && c("testemail"));
 
         }
 

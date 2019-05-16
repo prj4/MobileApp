@@ -11,7 +11,7 @@ namespace Photobook.Models
         public bool SendSucceeded { get; set; }
     }
 
-    internal interface IMediaUploader
+    public interface IMediaUploader
     {
         event ServerNotice NotifyDone;
         void SendMedia(string path, string eventId, DataType d);

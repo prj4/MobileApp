@@ -17,9 +17,10 @@ namespace Photobook.ViewModels
         private bool _showLogoutBtn;
         private bool _showTopBar;
         private readonly IMediaUploader MedUploader;
-
+        private IMediaPicker Med;
         public INavigation Navigation;
-
+        private ICameraAPI Cam;
+        
         public ShowEventViewModel(EventModel newEvent, bool ShowNavBar)
         {
             _event = newEvent;
@@ -44,6 +45,24 @@ namespace Photobook.ViewModels
                 ShowLogoutBtn = false;
             else
                 ShowLogoutBtn = true;
+        }
+        
+        public ShowEventViewModel(EventModel newEvent, Guest currentGuest, bool ShowNavBar, 
+            IMediaUploader med,
+            ICameraAPI cam)
+        {
+            _event = newEvent;
+            _guest = currentGuest;
+            ShowTopBar = ShowNavBar;
+            MedUploader = new MediaUploader(_guest);
+            MedUploader.NotifyDone += NotifyDoneHandler;
+            if (ShowNavBar)
+                ShowLogoutBtn = false;
+            else
+                ShowLogoutBtn = true;
+
+            Cam = cam;
+            MedUploader = med;
         }
 
         public bool ShowTopBar
@@ -156,7 +175,7 @@ namespace Photobook.ViewModels
 
         private async void UploadPicture_Execute()
         {
-            IMediaPicker Med = new CrossMediaPicker();
+            Med = new CrossMediaPicker();
 
             var photoPath = await Med.SelectPhoto();
 
@@ -170,8 +189,10 @@ namespace Photobook.ViewModels
 
         private async void UploadVideo_Execute()
         {
-            IMediaPicker Med = new CrossMediaPicker();
-
+            
+            if(Med == null)
+                Med = new CrossMediaPicker();
+            
             var videoPath = await Med.SelectVideo();
 
             if (videoPath != "Null")
@@ -186,7 +207,9 @@ namespace Photobook.ViewModels
 
         private async void TakePhoto_Execute()
         {
-            ICameraAPI Cam = new CrossCamera();
+            if(Cam == null)
+                Cam = new CrossCamera();
+
             var path = await Cam.TakePhoto();
             if (path != "Null") MedUploader.SendMedia(path, _event.Pin, DataType.Picture);
         }
@@ -198,7 +221,9 @@ namespace Photobook.ViewModels
 
         private async void TakeVideo_Execute()
         {
-            ICameraAPI Cam = new CrossCamera();
+            if(Cam == null)
+                Cam = new CrossCamera();
+
             var path = await Cam.TakeVideo();
             if (path != "Null")
             {
