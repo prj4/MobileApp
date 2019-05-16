@@ -2,7 +2,7 @@
 {
     public class PhotoToServer
     {
-        public string Path { get; set; }
+        public byte[] Bytes { get; set; }
         public string Pin { get; set; }
     }
 }

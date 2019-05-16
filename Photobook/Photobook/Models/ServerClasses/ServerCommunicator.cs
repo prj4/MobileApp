@@ -85,7 +85,7 @@ namespace Photobook.Models
 
         public void AddCookies(CookieCollection _cookies)
         {
-            cookies.Add(_cookies);
+            cookies?.Add(_cookies);
         }
 
         public async Task<bool> SendDataReturnIsValid(object dataToSend, DataType dataType)
@@ -96,11 +96,8 @@ namespace Photobook.Models
             if (!(dataType == DataType.Picture || dataType == DataType.Video))
                 Debug.WriteLine(data + DateTime.Now.ToString("ss.fff"), "JSON_DATA:");
 
-            if (cookies.Count > 0)
-                clientHandler.UseCookies = true;
+            clientHandler.UseCookies = true;
             
-            
-
             HttpResponseMessage response = null;
             try
             {
@@ -116,6 +113,12 @@ namespace Photobook.Models
             try
             {
                 response.EnsureSuccessStatusCode();
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    errorHandler?.Handle(response);
+                    return false;
+                }
+                    
             }
             catch (HttpRequestException e)
             {

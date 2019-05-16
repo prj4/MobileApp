@@ -41,9 +41,8 @@ namespace Photobook.Models
         public string ParsedData(object f)
         {
             var ps = (PhotoToServer) f;
-
-            var bytes = File.ReadAllBytes(ps.Path);
-            var asString = Convert.ToBase64String(bytes);
+            
+            var asString = Convert.ToBase64String(ps.Bytes);
 
             var content = new Dictionary<string, string>();
             content.Add("pictureString", asString);
