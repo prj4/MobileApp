@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 
 namespace Photobook.Models
@@ -39,7 +40,7 @@ namespace Photobook.Models
 
             var ps = new PhotoToServer
             {
-                Path = path,
+                Bytes = File.ReadAllBytes(path),
                 Pin = eventId
             };
             var cookies = await MemoryManager.GetCookies($"{currentGuest.Username}");
