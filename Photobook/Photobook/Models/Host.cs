@@ -31,7 +31,8 @@ namespace Photobook.Models
         }
         public void Validate()
         {
-            if (!Email.Contains("@")) throw new IncorrectEmailException("Incorrect email entered");
+            if (!Email.Contains("@") || !Email.Contains("."))
+                throw new IncorrectEmailException("Incorrect email entered");
         }
     }
 }

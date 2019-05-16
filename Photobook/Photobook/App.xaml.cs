@@ -16,12 +16,13 @@ namespace Photobook
             FlowListView.Init();
             DependencyService.Register<ICameraAPI>();
         }
-
-
+        
         protected override void OnStart()
         {
             MainPage = new NavigationPage(new StartUpView());
+            
         }
+        
 
         protected override void OnSleep()
         {
