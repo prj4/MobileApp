@@ -66,13 +66,7 @@ namespace Photobook.ViewModels
             {
                 IMediaDownloader downloader = new MediaDownloader(cookies);
                 downloader.DownloadSingleImage(Image.FullPictureUrl);
-                downloader.Downloading += args =>
-                {
-                    var path = DependencyService.Get<IFileDirectoryAPI>().GetImagePath();
-                    var fileName = $"{args.PictureId}{Directory.GetFiles(path).Length}.png";
-                    var fullPath = $"{path}/{fileName}";
-                    File.WriteAllBytes(fullPath, args.FileBytes);
-                };
+                downloader.Downloading += args => { MemoryManager.SaveToPicture(args.FileBytes, args.PictureId); };
             }
         }
     }

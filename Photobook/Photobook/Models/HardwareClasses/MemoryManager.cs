@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PCLStorage;
+using Xamarin.Forms;
 
 namespace Photobook.Models
 {
@@ -40,6 +42,40 @@ namespace Photobook.Models
                 CreationCollisionOption.OpenIfExists);
             return await folder.CreateFolderAsync(UserFolderName,
                 CreationCollisionOption.OpenIfExists);
+        }
+
+        public static string SaveToTemp(byte[] bytes, string name)
+        {
+            var path = DependencyService.Get<IFileDirectoryAPI>().GetTempPath();
+            var fileName = $"{name}{Directory.GetFiles(path).Length}.png";
+            var fullPath = $"{path}/{fileName}";
+            File.WriteAllBytes(fullPath, bytes);
+
+            return fullPath;
+        }
+
+        public static void PurgeTempDirectory()
+        {
+            var tempPath = DependencyService.Get<IFileDirectoryAPI>().GetTempPath();
+            if (Directory.GetFiles(tempPath).Length > 0)
+            {
+                Array.ForEach(
+                    Directory.GetFiles(tempPath),
+                    delegate (string path)
+                    {
+                        File.Delete(path);
+                    });
+            }
+        }
+
+        public static string SaveToPicture(byte[] bytes, string name)
+        {
+            var path = DependencyService.Get<IFileDirectoryAPI>().GetImagePath();
+            var fileName = $"{name}{Directory.GetFiles(path).Length}.png";
+            var fullPath = $"{path}/{fileName}";
+            File.WriteAllBytes(fullPath, bytes);
+
+            return fullPath;
         }
 
         public static async void Purge()

@@ -115,13 +115,8 @@ namespace Photobook.ViewModels
                 string fullPath;
                 lock (_lock)
                 {
-                
-                    var path = DependencyService.Get<IFileDirectoryAPI>().GetTempPath();
-                    var fileName = $"_temp_{e.PictureId}{Directory.GetFiles(path).Length}.png";
-                    fullPath = $"{path}/{fileName}";     
 
-                
-                    File.WriteAllBytes(fullPath, e.FileBytes);
+                    fullPath = MemoryManager.SaveToTemp(e.FileBytes, e.PictureId);
                 }
                 sw.Stop();
                 Debug.WriteLine($"{sw.ElapsedMilliseconds} ms", "Downloaded image");
@@ -147,25 +142,13 @@ namespace Photobook.ViewModels
 
         private void DeleteTempDirectory()
         {
-            var tempPath = DependencyService.Get<IFileDirectoryAPI>().GetTempPath();
-            if (Directory.GetFiles(tempPath).Length > 0)
-            {
-                Array.ForEach(
-                    Directory.GetFiles(tempPath),
-                    delegate (string path)
-                    {
-                        File.Delete(path);
-                    });
-            }
+            MemoryManager.PurgeTempDirectory();
         }
         private void Downloader_DownloadFull(ImageDownloadEventArgs e)
         {
             if (e.StatusOk)
             {
-                var directoryPath = DependencyService.Get<IFileDirectoryAPI>().GetImagePath();
-                var fileName = $"/photobook{Directory.GetFiles(directoryPath).Length + 1}.PNG";
-                var fullPath = directoryPath + fileName;
-                File.WriteAllBytes(fullPath, e.FileBytes);
+                MemoryManager.SaveToPicture(e.FileBytes, e.PictureId);
                 DownloadProgress = $"Downloading {Progress++}/{Count}";
                 if (Progress == Count)
                 {
