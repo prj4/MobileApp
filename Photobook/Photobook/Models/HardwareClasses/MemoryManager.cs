@@ -7,7 +7,7 @@ using PCLStorage;
 
 namespace Photobook.Models
 {
-    public class MemoryManager
+    public static class MemoryManager
     {
         private static readonly string GuestFileName = "savedGuests";
         private static readonly string CookieFolderName = "Cookies";

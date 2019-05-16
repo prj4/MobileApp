@@ -8,16 +8,11 @@ namespace Photobook.Models
 {
     public interface IFromJSONParser
     {
-        Task<object> DeserializedData(HttpResponseMessage msg);
         Task<T> DeserializedData<T>(HttpResponseMessage msg);
     }
 
     public class FromJsonParser : IFromJSONParser
     {
-        public async Task<object> DeserializedData(HttpResponseMessage msg)
-        {
-            return await DeserializedData<object>(msg);
-        }
 
         public async Task<T> DeserializedData<T>(HttpResponseMessage msg)
         {

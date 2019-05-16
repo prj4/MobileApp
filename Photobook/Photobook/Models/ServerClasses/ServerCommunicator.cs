@@ -179,7 +179,7 @@ namespace Photobook.Models
 
             Debug.WriteLine(rep, "Images");
             var result =
-                JsonConvert.DeserializeObject<RootObject>(rep);
+                JsonConvert.DeserializeObject<PictureListModel>(rep);
 
             return result.PictureList;
         }
