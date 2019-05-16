@@ -16,4 +16,10 @@
     <ProjectReference Include="..\Photobook\Photobook.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="PB.Dto">
+      <HintPath>..\Photobook\PB.Dto.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
