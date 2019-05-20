@@ -24,8 +24,7 @@ namespace IntegrationsTest
             Eventmodel.StartDate = DateTime.MinValue;
             Eventmodel.Location = "På skolen";
             Eventmodel.Name = "Navn på event";
-
-            EventSeeImages = new EventSeeImagesViewModel(Eventmodel);
+            
         }
 
         [Test]
