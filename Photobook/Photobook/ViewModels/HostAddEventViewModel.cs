@@ -28,12 +28,13 @@ namespace Photobook.ViewModels
         private ICommand _regretCommand;
         private DateTime _startDate = new DateTime();
         private TimeSpan _startTime;
-
+        private IMemoryManager _memoryManager;
         public INavigation Navigation;
 
-        public HostAddEventViewModel(Host host, ObservableCollection<EventModel> events)
+        public HostAddEventViewModel(Host host, ObservableCollection<EventModel> events, IMemoryManager memoryManager = null)
         {
             _host = host;
+            _memoryManager = memoryManager ?? MemoryManager.GetInstance();
             _events = events;
             isErrorMessageEnabled = false;
         }
@@ -142,7 +143,7 @@ namespace Photobook.ViewModels
                 isErrorMessageEnabled = false;
             }
 
-            var cookie = MemoryManager.CurrentCookies;
+            var cookie = _memoryManager.CurrentCookies;
 
             IServerDataHandler dataHandler = new ServerDataHandler();
             IServerCommunicator Com = new ServerCommunicator(dataHandler);

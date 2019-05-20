@@ -22,18 +22,19 @@ namespace Photobook.ViewModels
         private readonly IServerCommunicator Com;
 
         private readonly IServerDataHandler dataHandler;
-
+        private IMemoryManager _memoryManager;
 
         private Host host;
         private bool loggedIn;
         public INavigation Navigation;
 
-        public NewHostViewModel()
+        public NewHostViewModel(IMemoryManager memoryManager = null)
         {
             host = new Host();
             dataHandler = new ServerDataHandler();
             Com = new ServerCommunicator(dataHandler);
             SuccesTxt = "";
+            _memoryManager = memoryManager ?? MemoryManager.GetInstance();
         }
 
         public Host Host
@@ -101,7 +102,7 @@ namespace Photobook.ViewModels
 
                     if (await Com.SendDataReturnIsValid(Host, DataType.NewUser))
                     {
-                        MemoryManager.SaveCookie(dataHandler.LatestReceivedCookies, host.Name);
+                        _memoryManager.SaveCookie(dataHandler.LatestReceivedCookies, host.Name);
 
                         var rootPage = Navigation.NavigationStack.FirstOrDefault();
                         if (rootPage != null)

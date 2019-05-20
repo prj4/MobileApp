@@ -19,6 +19,7 @@ namespace Photobook.ViewModels
     public class EventSeeImagesViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private IMemoryManager _memoryManager;
 
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
@@ -69,11 +70,13 @@ namespace Photobook.ViewModels
 
         #region Constructors
 
-        public EventSeeImagesViewModel(EventModel loadEvent, IServerCommunicator servercom)
+        public EventSeeImagesViewModel(EventModel loadEvent, IServerCommunicator servercom, IMemoryManager memoryManager = null)
         {
             com = servercom;
             Items = new ObservableCollection<TestImage>();
             Images = new List<string>();
+
+            _memoryManager = memoryManager ?? MemoryManager.GetInstance();
 
             _event = loadEvent;
             
@@ -94,7 +97,7 @@ namespace Photobook.ViewModels
             
             Refresh = true;
 
-            var ids = await com.GetImages(_event, MemoryManager.CurrentCookies);
+            var ids = await com.GetImages(_event, _memoryManager.CurrentCookies);
 
             foreach (var id in ids)
             {
@@ -102,7 +105,7 @@ namespace Photobook.ViewModels
             }
 
 
-            IMediaDownloader downloader = new MediaDownloader(MemoryManager.CurrentCookies);
+            IMediaDownloader downloader = new MediaDownloader(_memoryManager.CurrentCookies);
             downloader.Downloading += Downloader_DownloadPreview;
             sw.Start();
             downloader.DownloadAllImages(Images);
@@ -120,7 +123,7 @@ namespace Photobook.ViewModels
                 lock (_lock)
                 {
 
-                    fullPath = MemoryManager.SaveToTemp(e.FileBytes, e.PictureId);
+                    fullPath = _memoryManager.SaveToTemp(e.FileBytes, e.PictureId);
                 }
                 sw.Stop();
                 Debug.WriteLine($"{sw.ElapsedMilliseconds} ms", "Downloaded image");
@@ -146,13 +149,13 @@ namespace Photobook.ViewModels
 
         private void DeleteTempDirectory()
         {
-            MemoryManager.PurgeTempDirectory();
+            _memoryManager.PurgeTempDirectory();
         }
         private void Downloader_DownloadFull(ImageDownloadEventArgs e)
         {
             if (e.StatusOk)
             {
-                MemoryManager.SaveToPicture(e.FileBytes, e.PictureId);
+                _memoryManager.SaveToPicture(e.FileBytes, e.PictureId);
                 DownloadProgress = $"Downloading {Progress++}/{Count}";
                 if (Progress == Count)
                 {
@@ -199,7 +202,7 @@ namespace Photobook.ViewModels
                 UrlList.Add(item.FullPictureUrl);
             }
 
-            var cookies = MemoryManager.CurrentCookies;
+            var cookies = _memoryManager.CurrentCookies;
             IMediaDownloader downloader = new MediaDownloader(cookies);
             downloader.Downloading += Downloader_DownloadFull;
             downloader.DownloadStarted += delegate (int count) {

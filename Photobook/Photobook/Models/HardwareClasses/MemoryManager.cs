@@ -9,15 +9,37 @@ using Xamarin.Forms;
 
 namespace Photobook.Models
 {
-    public static class MemoryManager
+    public interface IMemoryManager
     {
-        private static readonly string GuestFileName = "savedGuests";
-        private static readonly string CookieFolderName = "Cookies";
-        private static readonly string SaveFolderName = "photobookSaves";
-        private static readonly string UserFolderName = "Users";
-        public static CookieCollection CurrentCookies { get; private set; }
+        CookieCollection CurrentCookies { get; }
+        void SaveCookie(CookieCollection c, string username);
+        string SaveToPicture(byte[] bytes, string name);
+        void PurgeTempDirectory();
+        Task<CookieCollection> GetCookies(string id);
+        void SaveActiveGuestList(List<GuestAtEvent> current);
+        Task<List<GuestAtEvent>> GetAllActiveUsers();
+        string SaveToTemp(byte[] bytes, string name);
 
-        public static async void SaveCookie(CookieCollection c, string username)
+    }
+    public class MemoryManager : IMemoryManager
+    {
+        private readonly string GuestFileName = "savedGuests";
+        private readonly string CookieFolderName = "Cookies";
+        private readonly string SaveFolderName = "photobookSaves";
+        private readonly string UserFolderName = "Users";
+        public CookieCollection CurrentCookies { get; private set; }
+        private static MemoryManager Instance;
+        public static IMemoryManager GetInstance()
+        {
+            return Instance ?? (Instance = new MemoryManager());
+        }
+
+        protected MemoryManager()
+        {
+            
+        }
+
+        public async void SaveCookie(CookieCollection c, string username)
         {
             CurrentCookies = c;
             var cookieFolder = await GetToCookieFolder();
@@ -35,7 +57,7 @@ namespace Photobook.Models
         }
 
 
-        private static async Task<IFolder> GetToUserFolder()
+        private async Task<IFolder> GetToUserFolder()
         {
             var saveFolder = FileSystem.Current.LocalStorage;
             var folder = await saveFolder.CreateFolderAsync(SaveFolderName,
@@ -44,7 +66,7 @@ namespace Photobook.Models
                 CreationCollisionOption.OpenIfExists);
         }
 
-        public static string SaveToTemp(byte[] bytes, string name)
+        public string SaveToTemp(byte[] bytes, string name)
         {
             var path = DependencyService.Get<IFileDirectoryAPI>().GetTempPath();
             var fileName = $"{name}{Directory.GetFiles(path).Length}.png";
@@ -54,7 +76,7 @@ namespace Photobook.Models
             return fullPath;
         }
 
-        public static void PurgeTempDirectory()
+        public void PurgeTempDirectory()
         {
             
             var tempPath = DependencyService.Get<IFileDirectoryAPI>().GetTempPath();
@@ -69,7 +91,7 @@ namespace Photobook.Models
             }
         }
 
-        public static string SaveToPicture(byte[] bytes, string name)
+        public string SaveToPicture(byte[] bytes, string name)
         {
             var path = DependencyService.Get<IFileDirectoryAPI>().GetImagePath();
             var fileName = $"{name}{Directory.GetFiles(path).Length}.png";
@@ -79,7 +101,7 @@ namespace Photobook.Models
             return fullPath;
         }
 
-        public static async void Purge()
+        public async void Purge()
         {
 
             var userFolder = await GetToUserFolder();
@@ -88,7 +110,7 @@ namespace Photobook.Models
             await cookieFolder.DeleteAsync();
         }
 
-        public static async Task<List<GuestAtEvent>> GetAllActiveUsers()
+        public async Task<List<GuestAtEvent>> GetAllActiveUsers()
         {
             var userFolder = await GetToUserFolder();
 
@@ -114,12 +136,12 @@ namespace Photobook.Models
             return list;
         }
 
-        private static bool EventIsActive(GuestAtEvent e)
+        private bool EventIsActive(GuestAtEvent e)
         {
             return !(e.EventInfo.EndDate < DateTime.Now);
         }
 
-        public static async Task<CookieCollection> GetCookies(string id)
+        public async Task<CookieCollection> GetCookies(string id)
         {
             var cookieFolder = await GetToCookieFolder();
             var file = await cookieFolder.CreateFileAsync(id, CreationCollisionOption.OpenIfExists);
@@ -137,7 +159,7 @@ namespace Photobook.Models
             return cc;
         }
 
-        private static async Task<IFolder> GetToCookieFolder()
+        private async Task<IFolder> GetToCookieFolder()
         {
             var saveFolder = FileSystem.Current.LocalStorage;
             var folder = await saveFolder.CreateFolderAsync(SaveFolderName,
@@ -146,7 +168,7 @@ namespace Photobook.Models
                 CreationCollisionOption.OpenIfExists);
         }
 
-        public static async void SaveActiveGuestList(List<GuestAtEvent> current)
+        public async void SaveActiveGuestList(List<GuestAtEvent> current)
         {
             var guests = string.Empty;
 

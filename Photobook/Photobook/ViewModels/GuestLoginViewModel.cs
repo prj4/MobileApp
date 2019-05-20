@@ -19,16 +19,17 @@ namespace Photobook.ViewModels
 
         private ICommand _guestLoginCommand;
         private string _loginInfo;
- 
+        private IMemoryManager _memoryManager;
 
         private bool enableButton = true;
         private EventModel eventFromServer;
         public INavigation Navigation;
 
-        public GuestLoginViewModel()
+        public GuestLoginViewModel(IMemoryManager memoryManager = null)
         {
             Guest = new Guest();
             eventFromServer = new EventModel();
+            _memoryManager = memoryManager ?? MemoryManager.GetInstance();
             InitializeGuests();
         }
 
@@ -58,7 +59,7 @@ namespace Photobook.ViewModels
             set
             {
                 selected = value;
-                MemoryManager.GetCookies(selected.GuestInfo.Username);
+                _memoryManager.GetCookies(selected.GuestInfo.Username);
                 _guest = selected.GuestInfo;
                 
 
@@ -105,7 +106,7 @@ namespace Photobook.ViewModels
 
         private async void InitializeGuests()
         {
-            var list = await MemoryManager.GetAllActiveUsers();
+            var list = await _memoryManager.GetAllActiveUsers();
             ActiveGuests = new ObservableCollection<GuestAtEvent>(list);
             NotifyPropertyChanged();
         }
@@ -130,14 +131,14 @@ namespace Photobook.ViewModels
                 eventFromServer = await parser.DeserializedData<EventModel>(message);
 
 
-                MemoryManager.SaveCookie(Data.LatestReceivedCookies, _guest.Username);
+                _memoryManager.SaveCookie(Data.LatestReceivedCookies, _guest.Username);
                 selected = new GuestAtEvent
                 {
                     EventInfo = eventFromServer,
                     GuestInfo = _guest
                 };
                 ActiveGuests.Add(selected);
-                MemoryManager.SaveActiveGuestList(_guestAtEvents.ToList());
+                _memoryManager.SaveActiveGuestList(_guestAtEvents.ToList());
 
                 var rootPage = Navigation.NavigationStack.FirstOrDefault();
                 if (rootPage != null)

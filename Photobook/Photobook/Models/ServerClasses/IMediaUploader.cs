@@ -20,10 +20,12 @@ namespace Photobook.Models
     public class MediaUploader : IMediaUploader
     {
         private readonly Guest currentGuest;
+        private IMemoryManager _memoryManager;
 
-        public MediaUploader(Guest g)
+        public MediaUploader(Guest g, IMemoryManager memoryManager = null)
         {
             currentGuest = g;
+            _memoryManager = memoryManager ?? MemoryManager.GetInstance();
         }
 
         public event ServerNotice NotifyDone;
@@ -43,7 +45,7 @@ namespace Photobook.Models
                 Bytes = File.ReadAllBytes(path),
                 Pin = eventId
             };
-            var cookies = await MemoryManager.GetCookies($"{currentGuest.Username}");
+            var cookies = await _memoryManager.GetCookies($"{currentGuest.Username}");
 
             com.AddCookies(cookies);
 

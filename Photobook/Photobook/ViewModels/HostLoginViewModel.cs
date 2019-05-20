@@ -14,7 +14,7 @@ namespace Photobook.ViewModels
     public class HostLoginViewModel : INotifyPropertyChanged
     {
         public INavigation Navigation;
-
+        private IMemoryManager _memoryManager;
 
         public Host Host { get; set; } = new Host();
         public event PropertyChangedEventHandler PropertyChanged;
@@ -24,6 +24,10 @@ namespace Photobook.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public HostLoginViewModel(IMemoryManager memoryManager = null)
+        {
+            _memoryManager = memoryManager ?? MemoryManager.GetInstance();
+        }
 
         #region Commands
 
@@ -54,7 +58,7 @@ namespace Photobook.ViewModels
                         : new HostMainMenu(ServerHost);
 
 
-                    MemoryManager.SaveCookie(handler.LatestReceivedCookies, ServerHost.Name);
+                    _memoryManager.SaveCookie(handler.LatestReceivedCookies, ServerHost.Name);
                     Navigation.InsertPageBefore(page, Navigation.NavigationStack.First());
                     await Navigation.PopToRootAsync();
                 }

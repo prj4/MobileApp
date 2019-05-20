@@ -15,10 +15,12 @@ namespace Photobook.ViewModels
 
         private ICommand downloadSingleCommand;
         public INavigation Navigation;
+        private IMemoryManager _memoryManager;
 
-        public EventSeeSingleImageViewModel(TestImage Img)
+        public EventSeeSingleImageViewModel(TestImage Img, IMemoryManager memoryManager = null)
         {
             Image = Img;
+            _memoryManager = memoryManager ?? MemoryManager.GetInstance();
         }
 
         public TestImage Image
@@ -37,7 +39,7 @@ namespace Photobook.ViewModels
         private async void DeleteImage_Execute()
         {
             IServerCommunicator com = new ServerCommunicator();
-            com.AddCookies(MemoryManager.CurrentCookies);
+            com.AddCookies(_memoryManager.CurrentCookies);
 
             if(await com.DeleteFromServer(_image, DataType.Picture))
             {
@@ -61,12 +63,12 @@ namespace Photobook.ViewModels
 
         private void DownloadImage()
         {
-            var cookies = MemoryManager.CurrentCookies;
+            var cookies = _memoryManager.CurrentCookies;
             if (cookies != null)
             {
                 IMediaDownloader downloader = new MediaDownloader(cookies);
                 downloader.DownloadSingleImage(Image.FullPictureUrl);
-                downloader.Downloading += args => { MemoryManager.SaveToPicture(args.FileBytes, args.PictureId); };
+                downloader.Downloading += args => { _memoryManager.SaveToPicture(args.FileBytes, args.PictureId); };
             }
         }
     }
