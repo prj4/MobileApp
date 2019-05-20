@@ -1,4 +1,5 @@
-﻿using Photobook.ViewModels;
+﻿using Photobook.Models;
+using Photobook.ViewModels;
 using Xamarin.Forms;
 
 namespace Photobook.View

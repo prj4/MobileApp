@@ -28,9 +28,10 @@ namespace Photobook.Models
         private readonly string SaveFolderName = "photobookSaves";
         private readonly string UserFolderName = "Users";
         public CookieCollection CurrentCookies { get; private set; }
-        private static MemoryManager Instance;
+        public static IMemoryManager Instance;
         public static IMemoryManager GetInstance()
         {
+            
             return Instance ?? (Instance = new MemoryManager());
         }
 
