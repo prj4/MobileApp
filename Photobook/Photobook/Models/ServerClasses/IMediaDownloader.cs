@@ -21,7 +21,7 @@ namespace Photobook.Models
         public string PinId { get; set; }
     }
 
-    internal interface IMediaDownloader
+    public  interface IMediaDownloader
     {
         void DownloadSingleImage(string url);
         void DownloadAllImages(List<string> urls);
