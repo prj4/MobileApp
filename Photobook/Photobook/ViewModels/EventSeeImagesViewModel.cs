@@ -69,8 +69,10 @@ namespace Photobook.ViewModels
 
         #region Constructors
 
-        public EventSeeImagesViewModel(EventModel loadEvent)
+        public EventSeeImagesViewModel(EventModel loadEvent, ServerCommunicator servercom, INavigation navigation)
         {
+            Navigation = navigation;
+            com = servercom;
             Items = new ObservableCollection<TestImage>();
             Images = new List<string>();
 
@@ -88,7 +90,6 @@ namespace Photobook.ViewModels
         {
             DeleteTempDirectory();
             Refresh = true;
-            com = new ServerCommunicator();
 
             var ids = await com.GetImages(_event, MemoryManager.CurrentCookies);
 

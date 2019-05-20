@@ -1,5 +1,6 @@
 ﻿
 using PB.Dto;
+using Photobook.Models;
 using Photobook.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -11,8 +12,9 @@ namespace Photobook.View
     {
         public EventSeeImages(EventModel _event)
         {
-            var vm = new EventSeeImagesViewModel(_event);
-            vm.Navigation = Navigation;
+            ServerCommunicator com = new ServerCommunicator();
+            var vm = new EventSeeImagesViewModel(_event, com, Navigation);
+            //vm.Navigation = Navigation;
             BindingContext = vm;
             InitializeComponent();
         }
