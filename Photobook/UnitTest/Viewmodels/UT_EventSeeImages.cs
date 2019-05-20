@@ -21,15 +21,13 @@ namespace UnitTest.Viewmodels
 
         private EventSeeImagesViewModel _uut;
         private EventModel Eventmodel;
-        private ServerCommunicator com;
-        private INavigation nav;
-
+        private IServerCommunicator com;
 
         [SetUp]
         public void Setup()
         {
-            com = Substitute.For<ServerCommunicator>();
-            nav = Substitute.For<INavigation>();
+            com = Substitute.For<IServerCommunicator>();
+
 
             Eventmodel = new EventModel();
             Eventmodel.Pin = "1234";
@@ -39,39 +37,23 @@ namespace UnitTest.Viewmodels
             Eventmodel.Location = "På skolen";
             Eventmodel.Name = "Navn på event";
 
-            _uut = new EventSeeImagesViewModel(Eventmodel, com, nav);
+            _uut = new EventSeeImagesViewModel(Eventmodel, com);
         }
 
 
         [Test]
         public async Task ReloadData_Servercom_Called()
         {
+            List<string> tempList = new List<string>();
+            tempList.Add("1");
+            tempList.Add("2");
+
+            com.GetImages(Arg.Any<EventModel>(), Arg.Any<CookieCollection>()).Returns(tempList);
+
             _uut.ReloadData();
             // Can't test cookies
             Assert.That(_uut.Items.Count, Is.EqualTo(1));
         }
-
-
-        [Test]
-        public void ItemTappedCommand_Image()
-        {
-            _uut.LastTappedItem = new TestImage
-            {
-                FileName = "Filename",
-                ImagePath = "Path",
-                PinId = "1",
-            };
-
-            _uut.ItemTappedCommand.Execute(null);
-            nav.Received(1).PushAsync(Arg.Is(new EventSeeSingleImage((TestImage)_uut.LastTappedItem)));
-
-        }
-
-
-
-
-
-
 
 
     }

@@ -12,8 +12,8 @@ namespace Photobook.View
     {
         public StartUpView()
         {
-            var vm = new StartUpViewViewModel();
-            vm.Navigation = Navigation;
+            var vm = new StartUpViewViewModel(Navigation);
+            //vm.Navigation = Navigation;
             BindingContext = vm;
             InitializeComponent();
         }

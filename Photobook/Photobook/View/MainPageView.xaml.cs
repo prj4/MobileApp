@@ -9,7 +9,7 @@ namespace Photobook.View
         {
             InitializeComponent();
 
-            BindingContext = new UserViewmodel();
+            BindingContext = new MainPageViewViewModel();
         }
     }
 }
