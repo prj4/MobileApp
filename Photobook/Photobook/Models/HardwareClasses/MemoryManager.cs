@@ -56,6 +56,7 @@ namespace Photobook.Models
 
         public static void PurgeTempDirectory()
         {
+            
             var tempPath = DependencyService.Get<IFileDirectoryAPI>().GetTempPath();
             if (Directory.GetFiles(tempPath).Length > 0)
             {

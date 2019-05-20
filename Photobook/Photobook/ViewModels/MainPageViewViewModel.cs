@@ -7,13 +7,13 @@ using Xamarin.Forms;
 
 namespace Photobook.ViewModels
 {
-    public class UserViewmodel : INotifyPropertyChanged
+    public class MainPageViewViewModel : INotifyPropertyChanged
     {
         private ObservableCollection<Host> _hosts;
 
         private ObservableCollection<string> _tekst;
 
-        public UserViewmodel()
+        public MainPageViewViewModel()
         {
             AddCommand = new Command(param =>
             {

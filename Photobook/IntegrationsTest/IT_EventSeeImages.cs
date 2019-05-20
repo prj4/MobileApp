@@ -13,10 +13,12 @@ namespace IntegrationsTest
     {
         private EventSeeImagesViewModel EventSeeImages;
         private EventModel Eventmodel;
+        private ServerCommunicator com;
 
         [SetUp]
         public void Setup()
         {
+            com = new ServerCommunicator();
             Eventmodel = new EventModel();
             Eventmodel.Pin = "1234";
             Eventmodel.Description = "Description";
@@ -25,7 +27,7 @@ namespace IntegrationsTest
             Eventmodel.Location = "På skolen";
             Eventmodel.Name = "Navn på event";
 
-            EventSeeImages = new EventSeeImagesViewModel(Eventmodel);
+            EventSeeImages = new EventSeeImagesViewModel(Eventmodel, com);
         }
 
         [Test]

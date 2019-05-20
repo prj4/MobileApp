@@ -30,7 +30,7 @@ namespace Photobook.ViewModels
         public INavigation Navigation;
         private readonly EventModel _event;
         private List<string> Images;
-        private ServerCommunicator com;
+        private IServerCommunicator com;
         private string downloadProgress = "";
         private int Progress = 0;
         private int Count = 0;
@@ -69,9 +69,8 @@ namespace Photobook.ViewModels
 
         #region Constructors
 
-        public EventSeeImagesViewModel(EventModel loadEvent, ServerCommunicator servercom, INavigation navigation)
+        public EventSeeImagesViewModel(EventModel loadEvent, IServerCommunicator servercom)
         {
-            Navigation = navigation;
             com = servercom;
             Items = new ObservableCollection<TestImage>();
             Images = new List<string>();
@@ -88,7 +87,11 @@ namespace Photobook.ViewModels
 
         public async void ReloadData()
         {
+#if !DEBUG
             DeleteTempDirectory();
+#endif
+            
+            
             Refresh = true;
 
             var ids = await com.GetImages(_event, MemoryManager.CurrentCookies);
@@ -159,9 +162,9 @@ namespace Photobook.ViewModels
 
             }
         }
-        #endregion
+#endregion
 
-        #region Commands
+#region Commands
 
         private ICommand _itemTappedCommand;
         public ICommand ItemTappedCommand
@@ -206,7 +209,7 @@ namespace Photobook.ViewModels
             downloader.DownloadAllImages(UrlList);
         }
 
-        #endregion
+#endregion
         
        
     }
