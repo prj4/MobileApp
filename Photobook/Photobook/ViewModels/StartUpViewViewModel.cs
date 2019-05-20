@@ -19,11 +19,15 @@ namespace Photobook.ViewModels
         public INavigation Navigation;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public StartUpViewViewModel(INavigation nav)
+        public StartUpViewViewModel()
         {
-            Navigation = nav;
+            
         }
 
+        public StartUpViewViewModel(INavigation mockNavigation)
+        {
+            Navigation = mockNavigation;
+        }
         protected virtual void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
