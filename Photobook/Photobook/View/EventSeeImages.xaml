@@ -5,7 +5,8 @@
              x:Class="Photobook.View.EventSeeImages"
 
              xmlns:flv="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
-             BackgroundColor="#0e122a">
+             BackgroundColor="#0e122a"
+             >
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="{Binding DownloadProgress}"/>
@@ -17,7 +18,9 @@
         <flv:FlowListView SeparatorVisibility="None" HasUnevenRows="true"
                           FlowItemTappedCommand="{Binding ItemTappedCommand}" FlowLastTappedItem="{Binding LastTappedItem}"
                           FlowColumnMinWidth="110" FlowItemsSource="{Binding Items, Mode=OneWay}" 
-                          IsRefreshing="{Binding Refresh}"
+                          IsPullToRefreshEnabled="True"
+                          RefreshCommand="{Binding RefreshCommand}"
+                          IsRefreshing="{Binding IsRefreshing}"
                            >
 
             <flv:FlowListView.FlowColumnTemplate>

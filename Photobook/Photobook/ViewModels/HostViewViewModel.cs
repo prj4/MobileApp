@@ -30,9 +30,9 @@ namespace Photobook.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void Login_Execute()
+        private async void Login_Execute()
         {
-            Navigation.PushAsync(new HostLogin());
+            await Navigation.PushAsync(new HostLogin());
         }
 
         private void CreateUser_Execute()

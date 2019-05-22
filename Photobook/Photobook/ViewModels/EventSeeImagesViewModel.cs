@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using PB.Dto;
 using Photobook.Models;
@@ -41,6 +42,14 @@ namespace Photobook.ViewModels
         #endregion
 
         #region DataBindings
+
+        private bool _isRefreshing = false;
+
+        public bool IsRefreshing
+        {
+            get { return _isRefreshing; }
+            set { _isRefreshing = value; NotifyPropertyChanged(); }
+        }
         
         private static ObservableCollection<TestImage> _items;
         public ObservableCollection<TestImage> Items
@@ -70,13 +79,13 @@ namespace Photobook.ViewModels
 
         #region Constructors
 
-        public EventSeeImagesViewModel(EventModel loadEvent, IServerCommunicator servercom, IMemoryManager memoryManager = null)
+        public EventSeeImagesViewModel(EventModel loadEvent)
         {
-            com = servercom;
+            com = new ServerCommunicator();
             Items = new ObservableCollection<TestImage>();
             Images = new List<string>();
 
-            _memoryManager = memoryManager ?? MemoryManager.GetInstance();
+            _memoryManager = MemoryManager.GetInstance();
 
             _event = loadEvent;
             
@@ -114,6 +123,9 @@ namespace Photobook.ViewModels
 
         public bool Refresh = false;
 
+        private ObservableCollection<TestImage> list;
+
+
         private void Downloader_DownloadPreview(ImageDownloadEventArgs e)
         {
             if (e.StatusOk)
@@ -129,7 +141,7 @@ namespace Photobook.ViewModels
                 Debug.WriteLine($"{sw.ElapsedMilliseconds} ms", "Downloaded image");
                 sw.Reset();
                 sw.Start();
-                var list = Items;
+                list = Items;
 
                 list.Add(new TestImage
                 {
@@ -161,13 +173,31 @@ namespace Photobook.ViewModels
                 {
                     Progress = 0;
                     DownloadProgress = "Done!";
+                    // Indsat her
+                    Items = list;
                 }
 
             }
         }
-#endregion
+        #endregion
 
-#region Commands
+   
+
+        #region Commands
+
+
+        private ICommand _refreshCommand;
+        public ICommand RefreshCommand
+        {
+            get { return _refreshCommand ?? (_refreshCommand = new DelegateCommand(refresh_execute)); }
+        }
+        private void refresh_execute()
+        {
+            IsRefreshing = true;
+            Items = list;
+            IsRefreshing = false;
+
+        }
 
         private ICommand _itemTappedCommand;
         public ICommand ItemTappedCommand
@@ -175,13 +205,12 @@ namespace Photobook.ViewModels
             get { return _itemTappedCommand ?? (_itemTappedCommand = new DelegateCommand(itemTapped_Execute)); }
         }
 
-        private void itemTapped_Execute()
+        private async void itemTapped_Execute()
         {
             if (LastTappedItem is TestImage item)
             {
-                Debug.WriteLine($"Tapped {item.ImagePath}");
 
-                Navigation.PushAsync(new EventSeeSingleImage(item));
+                await Navigation.PushAsync(new EventSeeSingleImage(item));
             }
 
         }

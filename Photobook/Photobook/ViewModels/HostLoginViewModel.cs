@@ -57,8 +57,8 @@ namespace Photobook.ViewModels
                         ? new HostMainMenu(ServerHost, ServerHost.Events.ToList())
                         : new HostMainMenu(ServerHost);
 
-
                     _memoryManager.SaveCookie(handler.LatestReceivedCookies, ServerHost.Name);
+
                     Navigation.InsertPageBefore(page, Navigation.NavigationStack.First());
                     await Navigation.PopToRootAsync();
                 }
