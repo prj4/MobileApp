@@ -113,11 +113,6 @@ namespace Photobook.Models
             try
             {
                 response.EnsureSuccessStatusCode();
-                if (response.StatusCode != HttpStatusCode.OK)
-                {
-                    errorHandler?.Handle(response);
-                    return false;
-                }
                     
             }
             catch (HttpRequestException e)

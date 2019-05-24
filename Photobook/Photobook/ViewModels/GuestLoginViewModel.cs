@@ -120,8 +120,8 @@ namespace Photobook.ViewModels
         {
             EnableButton = false;
             IServerDataHandler Data = new ServerDataHandler();
-            IServerErrorcodeHandler errroHandler = new GuestLoginErrorcodeHandler();
-            IServerCommunicator Com = new ServerCommunicator(Data, errroHandler);
+            IServerErrorcodeHandler errorHandler = new GuestLoginErrorcodeHandler();
+            IServerCommunicator Com = new ServerCommunicator(Data, errorHandler);
 
             if (await Com.SendDataReturnIsValid(_guest, DataType.Guest))
             {
@@ -153,7 +153,7 @@ namespace Photobook.ViewModels
             }
             else
             {
-                LoginInfo = errroHandler.Message;
+                LoginInfo = errorHandler.Message;
                 EnableButton = true;
             }
         }
