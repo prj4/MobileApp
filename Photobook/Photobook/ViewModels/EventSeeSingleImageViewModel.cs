@@ -19,7 +19,7 @@ namespace Photobook.ViewModels
 
         public EventSeeSingleImageViewModel(TestImage Img, IMemoryManager memoryManager = null)
         {
-            Image = Img;
+            _image = Img;
             _memoryManager = memoryManager ?? MemoryManager.GetInstance();
         }
 

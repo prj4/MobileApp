@@ -10,7 +10,6 @@ namespace Photobook.View
             var vm = new HostViewViewModel();
             vm.Navigation = Navigation;
             BindingContext = vm;
-
             InitializeComponent();
         }
     }

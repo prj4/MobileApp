@@ -11,8 +11,8 @@ namespace Photobook.View
         public EventSeeSingleImage(TestImage img)
         {
             var vm = new EventSeeSingleImageViewModel(img);
-            //vm.Navigation = Navigation;
-            BindingContext = vm;
+            vm.Navigation = Navigation;
+            this.BindingContext = vm;
             InitializeComponent();
         }
     }
