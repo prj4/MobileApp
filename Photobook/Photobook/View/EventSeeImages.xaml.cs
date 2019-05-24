@@ -12,12 +12,12 @@ namespace Photobook.View
     {
         public EventSeeImages(EventModel _event)
         {
-            InitializeComponent();
+            
             var vm = new EventSeeImagesViewModel(_event);
             vm.Navigation = Navigation;
 
             BindingContext = vm;
-            
+            InitializeComponent();
         }
 
     }

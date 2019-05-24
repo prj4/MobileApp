@@ -94,7 +94,7 @@ namespace Photobook.Models
             var data = parser.ParsedData(dataToSend);
 
             if (!(dataType == DataType.Picture || dataType == DataType.Video))
-                Debug.WriteLine(data + DateTime.Now.ToString("ss.fff"), "JSON_DATA:");
+                Debug.WriteLine(data, "JSON_DATA:");
 
             clientHandler.UseCookies = true;
             

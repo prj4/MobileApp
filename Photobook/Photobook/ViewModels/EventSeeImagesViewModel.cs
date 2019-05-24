@@ -210,7 +210,7 @@ namespace Photobook.ViewModels
             if (LastTappedItem is TestImage item)
             {
 
-                await Navigation.PushAsync(new EventSeeSingleImage(item));
+                await Navigation.PushAsync(new EventSeeSingleImage(item), false);
             }
 
         }
