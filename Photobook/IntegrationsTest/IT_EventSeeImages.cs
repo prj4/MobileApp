@@ -27,7 +27,7 @@ namespace IntegrationsTest
             Eventmodel.Location = "På skolen";
             Eventmodel.Name = "Navn på event";
 
-            EventSeeImages = new EventSeeImagesViewModel(Eventmodel, com);
+            EventSeeImages = new EventSeeImagesViewModel(Eventmodel);
         }
 
         [Test]
