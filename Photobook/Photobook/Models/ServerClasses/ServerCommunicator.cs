@@ -189,7 +189,8 @@ namespace Photobook.Models
             var postfix = postfixCreator.Generate(o);
 
             var rep = await client.DeleteAsync($"{UrlFactory.Generate(d)}/{postfix}");
-
+            Debug.WriteLine(rep.StatusCode, "Status, delete");
+            Debug.WriteLine(rep);
             return rep.IsSuccessStatusCode;
         }
     }

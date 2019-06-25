@@ -27,6 +27,7 @@ namespace Photobook.ViewModels
 
         private ICommand _logOutCommand;
         public INavigation Navigation;
+        private IMemoryManager memory;
 
         public HostMainMenuViewModel(Host host)
         {
@@ -118,7 +119,9 @@ namespace Photobook.ViewModels
 
         private async void DeleteEvent_Execute(EventModel _event)
         {
+            memory = MemoryManager.GetInstance();
             IServerCommunicator com = new ServerCommunicator();
+            com.AddCookies(memory.CurrentCookies);
 
             if(await com.DeleteFromServer(_event, DataType.DeleteEvent))
             {
