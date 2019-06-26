@@ -163,10 +163,10 @@ namespace Photobook.ViewModels
         public ICommand SeeImagesCommand =>
             _seeImagesCommand ?? (_seeImagesCommand = new DelegateCommand(SeeImages_Execute));
 
-        private async void SeeImages_Execute()
+        private void SeeImages_Execute()
         {
             
-            await Navigation.PushAsync(new EventSeeImages(_event), false);
+            Navigation.PushAsync(new EventSeeImages(_event), false);
         }
 
         private ICommand _uploadPictureCommand;

@@ -205,12 +205,12 @@ namespace Photobook.ViewModels
             get { return _itemTappedCommand ?? (_itemTappedCommand = new DelegateCommand(itemTapped_Execute)); }
         }
 
-        private async void itemTapped_Execute()
+        private void itemTapped_Execute()
         {
             if (LastTappedItem is TestImage item)
             {
 
-                await Navigation.PushAsync(new EventSeeSingleImage(item), false);
+                Navigation.PushAsync(new EventSeeSingleImage(item), false);
             }
 
         }

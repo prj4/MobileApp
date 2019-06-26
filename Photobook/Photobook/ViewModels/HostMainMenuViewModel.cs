@@ -163,20 +163,20 @@ namespace Photobook.ViewModels
             }
         }
 
-        //public string EventList
-        //{
-        //    get
-        //    {
-        //        if (Events.Count > 0)
-        //        {
-        //            NotifyPropertyChanged();
-        //            return "Dine events";
-        //        }
+        public string EventList
+        {
+            get
+            {
+                if (Events.Count > 0)
+                {
+                    NotifyPropertyChanged();
+                    return "Dine events";
+                }
 
-        //        NotifyPropertyChanged();
-        //        return "Du har ikke nogle events endnu - opret et event";
-        //    }
-        //}
+                NotifyPropertyChanged();
+                return "Du har ikke nogle events endnu - opret et event";
+            }
+        }
 
         private EventModel _selectedEvent;
 
